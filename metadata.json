@@ -1,0 +1,8 @@
+{
+  "name": "Royal Uzhavan",
+  "description": "An online store for premium cattle, poultry, and goat/sheep feed plus organic farm inputs in Tamil Nadu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
