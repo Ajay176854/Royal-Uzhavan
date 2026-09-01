@@ -40,6 +40,7 @@ interface Smooth3DSlideshowProps {
         paddingBottom?: number
     }
     style?: CSSProperties
+    onSlideChange?: (index: number) => void
 }
 
 const DEFAULT_SLIDES: Slide[] = [
@@ -143,6 +144,7 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
         titleColor,
         titlePosition,
         style,
+        onSlideChange,
     } = props
 
     const tp = titlePosition || {}
@@ -166,6 +168,12 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
     useEffect(() => {
         setActive((a) => Math.max(0, Math.min(n - 1, a)))
     }, [n])
+
+    useEffect(() => {
+        if (onSlideChange) {
+            onSlideChange(active)
+        }
+    }, [active, onSlideChange])
 
     // Lock input while a card is mid-move; release once it settles, so rapid
     // clicks/keys don't stack up and look jittery. Duration comes from the

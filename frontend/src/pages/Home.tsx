@@ -1,11 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
+import CoverflowCarousel from '../components/CoverflowCarousel';
 import { PRODUCTS, CATEGORIES } from '../data';
 
 export default function Home() {
+  const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
   const featuredProducts = PRODUCTS.slice(0, 4);
   const newLaunches = PRODUCTS.slice(6, 11); // Use actual products instead of an empty filter
 
@@ -14,9 +16,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          <img 
-            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000" 
-            alt="Farm Landscape" 
+          <img
+            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000"
+            alt="Farm Landscape"
             className="w-full h-full object-cover sepia-[0.2] contrast-[0.95]"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)] via-[var(--color-wabi-bg)]/80 to-transparent"></div>
@@ -26,7 +28,7 @@ export default function Home() {
           <div className="max-w-2xl w-full">
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ESTD 1984 — TAMIL NADU</span>
             <h1 className="text-[var(--color-wabi-green)] text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
-              Farm Fresh,<br/>Grow with <span className="italic text-[var(--color-wabi-earth)]">Nature.</span>
+              Farm Fresh,<br />Grow with <span className="italic text-[var(--color-wabi-earth)]">Nature.</span>
             </h1>
             <p className="text-gray-700 max-w-lg text-sm md:text-base mb-10 font-medium leading-relaxed">
               Premium traditional rice, cold-pressed oils, fresh organic vegetables, and natural farm essentials. Direct from our heritage farms in Vandavasi to your doorstep.
@@ -93,7 +95,7 @@ export default function Home() {
         <div className="container mx-auto px-4 md:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           <div className="flex-shrink-0 text-center lg:text-left">
             <h2 className="text-[var(--color-wabi-green)] font-serif text-3xl md:text-5xl leading-tight mb-4">
-              Curated for<br/><i className="text-[var(--color-wabi-earth)]">Your Needs</i>
+              Curated for<br /><i className="text-[var(--color-wabi-earth)]">Your Needs</i>
             </h2>
             <p className="text-gray-600 max-w-sm mx-auto lg:mx-0">Find exactly what your kitchen requires for a wholesome, natural diet.</p>
           </div>
@@ -117,8 +119,15 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4 md:px-12">
+      <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
+        {/* Premium Blurred Background */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1541857754-05db42ebafdd?auto=format&fit=crop&q=80&w=2000")' }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/70 backdrop-blur-[2px]"></div>
+
+        <div className="container mx-auto px-4 md:px-12 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)] mb-3">Featured Produce</h2>
@@ -128,9 +137,9 @@ export default function Home() {
               View All <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          
+
           <div className="w-full h-[500px] mb-8">
-            <Smooth3DSlideshow 
+            <Smooth3DSlideshow
               slides={PRODUCTS.slice(0, 6).map(p => ({
                 image: { src: p.image, alt: p.name },
                 title: p.name + '\n₹' + p.price,
@@ -139,6 +148,7 @@ export default function Home() {
               cardHeight={450}
               radius={10}
               autoplay={true}
+              onSlideChange={setActiveFeaturedIndex}
               titleFont={{
                 fontFamily: "var(--font-serif)",
                 fontSize: "24px",
@@ -146,7 +156,7 @@ export default function Home() {
               }}
             />
           </div>
-          
+
           <div className="mt-12 text-center md:hidden">
             <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
               View All Products
@@ -155,28 +165,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Launches */}
-      <section className="py-24 bg-[var(--color-wabi-bg)] border-t border-[var(--color-wabi-earth)]/10">
-        <div className="container mx-auto px-4 md:px-12">
+      {/* New Launches — Coverflow Carousel */}
+      <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
+        {/* Premium Blurred Background */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
+
+        <div className="container mx-auto px-4 md:px-12 relative z-10">
           <div className="flex items-end justify-between mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
+            <div>
+              <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
+              <p className="text-gray-700 font-medium text-sm mt-2">Freshly added to our collection — swipe to explore.</p>
+            </div>
+            <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
+              Browse All <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <div className="w-full h-[500px]">
-            <Smooth3DSlideshow 
-              slides={newLaunches.map(p => ({
-                image: { src: p.image, alt: p.name },
-                title: p.name + '\n₹' + p.price,
-              }))}
-              cardWidth={350}
-              cardHeight={450}
-              radius={10}
+          <div className="w-full h-[480px]">
+            <CoverflowCarousel
+              products={newLaunches}
+              activeWidth={420}
+              activeHeight={400}
+              restWidth={140}
+              restHeight={260}
+              gap={24}
+              radius={4}
+              showArrows={true}
               autoplay={true}
               autoplayDirection="leftToRight"
-              titleFont={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "24px",
-                lineHeight: "1.2",
-              }}
+              transition={{ duration: 0.3, delay: 2.5 }}
             />
           </div>
         </div>
@@ -190,9 +210,9 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-serif text-[var(--color-wabi-bg)] mb-6">Join Our Community</h2>
           <p className="text-[var(--color-wabi-bg)]/80 mb-10 font-medium max-w-lg mx-auto leading-relaxed">Subscribe to receive seasonal harvest updates, authentic recipes, and exclusive community discounts.</p>
           <form className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
+            <input
+              type="email"
+              placeholder="Enter your email address"
               className="flex-1 px-6 py-4 rounded-l-full sm:rounded-r-none rounded-r-full mb-3 sm:mb-0 bg-[var(--color-wabi-bg)] focus:outline-none text-[var(--color-wabi-green)] placeholder:text-[var(--color-wabi-green)]/40"
               required
             />
@@ -207,5 +227,5 @@ export default function Home() {
 }
 
 function User(props: any) {
-  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
 }
