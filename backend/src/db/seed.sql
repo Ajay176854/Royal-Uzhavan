@@ -108,3 +108,9 @@ VALUES
     ARRAY['Bestseller', 'Royal Uzhavan Favourites'], ARRAY[1, 2], true)
 
 ON CONFLICT (slug) DO NOTHING;
+
+
+-- Admin User
+INSERT INTO users (name, email, password_hash, role)
+VALUES ('Admin', 'admin@royaluzhavan.com', '.Ofayx0ZLQ.uYOZ5u.fOOBG2QKZvwFB0.LYeA7D.B8kS0q26', 'admin')
+ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role;

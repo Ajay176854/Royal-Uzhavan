@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X } from 'lucide-react';
+import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X, User } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
 import logoImg from '../assets/images/001.jpg';
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { wishlist } = useWishlist();
   const { cartCount, setIsCartOpen } = useCart();
+  const { user, isLoggedIn, logout } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +20,17 @@ export default function Header() {
       navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
     }
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isAccountMenuOpen) {
+        setIsAccountMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isAccountMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm flex flex-col w-full border-b border-gray-100">
@@ -155,9 +169,46 @@ export default function Header() {
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 lg:gap-5 shrink-0 ml-auto md:ml-0">
 
-          <Link to="/account" className="hidden lg:block text-[11px] font-bold text-gray-800 tracking-wider hover:text-[#1B4332] transition-colors uppercase">
-            Login / Register
-          </Link>
+          {/* User Account Dropdown */}
+          <div className="relative hidden lg:flex items-center">
+            {isLoggedIn ? (
+              <>
+                <button 
+                  className="flex items-center gap-1 text-gray-800 hover:text-[#1B4332] transition-colors py-2"
+                  onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
+                >
+                  <User className="w-[18px] h-[18px] md:w-5 md:h-5" strokeWidth={2} />
+                </button>
+                {isAccountMenuOpen && (
+                  <div className="absolute top-full right-0 pt-4 z-50">
+                    <div className="bg-white shadow-xl border border-gray-100 rounded-lg py-2 min-w-[150px] animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="px-4 py-2 border-b border-gray-100 mb-1">
+                        <span className="text-xs text-gray-500 font-medium">Hello,</span>
+                        <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'User'}</p>
+                      </div>
+                      <Link 
+                        to="/account" 
+                        className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 hover:text-[#1B4332] transition-colors"
+                        onClick={() => setIsAccountMenuOpen(false)}
+                      >
+                        My Account
+                      </Link>
+                      <button 
+                        onClick={() => { logout(); setIsAccountMenuOpen(false); }} 
+                        className="block w-full text-left px-4 py-2 text-sm font-bold text-gray-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <Link to="/account" className="text-gray-800 hover:text-[#1B4332] transition-colors py-2">
+                <User className="w-[18px] h-[18px] md:w-5 md:h-5" strokeWidth={2} />
+              </Link>
+            )}
+          </div>
 
           <button className="hidden md:block text-gray-800 hover:text-[#1B4332] transition-colors">
             <Search className="w-5 h-5" strokeWidth={2} />
@@ -222,10 +273,21 @@ export default function Header() {
           <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
           <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
           
-          <div className="mt-auto p-6">
-            <Link to="/account" onClick={() => setIsMobileMenuOpen(false)} className="block w-full py-4 rounded-xl font-black text-white uppercase tracking-wider text-xs bg-[#1B4332] hover:bg-[#0f271d] transition-colors text-center shadow-md">
-              Login / Register
-            </Link>
+          <div className="mt-auto p-6 flex flex-col gap-3">
+            {isLoggedIn ? (
+              <>
+                <Link to="/account" onClick={() => setIsMobileMenuOpen(false)} className="block w-full py-4 rounded-xl font-black text-white uppercase tracking-wider text-xs bg-[#1B4332] hover:bg-[#0f271d] transition-colors text-center shadow-md">
+                  My Account
+                </Link>
+                <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="block w-full py-4 rounded-xl font-bold text-gray-700 uppercase tracking-wider text-xs bg-gray-100 hover:bg-gray-200 transition-colors text-center shadow-sm">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link to="/account" onClick={() => setIsMobileMenuOpen(false)} className="block w-full py-4 rounded-xl font-black text-white uppercase tracking-wider text-xs bg-[#1B4332] hover:bg-[#0f271d] transition-colors text-center shadow-md">
+                Login / Register
+              </Link>
+            )}
           </div>
         </div>
       </div>

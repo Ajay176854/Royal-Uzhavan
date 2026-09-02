@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Star } from 'lucide-react';
-import { Product } from '../data';
+import { Product } from '../types';
 import { cn } from '../lib/utils';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
@@ -20,9 +20,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   // Simple pricing logic for mock data based on variant size
   const variantMultiplier = selectedVariant;
-  const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
-  const currentOriginalPrice = product.originalPrice 
-    ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
+  const currentPrice = Number(product.price) * (variantMultiplier / (product.variants[0] || 1));
+  const currentOriginalPrice = product.original_price 
+    ? Number(product.original_price) * (variantMultiplier / (product.variants[0] || 1)) 
     : undefined;
 
   return (
@@ -73,7 +73,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Heart className={cn("w-4 h-4", liked && "fill-red-500 text-red-500")} />
         </button>
 
-        {!product.inStock && (
+        {!product.in_stock && (
           <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
             <span className="bg-gray-900 text-white font-bold px-4 py-2 rounded shadow-lg uppercase tracking-wider text-sm">
               Out of Stock
@@ -87,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Rating */}
         <div className="flex items-center gap-1 mb-2">
           <Star className="w-3.5 h-3.5 fill-[var(--color-wabi-gold)] text-[var(--color-wabi-gold)]" />
-          <span className="text-xs font-bold text-gray-700">{product.rating}</span>
+          <span className="text-xs font-bold text-gray-700">{Number(product.rating).toFixed(1)}</span>
           <span className="text-xs text-gray-400">({product.reviews})</span>
         </div>
 
@@ -119,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
             </div>
 
-            {product.inStock ? (
+            {product.in_stock ? (
               <button 
                 onClick={(e) => {
                   e.preventDefault();

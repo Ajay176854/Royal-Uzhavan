@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
-import ProductCard from '../components/ProductCard';
+import { ArrowRight } from 'lucide-react';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
-import { PRODUCTS, CATEGORIES } from '../data';
+import { Product } from '../types';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 export default function Home() {
-  const featuredProducts = PRODUCTS.slice(0, 4);
-  const newLaunches = PRODUCTS.slice(6, 11); // Use actual products instead of an empty filter
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [newLaunches, setNewLaunches] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${API_URL}/products?limit=10`);
+        const data = await res.json();
+        const products: Product[] = data.products || [];
+        
+        // Split for demo purposes
+        setFeaturedProducts(products.slice(0, 6));
+        setNewLaunches(products.slice(Math.max(0, products.length - 5)));
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -69,9 +91,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { num: 'I', title: 'Traditional Rice', desc: 'Mapillai Samba, Karuppu Kavuni, and more authentic grains.', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600' },
-              { num: 'II', title: 'Cold Pressed Oils', desc: 'Wood pressed groundnut, sesame, and coconut oils.', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=600' },
-              { num: 'III', title: 'Organic Vegetables', desc: 'Farm-fresh veggies and native greens harvested daily.', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600' },
-              { num: 'IV', title: 'Ghee & Honey', desc: 'Pure desi cow ghee and raw, unprocessed forest honey.', image: 'https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=600' }
+              { num: 'II', title: 'Cold Pressed Edible Oil', desc: 'Wood pressed groundnut, sesame, and coconut oils.', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=600' },
+              { num: 'III', title: 'Vegetables', desc: 'Farm-fresh veggies and native greens harvested daily.', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600' },
+              { num: 'IV', title: 'Farm Pantry', desc: 'Pure desi cow ghee and raw, unprocessed forest honey.', image: 'https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=600' }
             ].map((item, i) => (
               <Link to={`/shop?category=${encodeURIComponent(item.title)}`} key={item.num} className="group flex flex-col items-center text-center">
                 <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
@@ -99,12 +121,12 @@ export default function Home() {
           </div>
           <div className="flex-1 flex flex-wrap justify-center lg:justify-start gap-4 w-full">
             {[
-              { icon: '🍚', title: 'Daily Meals', desc: 'Native rice varieties' },
-              { icon: '🍳', title: 'Healthy Cooking', desc: 'Unrefined oils' },
-              { icon: '🌿', title: 'Fresh Greens', desc: 'Daily Keerai' },
-              { icon: '🍯', title: 'Immunity Boost', desc: 'Pure Ghee & Honey' }
+              { icon: '🍚', title: 'Daily Meals', desc: 'Native rice varieties', link: 'Traditional Rice' },
+              { icon: '🍳', title: 'Healthy Cooking', desc: 'Unrefined oils', link: 'Cold Pressed Edible Oil' },
+              { icon: '🌿', title: 'Fresh Greens', desc: 'Daily Keerai', link: 'Keerai Greens' },
+              { icon: '🍯', title: 'Immunity Boost', desc: 'Pure Ghee & Honey', link: 'Farm Pantry' }
             ].map((need, i) => (
-              <Link to={`/shop?need=${encodeURIComponent(need.title)}`} key={need.title} className="w-[calc(50%-8px)] md:w-[220px] bg-white p-6 rounded-2xl flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+              <Link to={`/shop?category=${encodeURIComponent(need.link)}`} key={need.title} className="w-[calc(50%-8px)] md:w-[220px] bg-white p-6 rounded-2xl flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-[var(--color-wabi-bg)] mb-4">
                   {need.icon}
                 </div>
@@ -130,21 +152,29 @@ export default function Home() {
           </div>
           
           <div className="w-full h-[500px] mb-8">
-            <Smooth3DSlideshow 
-              slides={PRODUCTS.slice(0, 6).map(p => ({
-                image: { src: p.image, alt: p.name },
-                title: p.name + '\n₹' + p.price,
-              }))}
-              cardWidth={350}
-              cardHeight={450}
-              radius={10}
-              autoplay={true}
-              titleFont={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "24px",
-                lineHeight: "1.2",
-              }}
-            />
+            {loading ? (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B4D26]"></div>
+              </div>
+            ) : featuredProducts.length > 0 ? (
+              <Smooth3DSlideshow 
+                slides={featuredProducts.map(p => ({
+                  image: { src: p.image, alt: p.name },
+                  title: p.name + '\n₹' + p.price,
+                }))}
+                cardWidth={350}
+                cardHeight={450}
+                radius={10}
+                autoplay={true}
+                titleFont={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "24px",
+                  lineHeight: "1.2",
+                }}
+              />
+            ) : (
+              <p className="text-center text-gray-500">No products available at the moment.</p>
+            )}
           </div>
           
           <div className="mt-12 text-center md:hidden">
@@ -162,22 +192,30 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
           </div>
           <div className="w-full h-[500px]">
-            <Smooth3DSlideshow 
-              slides={newLaunches.map(p => ({
-                image: { src: p.image, alt: p.name },
-                title: p.name + '\n₹' + p.price,
-              }))}
-              cardWidth={350}
-              cardHeight={450}
-              radius={10}
-              autoplay={true}
-              autoplayDirection="leftToRight"
-              titleFont={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "24px",
-                lineHeight: "1.2",
-              }}
-            />
+            {loading ? (
+              <div className="w-full h-full flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B4D26]"></div>
+              </div>
+            ) : newLaunches.length > 0 ? (
+              <Smooth3DSlideshow 
+                slides={newLaunches.map(p => ({
+                  image: { src: p.image, alt: p.name },
+                  title: p.name + '\n₹' + p.price,
+                }))}
+                cardWidth={350}
+                cardHeight={450}
+                radius={10}
+                autoplay={true}
+                autoplayDirection="leftToRight"
+                titleFont={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "24px",
+                  lineHeight: "1.2",
+                }}
+              />
+            ) : (
+              <p className="text-center text-gray-500">No new arrivals at the moment.</p>
+            )}
           </div>
         </div>
       </section>

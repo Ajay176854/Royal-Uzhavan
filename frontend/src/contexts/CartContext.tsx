@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Product } from '../data';
+import { Product } from '../types';
 
 export interface CartItem extends Product {
   quantity: number;
@@ -58,7 +58,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const cartSubtotal = cartItems.reduce((total, item) => {
     const variantMultiplier = item.selectedVariant;
-    const currentPrice = item.price * (variantMultiplier / (item.variants[0] || 1));
+    const currentPrice = Number(item.price) * (variantMultiplier / (item.variants[0] || 1));
     return total + currentPrice * item.quantity;
   }, 0);
 
