@@ -1,25 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Truck, ShieldCheck, Heart, Share2, Plus, Minus, Info } from 'lucide-react';
-import { PRODUCTS } from '../data';
 import { cn } from '../lib/utils';
 import ProductCard from '../components/ProductCard';
+import { useCart } from '../context/CartContext';
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = PRODUCTS.find(p => p.id === id) || PRODUCTS[0]; // Fallback for demo
+  const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || 1);
+  const [selectedVariant, setSelectedVariant] = useState(1);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        setLoading(true);
+        // Fetch product
+        const res = await fetch(`http://localhost:8000/api/products/${id}`);
+        if (!res.ok) throw new Error('Product not found');
+        const data = await res.json();
+        setProduct(data.product);
+        setSelectedVariant(data.product.variants[0] || 1);
+
+        // Fetch related products
+        if (data.product.category) {
+          const relatedRes = await fetch(`http://localhost:8000/api/products?category=${encodeURIComponent(data.product.category)}&limit=5`);
+          if (relatedRes.ok) {
+            const relatedData = await relatedRes.json();
+            setRelatedProducts(relatedData.products.filter((p: any) => p.id !== data.product.id).slice(0, 4));
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching product:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductData();
+  }, [id]);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+    
+    const variantMultiplier = selectedVariant;
+    const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
+    
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      price: currentPrice,
+      image: product.image,
+      quantity,
+      selectedVariant,
+      originalPrice: product.originalPrice 
+        ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
+        : undefined
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <p className="text-gray-500 font-medium text-lg">Loading product details...</p>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <p className="text-gray-500 font-medium text-lg mb-4">Product not found.</p>
+        <Link to="/shop" className="bg-[#0B4D26] text-white px-6 py-2 rounded-lg font-bold">Back to Shop</Link>
+      </div>
+    );
+  }
 
   const variantMultiplier = selectedVariant;
   const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
   const currentOriginalPrice = product.originalPrice 
     ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
     : undefined;
-
-  const relatedProducts = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
     <div className="bg-white min-h-screen pb-20">
@@ -45,7 +112,7 @@ export default function ProductDetail() {
           <div className="space-y-4">
             <div className="aspect-square bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 relative">
               <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-              {product.discount && (
+              {product.discount > 0 && (
                 <span className="absolute top-4 left-4 bg-[#C9A227] text-white text-sm font-bold px-3 py-1.5 rounded-sm shadow-md">
                   {product.discount}% OFF
                 </span>
@@ -66,7 +133,7 @@ export default function ProductDetail() {
             <div className="mb-6">
               <div className="flex items-center gap-4 mb-3">
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider bg-gray-100 px-2 py-1 rounded">
-                  SKU: RU-{product.id.toUpperCase()}-26
+                  SKU: RU-{product.id.split('-')[0].toUpperCase()}-26
                 </span>
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-[#C9A227] text-[#C9A227]" />
@@ -96,7 +163,7 @@ export default function ProductDetail() {
                 <span className="text-[#0B4D26] text-sm font-medium">Size Guide</span>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                {product.variants.map(v => (
+                {product.variants?.map((v: number) => (
                   <button 
                     key={v}
                     onClick={() => setSelectedVariant(v)}
@@ -107,7 +174,7 @@ export default function ProductDetail() {
                         : "border-gray-200 text-gray-600 hover:border-[#0B4D26]/50"
                     )}
                   >
-                    {v} kg
+                    {v} {product.category === 'Cold Pressed Edible Oil' ? 'Litre' : 'kg'}
                   </button>
                 ))}
               </div>
@@ -153,12 +220,12 @@ export default function ProductDetail() {
                 </button>
               </div>
 
-              {product.inStock ? (
+              {product.in_stock ? (
                 <>
-                  <button className="flex-1 bg-[#0B4D26] hover:bg-[#07361a] text-white rounded-lg h-14 font-bold text-lg shadow-sm transition-colors">
+                  <button onClick={handleAddToCart} className="flex-1 bg-[#0B4D26] hover:bg-[#07361a] text-white rounded-lg h-14 font-bold text-lg shadow-sm transition-colors active:scale-[0.98]">
                     Add to Cart
                   </button>
-                  <button className="flex-1 bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 rounded-lg h-14 font-bold text-lg shadow-sm transition-colors">
+                  <button onClick={() => { handleAddToCart(); window.location.href='/checkout'; }} className="flex-1 bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 rounded-lg h-14 font-bold text-lg shadow-sm transition-colors active:scale-[0.98]">
                     Buy Now
                   </button>
                 </>
@@ -253,7 +320,6 @@ export default function ProductDetail() {
               </table>
             </div>
           )}
-          {/* ... other tabs would be similarly structured ... */}
           {(activeTab === 'ingredients' || activeTab === 'reviews') && (
             <p className="text-gray-500 italic">Content for {activeTab} will be displayed here.</p>
           )}

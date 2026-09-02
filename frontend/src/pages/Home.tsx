@@ -1,15 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
 import CoverflowCarousel from '../components/CoverflowCarousel';
-import { PRODUCTS, CATEGORIES } from '../data';
 
 export default function Home() {
   const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
-  const featuredProducts = PRODUCTS.slice(0, 4);
-  const newLaunches = PRODUCTS.slice(6, 11); // Use actual products instead of an empty filter
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [newLaunches, setNewLaunches] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeProducts = async () => {
+      try {
+        setLoading(true);
+        // Fetch featured/popular
+        const featuredRes = await fetch('http://localhost:8000/api/products?sort=popular&limit=6');
+        const newRes = await fetch('http://localhost:8000/api/products?sort=created_at&limit=6');
+        
+        if (featuredRes.ok) {
+          const featuredData = await featuredRes.json();
+          setFeaturedProducts(featuredData.products);
+        }
+        if (newRes.ok) {
+          const newData = await newRes.json();
+          setNewLaunches(newData.products);
+        }
+      } catch (err) {
+        console.error('Failed to fetch home products', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHomeProducts();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -119,88 +144,93 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
-        {/* Premium Blurred Background */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1541857754-05db42ebafdd?auto=format&fit=crop&q=80&w=2000")' }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/70 backdrop-blur-[2px]"></div>
+      {!loading && featuredProducts.length > 0 && (
+        <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
+          {/* Premium Blurred Background */}
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
+            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1541857754-05db42ebafdd?auto=format&fit=crop&q=80&w=2000")' }}
+          ></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/70 backdrop-blur-[2px]"></div>
 
-        <div className="container mx-auto px-4 md:px-12 relative z-10">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)] mb-3">Featured Produce</h2>
-              <p className="text-gray-500 text-sm">Hand-selected favorites from our harvest.</p>
+          <div className="container mx-auto px-4 md:px-12 relative z-10">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)] mb-3">Featured Produce</h2>
+                <p className="text-gray-500 text-sm">Hand-selected favorites from our harvest.</p>
+              </div>
+              <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors mt-4 md:mt-0 border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
+                View All <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
-            <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors mt-4 md:mt-0 border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
+            
+            <div className="w-full h-[500px] mb-8">
+              <Smooth3DSlideshow 
+                slides={featuredProducts.map(p => ({
+                  image: { src: p.image, alt: p.name },
+                  title: p.name + '\n₹' + p.price,
+                  link: `/product/${p.id}`
+                }))}
+                cardWidth={350}
+                cardHeight={450}
+                radius={10}
+                autoplay={true}
+                onSlideChange={setActiveFeaturedIndex}
+                titleFont={{
+                  fontFamily: "var(--font-serif)",
+                  fontSize: "24px",
+                  lineHeight: "1.2",
+                }}
+              />
+            </div>
+            
+            <div className="mt-12 text-center md:hidden">
+              <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
+                View All Products
+              </Link>
+            </div>
           </div>
-
-          <div className="w-full h-[500px] mb-8">
-            <Smooth3DSlideshow
-              slides={PRODUCTS.slice(0, 6).map(p => ({
-                image: { src: p.image, alt: p.name },
-                title: p.name + '\n₹' + p.price,
-              }))}
-              cardWidth={350}
-              cardHeight={450}
-              radius={10}
-              autoplay={true}
-              onSlideChange={setActiveFeaturedIndex}
-              titleFont={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "24px",
-                lineHeight: "1.2",
-              }}
-            />
-          </div>
-
-          <div className="mt-12 text-center md:hidden">
-            <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
-              View All Products
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* New Launches — Coverflow Carousel */}
-      <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
-        {/* Premium Blurred Background */}
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
-          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
+      {!loading && newLaunches.length > 0 && (
+        <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
+          {/* Premium Blurred Background */}
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
+            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
+          ></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
 
-        <div className="container mx-auto px-4 md:px-12 relative z-10">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
-              <p className="text-gray-700 font-medium text-sm mt-2">Freshly added to our collection — swipe to explore.</p>
+          <div className="container mx-auto px-4 md:px-12 relative z-10">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
+                <p className="text-gray-700 font-medium text-sm mt-2">Freshly added to our collection — swipe to explore.</p>
+              </div>
+              <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
+                Browse All <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
-            <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
-              Browse All <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="w-full h-[480px]">
+              <CoverflowCarousel
+                products={newLaunches}
+                activeWidth={420}
+                activeHeight={400}
+                restWidth={140}
+                restHeight={260}
+                gap={24}
+                radius={4}
+                showArrows={true}
+                autoplay={true}
+                autoplayDirection="leftToRight"
+                transition={{ duration: 0.3, delay: 2.5 }}
+              />
+            </div>
           </div>
-          <div className="w-full h-[480px]">
-            <CoverflowCarousel
-              products={newLaunches}
-              activeWidth={420}
-              activeHeight={400}
-              restWidth={140}
-              restHeight={260}
-              gap={24}
-              radius={4}
-              showArrows={true}
-              autoplay={true}
-              autoplayDirection="leftToRight"
-              transition={{ duration: 0.3, delay: 2.5 }}
-            />
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Newsletter */}
       <section className="bg-[var(--color-wabi-green)] py-24 text-center px-4 relative overflow-hidden">

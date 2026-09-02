@@ -1,26 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, ChevronDown, Check } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import { PRODUCTS, CATEGORIES } from '../data';
 import { cn } from '../lib/utils';
 
 export default function Shop() {
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category');
-  const searchQuery = searchParams.get('q');
+  const searchQuery = searchParams.get('search'); // Use 'search' as per header query string
 
   const [activeCategory, setActiveCategory] = useState(initialCategory || 'All');
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [sortOption, setSortOption] = useState('created_at');
 
-  // Simple filtering logic
-  let filteredProducts = PRODUCTS;
-  if (activeCategory !== 'All') {
-    filteredProducts = filteredProducts.filter(p => p.category === activeCategory || p.animalType === activeCategory);
-  }
-  if (searchQuery) {
-    filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
-  }
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch categories
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/api/products/categories');
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data.categories);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    // Fetch products
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        let url = `http://localhost:8000/api/products?sort=${sortOption}&limit=50`;
+        if (activeCategory !== 'All') {
+          url += `&category=${encodeURIComponent(activeCategory)}`;
+        }
+        if (searchQuery) {
+          url += `&search=${encodeURIComponent(searchQuery)}`;
+        }
+
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data.products);
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, [activeCategory, searchQuery, sortOption]);
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
@@ -29,9 +67,9 @@ export default function Shop() {
         {/* Page Header */}
         <div className="mb-8 border-b border-gray-200 pb-6">
           <h1 className="text-3xl font-black uppercase tracking-tighter text-[#0B4D26] mb-2">
-            {searchQuery ? `Search Results for "${searchQuery}"` : 'Shop All Feed & Inputs'}
+            {searchQuery ? `Search Results for "${searchQuery}"` : 'Shop All Produce'}
           </h1>
-          <p className="text-gray-500 text-sm">Showing {filteredProducts.length} products</p>
+          <p className="text-gray-500 text-sm">Showing {products.length} products</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
@@ -63,45 +101,17 @@ export default function Shop() {
                     All Products
                   </button>
                 </li>
-                {CATEGORIES.map(cat => (
-                  <li key={cat.name}>
+                {categories.map(cat => (
+                  <li key={cat.id}>
                     <button 
                       onClick={() => setActiveCategory(cat.name)}
-                      className={cn("flex items-center gap-2 text-sm transition-colors", activeCategory === cat.name ? "font-bold text-[#0B4D26]" : "text-gray-600 hover:text-[#0B4D26]")}
+                      className={cn("flex items-center gap-2 text-sm transition-colors text-left", activeCategory === cat.name ? "font-bold text-[#0B4D26]" : "text-gray-600 hover:text-[#0B4D26]")}
                     >
-                      <div className={cn("w-4 h-4 rounded border flex items-center justify-center", activeCategory === cat.name ? "border-[#0B4D26] bg-[#0B4D26]" : "border-gray-300")}>
+                      <div className={cn("w-4 h-4 rounded border flex items-center justify-center shrink-0", activeCategory === cat.name ? "border-[#0B4D26] bg-[#0B4D26]" : "border-gray-300")}>
                         {activeCategory === cat.name && <Check className="w-3 h-3 text-white" />}
                       </div>
                       {cat.name}
                     </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pt-6 border-t border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm">Animal Type</h3>
-              <ul className="space-y-3">
-                {["Cattle", "Poultry", "Goat/Sheep"].map(type => (
-                  <li key={type}>
-                    <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-[#0B4D26]">
-                      <input type="checkbox" className="rounded border-gray-300 text-[#0B4D26] focus:ring-[#0B4D26]" />
-                      {type}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pt-6 border-t border-gray-100">
-              <h3 className="font-bold text-gray-900 mb-4 uppercase tracking-wider text-sm">Bag Size</h3>
-              <ul className="space-y-3">
-                {[5, 10, 25, 50].map(size => (
-                  <li key={size}>
-                    <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer hover:text-[#0B4D26]">
-                      <input type="checkbox" className="rounded border-gray-300 text-[#0B4D26] focus:ring-[#0B4D26]" />
-                      {size} kg
-                    </label>
                   </li>
                 ))}
               </ul>
@@ -134,30 +144,42 @@ export default function Shop() {
 
               <div className="flex items-center gap-3 ml-auto">
                 <label className="text-sm text-gray-500 font-medium hidden sm:block">Sort by:</label>
-                <select className="border-gray-200 rounded-md text-sm py-1.5 pl-3 pr-8 focus:border-[#0B4D26] focus:ring-[#0B4D26] bg-gray-50 font-medium">
-                  <option>Popularity</option>
-                  <option>Price: Low to High</option>
-                  <option>Price: High to Low</option>
-                  <option>Newest Arrivals</option>
+                <select 
+                  value={sortOption}
+                  onChange={(e) => setSortOption(e.target.value)}
+                  className="border-gray-200 rounded-md text-sm py-1.5 pl-3 pr-8 focus:border-[#0B4D26] focus:ring-[#0B4D26] bg-gray-50 font-medium"
+                >
+                  <option value="popular">Popularity</option>
+                  <option value="price_asc">Price: Low to High</option>
+                  <option value="price_desc">Price: High to Low</option>
+                  <option value="created_at">Newest Arrivals</option>
                 </select>
               </div>
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredProducts.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
-                <p className="text-gray-500">Try adjusting your filters or search query.</p>
-                <button onClick={() => {setActiveCategory('All'); window.history.replaceState({}, '', '/shop')}} className="mt-6 text-[#0B4D26] font-bold underline">
-                  Clear all filters
-                </button>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <p className="text-gray-500 font-medium">Loading products...</p>
               </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {products.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+                
+                {products.length === 0 && (
+                  <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
+                    <p className="text-gray-500">Try adjusting your filters or search query.</p>
+                    <button onClick={() => {setActiveCategory('All'); window.history.replaceState({}, '', '/shop')}} className="mt-6 text-[#0B4D26] font-bold underline">
+                      Clear all filters
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

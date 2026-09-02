@@ -1,9 +1,86 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export default function Checkout() {
   const [step, setStep] = useState(1);
+  const { items, cartTotal, clearCart } = useCart();
+  const navigate = useNavigate();
+
+  const [address, setAddress] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    flat: '',
+    area: '',
+    city: '',
+    pincode: ''
+  });
+  const [addressError, setAddressError] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('upi');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const subtotal = cartTotal;
+
+  const handlePlaceOrder = async () => {
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem('ru_token');
+      const orderData = {
+        customerName: `${address.firstName} ${address.lastName}`.trim(),
+        customerEmail: address.email,
+        customerPhone: address.phone,
+        shippingAddress: `${address.flat}, ${address.area}, ${address.city} - ${address.pincode}`,
+        items: items.map(i => ({
+          product_id: i.productId,
+          name: i.name,
+          image: i.image,
+          variant: String(i.selectedVariant),
+          quantity: i.quantity,
+          price: i.price
+        })),
+        subtotal: subtotal,
+        shippingFee: 0,
+        total: subtotal,
+        paymentMethod: 'cod'
+      };
+
+      const res = await fetch('http://localhost:8000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (res.ok) {
+        clearCart();
+        navigate('/account');
+      } else {
+        const error = await res.json();
+        alert('Failed to place order: ' + error.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error placing order. Please make sure you are logged in.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (items.length === 0) {
+    return (
+      <div className="bg-gray-50 min-h-screen py-12 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+          <Link to="/shop" className="bg-[#0B4D26] text-white px-6 py-2 rounded-lg">Go Shopping</Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen py-12">
@@ -38,58 +115,64 @@ export default function Checkout() {
               {step === 1 && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="First Name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                    <input type="text" placeholder="Last Name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="text" placeholder="First Name" value={address.firstName} onChange={e => setAddress({...address, firstName: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="text" placeholder="Last Name" value={address.lastName} onChange={e => setAddress({...address, lastName: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   </div>
-                  <input type="tel" placeholder="Phone Number" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                  <input type="text" placeholder="Flat, House no., Building, Company, Apartment" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                  <input type="text" placeholder="Area, Street, Sector, Village" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Town/City" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                    <input type="text" placeholder="PIN Code" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="tel" placeholder="Phone Number" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="email" placeholder="Email Address" value={address.email} onChange={e => setAddress({...address, email: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   </div>
+                  <input type="text" placeholder="Flat, House no., Building, Company, Apartment" value={address.flat} onChange={e => setAddress({...address, flat: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                  <input type="text" placeholder="Area, Street, Sector, Village" value={address.area} onChange={e => setAddress({...address, area: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Town/City" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="text" placeholder="PIN Code" value={address.pincode} onChange={e => setAddress({...address, pincode: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                  </div>
+                  
+                  {addressError && (
+                    <div className="text-red-500 text-sm font-medium px-1">
+                      {addressError}
+                    </div>
+                  )}
+                  
                   <button 
-                    onClick={() => setStep(2)}
+                    onClick={() => {
+                      const { firstName, lastName, phone, email, flat, area, city, pincode } = address;
+                      if (!firstName || !lastName || !phone || !email || !flat || !area || !city || !pincode) {
+                        setAddressError('Please fill out all the blank spaces before continuing.');
+                        return;
+                      }
+                      setAddressError('');
+                      setStep(2);
+                    }}
                     className="w-full bg-[#0B4D26] text-white font-bold py-4 rounded-xl mt-4"
                   >
-                    Continue to Payment
+                    Continue to Review
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Step 2: Payment */}
+            {/* Step 2: Verify & Place Order */}
             <div className={`bg-white rounded-2xl shadow-sm border ${step === 2 ? 'border-[#0B4D26] ring-1 ring-[#0B4D26]' : 'border-gray-100'} p-6 md:p-8`}>
               <h2 className="text-xl font-bold flex items-center gap-3 mb-6">
                 <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${step === 2 ? 'bg-[#0B4D26] text-white' : 'bg-gray-100 text-gray-500'}`}>2</span>
-                Payment Method
+                Verify & Place Order
               </h2>
               
               {step === 2 && (
                 <div className="space-y-4">
-                  <label className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <div className="flex items-center gap-3">
-                      <input type="radio" name="payment" className="text-[#0B4D26] focus:ring-[#0B4D26]" defaultChecked />
-                      <span className="font-medium text-gray-900">UPI (GPay, PhonePe, Paytm)</span>
-                    </div>
-                  </label>
-                  <label className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <div className="flex items-center gap-3">
-                      <input type="radio" name="payment" className="text-[#0B4D26] focus:ring-[#0B4D26]" />
-                      <span className="font-medium text-gray-900">Credit / Debit Card</span>
-                    </div>
-                  </label>
-                  <label className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
-                    <div className="flex items-center gap-3">
-                      <input type="radio" name="payment" className="text-[#0B4D26] focus:ring-[#0B4D26]" />
-                      <span className="font-medium text-gray-900">Cash on Delivery (COD)</span>
-                    </div>
-                  </label>
+                  <div className="p-4 border border-[#0B4D26]/20 bg-[#0B4D26]/5 rounded-lg mb-6">
+                    <p className="font-bold text-[#0B4D26] mb-1">Payment Method: Cash on Delivery (COD)</p>
+                    <p className="text-sm text-gray-700">You will pay for your order when it is delivered to your address.</p>
+                  </div>
                   
                   <button 
-                    className="w-full bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 font-bold py-4 rounded-xl mt-6 flex items-center justify-center gap-2 transition-colors"
+                    onClick={handlePlaceOrder}
+                    disabled={isSubmitting}
+                    className="w-full bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 font-bold py-4 rounded-xl mt-6 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
-                    <Lock className="w-5 h-5" /> Place Order • ₹8,200
+                    <Lock className="w-5 h-5" /> {isSubmitting ? 'Processing...' : `Place Order • ₹${subtotal.toLocaleString('en-IN')}`}
                   </button>
                 </div>
               )}
@@ -101,30 +184,24 @@ export default function Checkout() {
              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-6">
                 <h3 className="font-bold text-lg mb-4">Order Summary</h3>
                 <div className="space-y-4 text-sm mb-6 pb-6 border-b border-gray-100">
-                  <div className="flex gap-4">
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0"></div>
-                    <div>
-                      <h4 className="font-bold">Premium Dairy Cattle Feed</h4>
-                      <p className="text-gray-500">50kg × 2</p>
+                  {items.map(item => (
+                    <div key={`${item.productId}-${item.selectedVariant}`} className="flex gap-4">
+                      <img src={item.image} alt={item.name} className="w-16 h-16 bg-gray-100 rounded-lg shrink-0 object-cover" />
+                      <div>
+                        <h4 className="font-bold line-clamp-1">{item.name}</h4>
+                        <p className="text-gray-500">{item.selectedVariant} × {item.quantity}</p>
+                      </div>
+                      <div className="ml-auto font-bold">₹{(item.price * item.quantity).toLocaleString('en-IN')}</div>
                     </div>
-                    <div className="ml-auto font-bold">₹7,250</div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg shrink-0"></div>
-                    <div>
-                      <h4 className="font-bold">Mineral Block Supplement</h4>
-                      <p className="text-gray-500">5kg × 1</p>
-                    </div>
-                    <div className="ml-auto font-bold">₹2,250</div>
-                  </div>
+                  ))}
                 </div>
                 <div className="space-y-3 mb-6 pb-6 border-b border-gray-100 text-sm text-gray-600">
-                  <div className="flex justify-between"><span>Subtotal</span><span className="font-medium text-gray-900">₹9,500</span></div>
+                  <div className="flex justify-between"><span>Subtotal</span><span className="font-medium text-gray-900">₹{subtotal.toLocaleString('en-IN')}</span></div>
                   <div className="flex justify-between"><span>Shipping</span><span className="font-medium text-green-600">Free</span></div>
                 </div>
                 <div className="flex justify-between items-end mb-4">
                   <span className="text-lg font-bold text-gray-900">Total</span>
-                  <span className="text-2xl font-bold text-[#0B4D26]">₹9,500</span>
+                  <span className="text-2xl font-bold text-[#0B4D26]">₹{subtotal.toLocaleString('en-IN')}</span>
                 </div>
              </div>
           </div>

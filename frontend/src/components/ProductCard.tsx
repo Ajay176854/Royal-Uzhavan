@@ -1,23 +1,54 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, Star } from 'lucide-react';
-import { Product } from '../data';
 import { cn } from '../lib/utils';
+import { useCart } from '../context/CartContext';
+
+interface Product {
+  id: string;
+  name: string;
+  category: string;
+  animalType: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
+  rating: number;
+  reviews: number;
+  image: string;
+  tags: string[];
+  variants: number[];
+  in_stock: boolean; // Note: backend returns in_stock
+  description: string;
+}
 
 interface ProductCardProps {
-  product: Product;
+  product: Product | any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0] || 1);
+  const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || 1);
   const [isHovered, setIsHovered] = useState(false);
+  const { addToCart } = useCart();
 
   // Simple pricing logic for mock data based on variant size
   const variantMultiplier = selectedVariant;
-  const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
-  const currentOriginalPrice = product.originalPrice 
-    ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
+  const currentPrice = product.price * (variantMultiplier / (product.variants?.[0] || 1));
+  const currentOriginalPrice = product.original_price 
+    ? product.original_price * (variantMultiplier / (product.variants?.[0] || 1)) 
     : undefined;
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      price: currentPrice,
+      image: product.image,
+      quantity: 1,
+      selectedVariant,
+      originalPrice: currentOriginalPrice
+    });
+  };
 
   return (
     <div 
@@ -40,12 +71,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {product.discount && (
+          {product.discount > 0 && (
             <span className="bg-[var(--color-wabi-gold)] text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full shadow-sm">
               {product.discount}% OFF
             </span>
           )}
-          {product.tags.map(tag => (
+          {product.tags && product.tags.map((tag: string) => (
             <span key={tag} className={cn(
               "text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full shadow-sm",
               tag === "Royal Uzhavan Favourites" ? "bg-[var(--color-wabi-green)]" : "bg-[var(--color-wabi-earth)]"
@@ -60,8 +91,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Heart className="w-4 h-4" />
         </button>
 
-        {!product.inStock && (
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
+        {!product.in_stock && (
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
             <span className="bg-gray-900 text-white font-bold px-4 py-2 rounded shadow-lg uppercase tracking-wider text-sm">
               Out of Stock
             </span>
@@ -92,8 +123,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             value={selectedVariant}
             onChange={(e) => setSelectedVariant(Number(e.target.value))}
           >
-            {product.variants.map(v => (
-              <option key={v} value={v}>{v} kg / {v} Ltr</option>
+            {product.variants?.map((v: number) => (
+              <option key={v} value={v}>{v} {product.category === 'Cold Pressed Edible Oil' ? 'Ltr' : 'kg'}</option>
             ))}
           </select>
 
@@ -106,12 +137,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
             </div>
 
-            {product.inStock ? (
-              <button className="bg-[var(--color-wabi-bg)] hover:bg-[var(--color-wabi-green)] text-[var(--color-wabi-green)] hover:text-white border border-[var(--color-wabi-green)]/20 hover:border-[var(--color-wabi-green)] px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all">
+            {product.in_stock ? (
+              <button onClick={handleAddToCart} className="bg-[var(--color-wabi-bg)] hover:bg-[var(--color-wabi-green)] text-[var(--color-wabi-green)] hover:text-white border border-[var(--color-wabi-green)]/20 hover:border-[var(--color-wabi-green)] px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all">
                 Add
               </button>
             ) : (
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-500 px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-colors">
+              <button className="bg-gray-100 hover:bg-gray-200 text-gray-500 px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-colors cursor-not-allowed">
                 Notify
               </button>
             )}

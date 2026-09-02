@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+  const { cartCount } = useCart();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,7 +154,11 @@ export default function Header() {
 
           <Link to="/cart" className="relative bg-[#86B841] text-white w-9 h-9 md:w-11 md:h-11 rounded-full flex items-center justify-center hover:bg-[#729c36] transition-colors shadow-sm">
             <ShoppingCart className="w-[18px] h-[18px] md:w-5 md:h-5" strokeWidth={2.5} />
-            <span className="absolute -top-1 -right-1 bg-white text-[#86B841] text-[10px] font-black w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center shadow-md border border-gray-100">0</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-white text-[#86B841] text-[10px] font-black w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center shadow-md border border-gray-100">
+                {cartCount}
+              </span>
+            )}
           </Link>
 
           {/* WhatsApp Icon */}
