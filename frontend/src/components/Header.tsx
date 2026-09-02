@@ -26,7 +26,7 @@ export default function Header() {
           <span className="text-sm">🌿</span> Free Shipping
         </div>
         <div className="flex items-center gap-2 text-[#C9A227]">
-          <span className="text-sm">🌾</span> Direct From TamilNadu Farmers
+          <span className="text-sm">🌾</span> Direct From TN Farmers
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm">🥥</span> Wood Cold-Pressed Oils Available
