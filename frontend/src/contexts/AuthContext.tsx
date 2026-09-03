@@ -16,6 +16,8 @@ interface AuthContextType {
   logout: () => void;
   isLoggedIn: boolean;
   isLoading: boolean;
+  isAuthOpen: boolean;
+  setIsAuthOpen: (isOpen: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -66,7 +69,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn: !!user, isLoading }}>
+    <AuthContext.Provider value={{ user, login, logout, isLoggedIn: !!user, isLoading, isAuthOpen, setIsAuthOpen }}>
       {children}
     </AuthContext.Provider>
   );

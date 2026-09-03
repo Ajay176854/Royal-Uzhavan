@@ -16,10 +16,14 @@ import Account from './pages/Account';
 import Contact from './pages/Contact';
 import TrackOrder from './pages/TrackOrder';
 import Policies from './pages/Policies';
+import RefundPolicy from './pages/RefundPolicy';
+import TermsOfService from './pages/TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import { AuthProvider } from './contexts/AuthContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { CartProvider } from './contexts/CartContext';
 import CartDrawer from './components/CartDrawer';
+import AuthDrawer from './components/AuthDrawer';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -38,10 +42,11 @@ export default function App() {
           <BrowserRouter>
             <ScrollToTop />
             <CartDrawer />
+            <AuthDrawer />
             <div className="flex flex-col min-h-screen text-[#1A1A1A] overflow-x-hidden">
             <Header />
             
-            <main className="flex-1 pb-16 md:pb-0"> {/* Padding bottom for mobile nav */}
+            <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/shop" element={<Shop />} />
@@ -56,6 +61,9 @@ export default function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/track" element={<TrackOrder />} />
                 <Route path="/policies" element={<Policies />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               </Routes>
             </main>
 

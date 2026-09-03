@@ -23,9 +23,7 @@ export default function Policies() {
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="flex flex-col sm:flex-row border-b border-gray-100 overflow-x-auto">
             {[
-
               { id: 'shipping', label: 'Shipping & Bulk Orders' }
-
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -63,7 +61,6 @@ export default function Policies() {
 
               </div>
             )}
-
           </div>
         </div>
       </div>

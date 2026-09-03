@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
 import { Product } from '../types';
@@ -10,6 +10,7 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [newLaunches, setNewLaunches] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -159,6 +160,7 @@ export default function Home() {
             ) : featuredProducts.length > 0 ? (
               <Smooth3DSlideshow 
                 slides={featuredProducts.map(p => ({
+                  id: p.id,
                   image: { src: p.image, alt: p.name },
                   title: p.name + '\n₹' + p.price,
                 }))}
@@ -166,6 +168,9 @@ export default function Home() {
                 cardHeight={450}
                 radius={10}
                 autoplay={true}
+                onSlideClick={(slide) => {
+                  if (slide.id) navigate(`/product/${slide.id}`);
+                }}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",
@@ -199,6 +204,7 @@ export default function Home() {
             ) : newLaunches.length > 0 ? (
               <Smooth3DSlideshow 
                 slides={newLaunches.map(p => ({
+                  id: p.id,
                   image: { src: p.image, alt: p.name },
                   title: p.name + '\n₹' + p.price,
                 }))}
@@ -207,6 +213,9 @@ export default function Home() {
                 radius={10}
                 autoplay={true}
                 autoplayDirection="leftToRight"
+                onSlideClick={(slide) => {
+                  if (slide.id) navigate(`/product/${slide.id}`);
+                }}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",
