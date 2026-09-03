@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileNav from './components/MobileNav';
+import CartDrawer from './components/CartDrawer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
@@ -55,6 +56,7 @@ export default function App() {
 
           <Footer />
           <MobileNav />
+          <CartDrawer />
           <a 
             href="https://wa.me/919159944366" 
             target="_blank" 
