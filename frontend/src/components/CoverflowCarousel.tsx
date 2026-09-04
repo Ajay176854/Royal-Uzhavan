@@ -7,7 +7,7 @@ import {
     useTransform,
     type MotionValue,
 } from "motion/react"
-import type { Product } from "../types"
+import type { Product } from "../data"
 
 // -----------------------------------------------------------------------------
 // Types
@@ -220,7 +220,7 @@ function Card({
                         }}
                     >
                         ₹{product.price}
-                        {product.original_price && (
+                        {product.originalPrice && (
                             <span
                                 style={{
                                     fontSize: "13px",
@@ -230,7 +230,7 @@ function Card({
                                     marginLeft: "8px",
                                 }}
                             >
-                                ₹{product.original_price}
+                                ₹{product.originalPrice}
                             </span>
                         )}
                     </span>

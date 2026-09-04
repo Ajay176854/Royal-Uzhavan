@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X } from 'lucide-react';
 import { useCart } from '../context/CartContext';
@@ -6,10 +6,7 @@ import logoImg from '../assets/images/001.jpg';
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
-  const [isMobilePoliciesOpen, setIsMobilePoliciesOpen] = useState(false);
   const navigate = useNavigate();
   const { cartCount, setIsCartOpen } = useCart();
 
@@ -17,7 +14,6 @@ export default function Header() {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
-      setIsSearchOpen(false);
     }
   };
 
@@ -28,8 +24,8 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <span className="text-sm">🌿</span> Free Shipping
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm">🌾</span> Direct From Tamilnadu Farmers
+        <div className="flex items-center gap-2 text-[#C9A227]">
+          <span className="text-sm">🌾</span> Direct From TN Farmers
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm">🥥</span> Wood Cold-Pressed Oils Available
@@ -58,13 +54,11 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex flex-1 justify-start items-center gap-3 lg:gap-4 xl:gap-6 text-[10px] lg:text-[11px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
-
-          <Link to="/our-farms" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">ABOUT US</Link>
+        <nav className="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4 xl:gap-6 text-[9px] lg:text-[10px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
 
           <div className="group">
-            <button className="flex items-center gap-1 group-hover:bg-[#86B841] group-hover:text-white rounded-full transition-colors py-2 px-3">
-              PRODUCTS <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white" strokeWidth={2.5} />
+            <button className="flex items-center gap-1 bg-[#86B841] text-white px-3 py-1.5 lg:px-5 lg:py-2.5 rounded-full transition-colors shadow-sm hover:bg-[#729c36] hover:shadow-md">
+              Products <ChevronDown className="w-3.5 h-3.5" strokeWidth={2.5} />
             </button>
             {/* Full-width Mega Menu Wrapper with hover bridge */}
             <div className="absolute top-[100%] left-0 w-full pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 cursor-default">
@@ -136,77 +130,39 @@ export default function Header() {
             </div>
           </div>
 
+          <Link to="/our-farms" className="relative hover:text-[#1B4332] transition-colors py-2 px-1 after:content-[''] after:absolute after:left-1 after:right-1 after:bottom-0 after:h-[2px] after:bg-[#1B4332] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">About Us</Link>
+          <Link to="/policies?tab=shipping" className="relative hover:text-[#1B4332] transition-colors py-2 px-1 after:content-[''] after:absolute after:left-1 after:right-1 after:bottom-0 after:h-[2px] after:bg-[#1B4332] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">Shipping & Bulk Orders</Link>
+
           <div className="relative group">
-            <button className="flex items-center gap-1 group-hover:bg-[#86B841] group-hover:text-white rounded-full transition-colors py-2 px-3">
-              POLICY <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white" strokeWidth={2.5} />
+            <button className="relative flex items-center gap-1 hover:text-[#1B4332] transition-colors py-2 px-1 after:content-[''] after:absolute after:left-1 after:right-1 after:bottom-0 after:h-[2px] after:bg-[#1B4332] after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">
+              Policies <ChevronDown className="w-3.5 h-3.5" strokeWidth={2.5} />
             </button>
             {/* Dropdown with hover bridge */}
             <div className="absolute top-full left-0 pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
               <div className="bg-white shadow-xl border border-gray-100 rounded-lg py-3 min-w-[180px] translate-y-2 group-hover:translate-y-0 transition-transform duration-300 normal-case tracking-normal">
-                <Link to="/refund-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Refund Policy</Link>
-                <Link to="/terms-of-service" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Terms of Service</Link>
-                <Link to="/privacy-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Privacy Policy</Link>
+                <Link to="/policies?tab=refund" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#1B4332] transition-colors">Refund Policy</Link>
+                <Link to="/policies?tab=terms" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#1B4332] transition-colors">Terms of Service</Link>
+                <Link to="/policies?tab=privacy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#1B4332] transition-colors">Privacy Policy</Link>
               </div>
             </div>
           </div>
-          <Link to="/policies?tab=shipping" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">SHIPPING & BULK ORDERS</Link>
-          <Link to="/blog" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">BLOG</Link>
-          <Link to="/contact" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">CONTACT US</Link>
+
+          <Link to="/blog" className="relative hover:text-[#1B4332] transition-colors py-2 px-1 after:content-[''] after:absolute after:left-1 after:right-1 after:bottom-0 after:h-[2px] after:bg-[#1B4332] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">Blog</Link>
+          <Link to="/contact" className="relative hover:text-[#1B4332] transition-colors py-2 px-1 after:content-[''] after:absolute after:left-1 after:right-1 after:bottom-0 after:h-[2px] after:bg-[#1B4332] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left">Contact Us</Link>
         </nav>
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 lg:gap-5 shrink-0 ml-auto md:ml-0">
 
-          {/* User Account Dropdown */}
-          <div className="relative hidden lg:flex items-center group">
-            {isLoggedIn ? (
-              <>
-                <button
-                  className="flex items-center gap-1 text-gray-800 hover:text-[#86B841] transition-colors py-2 text-[10px] xl:text-xs font-bold uppercase tracking-wider cursor-default"
-                >
-                  MY ACCOUNT <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#86B841]" strokeWidth={2.5} />
-                </button>
-                
-                {/* Hover Bridge & Dropdown Menu */}
-                <div className="absolute top-[100%] right-0 pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                  <div className="bg-white shadow-xl border border-gray-100 rounded-lg py-2 min-w-[150px] translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="px-4 py-2 border-b border-gray-100 mb-1">
-                      <span className="text-xs text-gray-500 font-medium">Hello,</span>
-                      <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'User'}</p>
-                    </div>
-                    <Link
-                      to="/account"
-                      className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 hover:text-[#1B4332] transition-colors"
-                    >
-                      My Account
-                    </Link>
-                    <button
-                      onClick={() => { logout(); }}
-                      className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
-                    >
-                      <LogOut className="w-4 h-4 text-red-500" /> Logout
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <button 
-                onClick={() => setIsAuthOpen(true)} 
-                className="text-gray-800 hover:text-[#86B841] transition-colors py-2 text-[10px] xl:text-xs font-bold uppercase tracking-wider"
-              >
-                LOGIN / REGISTER
-              </button>
-            )}
-          </div>
+          <Link to="/account" className="hidden lg:block text-[11px] font-bold text-gray-800 tracking-wider hover:text-[#1B4332] transition-colors uppercase">
+            Login / Register
+          </Link>
 
-          <button 
-            onClick={() => setIsSearchOpen(!isSearchOpen)} 
-            className="text-gray-800 hover:text-[#86B841] transition-colors p-1"
-          >
+          <button className="hidden md:block text-gray-800 hover:text-[#1B4332] transition-colors">
             <Search className="w-5 h-5" strokeWidth={2} />
           </button>
 
-          <Link to="/account" className="relative hidden sm:block text-gray-800 hover:text-[#86B841] transition-colors">
+          <Link to="/account" className="relative hidden sm:block text-gray-800 hover:text-[#1B4332] transition-colors">
             <Heart className="w-[18px] h-[18px] md:w-5 md:h-5" strokeWidth={2} />
           </Link>
 
@@ -222,17 +178,11 @@ export default function Header() {
             )}
           </button>
 
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative hidden md:flex bg-[#86B841] text-white w-9 h-9 md:w-11 md:h-11 rounded-full items-center justify-center hover:bg-[#729c36] transition-colors shadow-sm"
-          >
-            <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
-            <span className="absolute -top-1 -right-1 bg-white text-[#86B841] text-[9px] md:text-[10px] font-black w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center shadow-md border border-gray-100">
-              {cartCount}
-            </span>
-          </button>
+          {/* WhatsApp Icon */}
+          <a href="https://wa.me/918072864890" target="_blank" rel="noopener noreferrer" className="hidden sm:flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full border border-gray-200 bg-gray-50 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] text-gray-600 transition-all shadow-sm">
+            <MessageCircle className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2} />
+          </a>
 
-         
           {/* Mobile Menu Toggle (Moved to Right) */}
           <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden text-gray-800 p-1 hover:text-[#1B4332] transition-colors">
             <Menu className="w-6 h-6 sm:w-7 sm:h-7" strokeWidth={1.5} />
@@ -248,7 +198,7 @@ export default function Header() {
       />
 
       {/* Mobile Menu Drawer */}
-      <div className={`fixed top-0 right-0 h-[100dvh] w-full sm:w-[400px] md:w-[450px] bg-white shadow-2xl z-[100] flex flex-col transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 right-0 h-[100dvh] w-[85%] max-w-[320px] bg-white shadow-2xl z-[100] flex flex-col transform transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex items-center justify-between p-5 sm:p-6 border-b border-gray-100 bg-gray-50/50">
           <h2 className="text-xl font-playfair font-bold text-[#1B4332]">Menu</h2>
           <button
@@ -259,81 +209,20 @@ export default function Header() {
           </button>
         </div>
         <div className="flex-1 overflow-y-auto py-2 flex flex-col">
-          
-          {/* Products Accordion */}
-          <div>
-            <button 
-              onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)} 
-              className="w-full px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 flex items-center justify-between hover:bg-gray-50 transition-colors"
-            >
-              Shop Products 
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isMobileProductsOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <div className={`bg-gray-50/50 overflow-hidden transition-all duration-300 ${isMobileProductsOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
-              <div className="py-2 flex flex-col border-b border-gray-50">
-                <Link to="/shop?category=Traditional%20Rice" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Traditional Rice</Link>
-                <Link to="/shop?category=Millets" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Millets</Link>
-                <Link to="/shop?category=Ready%20to%20Cook" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Ready to Cook & Flour</Link>
-                <Link to="/shop?category=Health%20Mix" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Health Mix & Malt</Link>
-                <Link to="/shop?category=Combo%20Offer" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Combo Offer</Link>
-                <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-bold text-[#1B4332] hover:text-[#86B841] border-t border-gray-100/50 mt-2">View All Products</Link>
-              </div>
-            </div>
-          </div>
-
+          <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 flex items-center justify-between hover:bg-gray-50 transition-colors">
+            Shop Products <ChevronDown className="w-4 h-4 -rotate-90 text-gray-400" />
+          </Link>
           <Link to="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">About Us</Link>
-          
-          {/* Policies Accordion */}
-          <div>
-            <button 
-              onClick={() => setIsMobilePoliciesOpen(!isMobilePoliciesOpen)} 
-              className="w-full px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 flex items-center justify-between hover:bg-gray-50 transition-colors"
-            >
-              Policies 
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isMobilePoliciesOpen ? 'rotate-180' : ''}`} />
-            </button>
-            <div className={`bg-gray-50/50 overflow-hidden transition-all duration-300 ${isMobilePoliciesOpen ? 'max-h-[300px]' : 'max-h-0'}`}>
-              <div className="py-2 flex flex-col border-b border-gray-50">
-                <Link to="/refund-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Refund Policy</Link>
-                <Link to="/terms-of-service" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Terms of Service</Link>
-                <Link to="/privacy-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Privacy Policy</Link>
-                
-              </div>
-            </div>
-          </div>
-
-          <Link to="/git branchpolicies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
+          <Link to="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
+          <Link to="/policies?tab=refund" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Policies</Link>
           <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
           <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
-        </div>
-
-        
-      </div>
-
-      {/* Search Dropdown */}
-      <div 
-        className={`absolute top-full left-0 w-full bg-white shadow-md border-b border-gray-100 transition-all duration-300 overflow-hidden z-40 ${isSearchOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="container mx-auto px-4 xl:px-8 py-4">
-          <form onSubmit={handleSearch} className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-2xl mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input 
-                type="text" 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for products..."
-                className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-[#86B841] focus:ring-1 focus:ring-[#86B841] text-sm"
-              />
-            </div>
-            <button 
-              type="button" 
-              onClick={() => setIsSearchOpen(false)}
-              className="p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 rounded-full transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
-          </form>
+          
+          <div className="mt-auto p-6">
+            <Link to="/account" onClick={() => setIsMobileMenuOpen(false)} className="block w-full py-4 rounded-xl font-black text-white uppercase tracking-wider text-xs bg-[#1B4332] hover:bg-[#0f271d] transition-colors text-center shadow-md">
+              Login / Register
+            </Link>
+          </div>
         </div>
       </div>
     </header>

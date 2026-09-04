@@ -10,7 +10,6 @@ import React, {
 const useIsStaticRenderer = () => false
 
 interface Slide {
-    id?: string
     image?: { src?: string; srcSet?: string; alt?: string }
     title?: string
 }
@@ -41,7 +40,7 @@ interface Smooth3DSlideshowProps {
         paddingBottom?: number
     }
     style?: CSSProperties
-    onSlideClick?: (slide: Slide, index: number) => void
+    onSlideChange?: (index: number) => void
 }
 
 const DEFAULT_SLIDES: Slide[] = [
@@ -145,7 +144,7 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
         titleColor,
         titlePosition,
         style,
-        onSlideClick,
+        onSlideChange,
     } = props
 
     const tp = titlePosition || {}
@@ -169,6 +168,12 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
     useEffect(() => {
         setActive((a) => Math.max(0, Math.min(n - 1, a)))
     }, [n])
+
+    useEffect(() => {
+        if (onSlideChange) {
+            onSlideChange(active)
+        }
+    }, [active, onSlideChange])
 
     // Lock input while a card is mid-move; release once it settles, so rapid
     // clicks/keys don't stack up and look jittery. Duration comes from the
@@ -199,22 +204,11 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
 
     const handleCardClick = useCallback(
         (i: number) => {
-            if (isStatic || lockRef.current) return
-            
-            if (i === active) {
-                if (onSlideClick) {
-                    onSlideClick(list[i], i)
-                } else {
-                    lock()
-                    setActive((a) => (a + 1) % n)
-                }
-                return
-            }
-            
+            if (isStatic || autoplay || lockRef.current) return
             lock()
-            setActive(i)
+            setActive((a) => (i === a ? (a + 1) % n : i))
         },
-        [isStatic, lock, active, onSlideClick, list, n]
+        [isStatic, autoplay, n, lock]
     )
 
     // Autoplay — the transition's Delay drives the time each card holds.
@@ -314,9 +308,9 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
                         transform: `translate(-50%, -50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`,
                         transition: transitionCss,
                         opacity: visible ? 1 : 0,
-                        cursor: "pointer",
+                        cursor: autoplay || isActive ? "default" : "pointer",
                         pointerEvents:
-                            visible && !isStatic ? "auto" : "none",
+                            visible && !isStatic && !autoplay ? "auto" : "none",
                         backgroundColor: "#1a1a1a",
                     }
 

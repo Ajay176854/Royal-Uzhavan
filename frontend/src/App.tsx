@@ -17,14 +17,7 @@ import Account from './pages/Account';
 import Contact from './pages/Contact';
 import TrackOrder from './pages/TrackOrder';
 import Policies from './pages/Policies';
-import RefundPolicy from './pages/RefundPolicy';
-import TermsOfService from './pages/TermsOfService';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import { AuthProvider } from './contexts/AuthContext';
-import { WishlistProvider } from './contexts/WishlistContext';
-import { CartProvider } from './contexts/CartContext';
-import CartDrawer from './components/CartDrawer';
-import AuthDrawer from './components/AuthDrawer';
+import { CartProvider } from './context/CartContext';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -37,36 +30,29 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <WishlistProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <CartDrawer />
-            <AuthDrawer />
-            <div className="flex flex-col min-h-screen text-[#1A1A1A] overflow-x-hidden">
-            <Header />
-            
-            <main className="flex-1">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/subscriptions" element={<Subscriptions />} />
-                <Route path="/our-farms" element={<OurFarms />} />
-                <Route path="/trace" element={<TraceProduct />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/account" element={<Account />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/track" element={<TrackOrder />} />
-                <Route path="/policies" element={<Policies />} />
-                <Route path="/refund-policy" element={<RefundPolicy />} />
-                <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              </Routes>
-            </main>
+    <CartProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <div className="flex flex-col min-h-screen text-[#1A1A1A]">
+          <Header />
+          
+          <main className="flex-1 pb-16 md:pb-0"> {/* Padding bottom for mobile nav */}
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/product/:id" element={<ProductDetail />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
+              <Route path="/our-farms" element={<OurFarms />} />
+              <Route path="/trace" element={<TraceProduct />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/track" element={<TrackOrder />} />
+              <Route path="/policies" element={<Policies />} />
+            </Routes>
+          </main>
 
           <Footer />
           <MobileNav />

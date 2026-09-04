@@ -138,9 +138,3 @@ VALUES
   ('theeni-juice-energy-tonic', 'Theeni Juice / Energy Tonic', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 200.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
   ('cuttlefish-bone', 'Cuttlefish Bone', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 300.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true)
 ON CONFLICT (slug) DO NOTHING;
-
-
--- Admin User
-INSERT INTO users (name, email, password_hash, role)
-VALUES ('Admin', 'admin@royaluzhavan.com', '.Ofayx0ZLQ.uYOZ5u.fOOBG2QKZvwFB0.LYeA7D.B8kS0q26', 'admin')
-ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role;

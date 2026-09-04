@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
+import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
-import { Product } from '../types';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+import CoverflowCarousel from '../components/CoverflowCarousel';
 
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [newLaunches, setNewLaunches] = useState<Product[]>([]);
+  const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [newLaunches, setNewLaunches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchHomeProducts = async () => {
       try {
-        const res = await fetch(`${API_URL}/products?limit=10`);
-        const data = await res.json();
-        const products: Product[] = data.products || [];
+        setLoading(true);
+        // Fetch featured/popular
+        const featuredRes = await fetch('http://localhost:8000/api/products?sort=popular&limit=6');
+        const newRes = await fetch('http://localhost:8000/api/products?sort=created_at&limit=6');
         
-        // Split for demo purposes
-        setFeaturedProducts(products.slice(0, 6));
-        setNewLaunches(products.slice(Math.max(0, products.length - 5)));
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
+        if (featuredRes.ok) {
+          const featuredData = await featuredRes.json();
+          setFeaturedProducts(featuredData.products);
+        }
+        if (newRes.ok) {
+          const newData = await newRes.json();
+          setNewLaunches(newData.products);
+        }
+      } catch (err) {
+        console.error('Failed to fetch home products', err);
       } finally {
         setLoading(false);
       }
     };
-    
-    fetchProducts();
+    fetchHomeProducts();
   }, []);
 
   return (
@@ -37,9 +41,9 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          <img 
-            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000" 
-            alt="Farm Landscape" 
+          <img
+            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000"
+            alt="Farm Landscape"
             className="w-full h-full object-cover sepia-[0.2] contrast-[0.95]"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)] via-[var(--color-wabi-bg)]/80 to-transparent"></div>
@@ -165,87 +169,74 @@ export default function Home() {
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-            <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors mt-4 md:mt-0 border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
-              View All <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          
-          <div className="w-full h-[500px] mb-8">
-            {loading ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B4D26]"></div>
-              </div>
-            ) : featuredProducts.length > 0 ? (
+            
+            <div className="w-full h-[500px] mb-8">
               <Smooth3DSlideshow 
                 slides={featuredProducts.map(p => ({
-                  id: p.id,
                   image: { src: p.image, alt: p.name },
                   title: p.name + '\n₹' + p.price,
+                  link: `/product/${p.id}`
                 }))}
                 cardWidth={350}
                 cardHeight={450}
                 radius={10}
                 autoplay={true}
-                onSlideClick={(slide) => {
-                  if (slide.id) navigate(`/product/${slide.id}`);
-                }}
+                onSlideChange={setActiveFeaturedIndex}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",
                   lineHeight: "1.2",
                 }}
               />
-            ) : (
-              <p className="text-center text-gray-500">No products available at the moment.</p>
-            )}
+            </div>
+            
+            <div className="mt-12 text-center md:hidden">
+              <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
+                View All Products
+              </Link>
+            </div>
           </div>
-          
-          <div className="mt-12 text-center md:hidden">
-            <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
-              View All Products
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* New Launches */}
-      <section className="py-24 bg-[var(--color-wabi-bg)] border-t border-[var(--color-wabi-earth)]/10">
-        <div className="container mx-auto px-4 md:px-12">
-          <div className="flex items-end justify-between mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
-          </div>
-          <div className="w-full h-[500px]">
-            {loading ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B4D26]"></div>
+      {/* New Launches — Coverflow Carousel */}
+      {!loading && newLaunches.length > 0 && (
+        <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
+          {/* Premium Blurred Background */}
+          <div
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
+            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
+          ></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
+
+          <div className="container mx-auto px-4 md:px-12 relative z-10">
+            <div className="flex items-end justify-between mb-12">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
+                <p className="text-gray-700 font-medium text-sm mt-2">Freshly added to our collection — swipe to explore.</p>
               </div>
-            ) : newLaunches.length > 0 ? (
-              <Smooth3DSlideshow 
-                slides={newLaunches.map(p => ({
-                  id: p.id,
-                  image: { src: p.image, alt: p.name },
-                  title: p.name + '\n₹' + p.price,
-                }))}
-                cardWidth={350}
-                cardHeight={450}
-                radius={10}
+              <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
+                Browse All <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="w-full h-[480px]">
+              <CoverflowCarousel
+                products={newLaunches}
+                activeWidth={420}
+                activeHeight={400}
+                restWidth={140}
+                restHeight={260}
+                gap={24}
+                radius={4}
+                showArrows={true}
                 autoplay={true}
                 autoplayDirection="leftToRight"
-                onSlideClick={(slide) => {
-                  if (slide.id) navigate(`/product/${slide.id}`);
-                }}
-                titleFont={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: "24px",
-                  lineHeight: "1.2",
-                }}
+                transition={{ duration: 0.3, delay: 2.5 }}
               />
-            ) : (
-              <p className="text-center text-gray-500">No new arrivals at the moment.</p>
-            )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Newsletter */}
       <section className="bg-[var(--color-wabi-green)] py-24 text-center px-4 relative overflow-hidden">
@@ -255,9 +246,9 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-serif text-[var(--color-wabi-bg)] mb-6">Join Our Farmer Community</h2>
           <p className="text-[var(--color-wabi-bg)]/80 mb-10 font-medium max-w-lg mx-auto leading-relaxed">Subscribe to receive agricultural updates, feed guidelines, and exclusive community discounts.</p>
           <form className="flex flex-col sm:flex-row gap-0 max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
+            <input
+              type="email"
+              placeholder="Enter your email address"
               className="flex-1 px-6 py-4 rounded-l-full sm:rounded-r-none rounded-r-full mb-3 sm:mb-0 bg-[var(--color-wabi-bg)] focus:outline-none text-[var(--color-wabi-green)] placeholder:text-[var(--color-wabi-green)]/40"
               required
             />
@@ -272,5 +263,5 @@ export default function Home() {
 }
 
 function User(props: any) {
-  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
 }
