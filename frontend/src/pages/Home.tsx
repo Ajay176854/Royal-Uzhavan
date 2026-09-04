@@ -39,14 +39,17 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
+      <section className="relative h-screen min-h-[700px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          <img
-            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000"
-            alt="Farm Landscape"
-            className="w-full h-full object-cover sepia-[0.2] contrast-[0.95]"
+          <video
+            src="/assets/theme_video.MP4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)] via-[var(--color-wabi-bg)]/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/70 via-[var(--color-wabi-bg)]/30 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
