@@ -2,10 +2,13 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, ShoppingBag, MessageCircle, ShoppingCart, User } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useCart } from '../context/CartContext';
 
 export default function MobileNav() {
   const location = useLocation();
   const path = location.pathname;
+  const { cartCount } = useCart();
+
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -16,12 +19,12 @@ export default function MobileNav() {
       icon: MessageCircle,
       external: true 
     },
-    { name: 'Cart', path: '/cart', icon: ShoppingCart, badge: 0 },
+    { name: 'Cart', path: '/cart', icon: ShoppingCart, badge: cartCount },
     { name: 'Account', path: '/account', icon: User },
   ];
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-safe">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-around h-16">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -34,6 +37,7 @@ export default function MobileNav() {
                 href={item.path}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => window.dispatchEvent(new Event('close-mobile-menu'))}
                 className="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-green-600 transition-colors"
               >
                 <Icon className="w-5 h-5 mb-1 text-green-600" />
@@ -46,6 +50,7 @@ export default function MobileNav() {
             <Link
               key={item.name}
               to={item.path}
+              onClick={() => window.dispatchEvent(new Event('close-mobile-menu'))}
               className={cn(
                 "flex flex-col items-center justify-center w-full h-full transition-colors relative",
                 isActive ? "text-[#0B4D26]" : "text-gray-500 hover:text-[#0B4D26]"

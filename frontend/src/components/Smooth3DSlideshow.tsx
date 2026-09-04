@@ -10,6 +10,7 @@ import React, {
 const useIsStaticRenderer = () => false
 
 interface Slide {
+    id?: string
     image?: { src?: string; srcSet?: string; alt?: string }
     title?: string
 }
@@ -22,6 +23,7 @@ interface Smooth3DSlideshowProps {
     cardWidth?: number
     cardHeight?: number
     radius?: number
+    onSlideChange?: (index: number) => void
     tilt?: number
     sideTilt?: number
     gap?: number
@@ -40,7 +42,7 @@ interface Smooth3DSlideshowProps {
         paddingBottom?: number
     }
     style?: CSSProperties
-    onSlideChange?: (index: number) => void
+    onSlideClick?: (slide: Slide, index: number) => void
 }
 
 const DEFAULT_SLIDES: Slide[] = [
@@ -144,7 +146,7 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
         titleColor,
         titlePosition,
         style,
-        onSlideChange,
+        onSlideClick,
     } = props
 
     const tp = titlePosition || {}
@@ -168,12 +170,6 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
     useEffect(() => {
         setActive((a) => Math.max(0, Math.min(n - 1, a)))
     }, [n])
-
-    useEffect(() => {
-        if (onSlideChange) {
-            onSlideChange(active)
-        }
-    }, [active, onSlideChange])
 
     // Lock input while a card is mid-move; release once it settles, so rapid
     // clicks/keys don't stack up and look jittery. Duration comes from the
@@ -204,11 +200,22 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
 
     const handleCardClick = useCallback(
         (i: number) => {
-            if (isStatic || autoplay || lockRef.current) return
+            if (isStatic || lockRef.current) return
+            
+            if (i === active) {
+                if (onSlideClick) {
+                    onSlideClick(list[i], i)
+                } else {
+                    lock()
+                    setActive((a) => (a + 1) % n)
+                }
+                return
+            }
+            
             lock()
-            setActive((a) => (i === a ? (a + 1) % n : i))
+            setActive(i)
         },
-        [isStatic, autoplay, n, lock]
+        [isStatic, lock, active, onSlideClick, list, n]
     )
 
     // Autoplay — the transition's Delay drives the time each card holds.
@@ -308,9 +315,9 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
                         transform: `translate(-50%, -50%) translateX(${tx}px) translateZ(${tz}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`,
                         transition: transitionCss,
                         opacity: visible ? 1 : 0,
-                        cursor: autoplay || isActive ? "default" : "pointer",
+                        cursor: "pointer",
                         pointerEvents:
-                            visible && !isStatic && !autoplay ? "auto" : "none",
+                            visible && !isStatic ? "auto" : "none",
                         backgroundColor: "#1a1a1a",
                     }
 

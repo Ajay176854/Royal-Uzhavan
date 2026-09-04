@@ -1,52 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
 import CoverflowCarousel from '../components/CoverflowCarousel';
 
-export default function Home() {
-  const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
-  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-  const [newLaunches, setNewLaunches] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const CATEGORY_DATA = [
+  { num: 'I', title: 'Royal Cattle Feed', desc: 'Premium feeds and mixes for healthy, productive cattle.', image: '/images/cattle-food.png', price: 850 },
+  { num: 'II', title: 'Royal Hen Feed', desc: 'Starter, grower, and layer feeds for healthy hens.', image: '/images/hen-food.png', price: 650 },
+  { num: 'III', title: 'Royal Birds Food', desc: 'Specialized mixes for pigeons, budgies, and exotic birds.', image: '/images/birds-food.png', price: 450 },
+  { num: 'IV', title: 'Oil Cake (Punnakku)', desc: 'High-protein seed meals for optimal digestion and condition.', image: '/images/royal-punnakku.png', price: 1200 },
+  { num: 'V', title: 'Farmer\'s Bran Types', desc: 'Essential daily nutrition and dietary fiber for livestock.', image: '/images/royal-nutrition.png', price: 550 },
+  { num: 'VI', title: 'Oil Seeds & Millets', desc: 'Premium multi-grain seed & pulse blend for birds.', image: '/images/royal-grains.png', price: 750 },
+  { num: 'VII', title: 'Cereals, Millets & Grains', desc: 'Complete mix of essential grains for optimal nutrition.', image: '/images/royal-cereals.jpg', price: 900 },
+  { num: 'VIII', title: 'Cattle Feed & Seed Cake', desc: 'Balanced feed pellets and seed mixes for all stages.', image: '/images/royal-seed-theevanam.png', price: 1100 },
+  { num: 'IX', title: 'Pulses Husk & Feed Waste', desc: 'Traditional multi-bran mix for maximum digestive aid.', image: '/images/royal-thoosu-vagaigal.jpg', price: 350 },
+  { num: 'X', title: 'Pigeon Health Supplements', desc: 'Calcium, grit, and tonics for optimal animal health.', image: '/images/hen-pigeon-supplement.png', price: 250 }
+];
 
-  useEffect(() => {
-    const fetchHomeProducts = async () => {
-      try {
-        setLoading(true);
-        // Fetch featured/popular
-        const featuredRes = await fetch('http://localhost:8000/api/products?sort=popular&limit=6');
-        const newRes = await fetch('http://localhost:8000/api/products?sort=created_at&limit=6');
-        
-        if (featuredRes.ok) {
-          const featuredData = await featuredRes.json();
-          setFeaturedProducts(featuredData.products);
-        }
-        if (newRes.ok) {
-          const newData = await newRes.json();
-          setNewLaunches(newData.products);
-        }
-      } catch (err) {
-        console.error('Failed to fetch home products', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchHomeProducts();
-  }, []);
+export default function Home() {
+  const navigate = useNavigate();
+  const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
+
+  const mappedProducts = CATEGORY_DATA.map((item, index) => ({
+    id: String(index + 1),
+    name: item.title,
+    price: item.price,
+    image: item.image,
+    category: item.title,
+    tags: ["Best Seller"],
+    rating: 5,
+    reviews: 0,
+    variants: [],
+    in_stock: true,
+  }));
+
+  const featuredProducts = mappedProducts.slice(0, 5);
+  const newLaunches = mappedProducts.slice(5, 10);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[85vh] min-h-[600px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
-          <img
-            src="https://images.unsplash.com/photo-1596733430284-f74372763f03?auto=format&fit=crop&q=80&w=2000"
-            alt="Farm Landscape"
-            className="w-full h-full object-cover sepia-[0.2] contrast-[0.95]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)] via-[var(--color-wabi-bg)]/80 to-transparent"></div>
+          <video
+            autoPlay
+            loop
+            muted={true}
+            defaultMuted={true}
+            playsInline={true}
+            className="w-full h-full object-cover object-top"
+          >
+            <source src="/hero-video.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/90 via-[var(--color-wabi-bg)]/60 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
@@ -60,7 +68,7 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-6 items-center">
               <Link to="/shop" className="bg-[var(--color-wabi-green)] hover:bg-[#1a2b14] text-white px-10 py-4 font-bold text-xs uppercase tracking-widest rounded-full transition-all">
-                Shop Produce
+                Shop Products
               </Link>
               <Link to="/our-farms" className="text-[var(--color-wabi-green)] text-sm font-bold tracking-widest uppercase hover:text-[var(--color-wabi-gold)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-gold)] pb-1">
                 Our Story
@@ -94,18 +102,7 @@ export default function Home() {
             <p className="text-gray-500 text-sm leading-relaxed">Carefully formulated nutrition for all your farming and livestock needs.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 xl:gap-8">
-            {[
-              { num: 'I', title: 'Royal Cattle Feed', desc: 'Premium feeds and mixes for healthy, productive cattle.', image: '/images/cattle-food.png' },
-              { num: 'II', title: 'Royal Hen Feed', desc: 'Starter, grower, and layer feeds for healthy hens.', image: '/images/hen-food.png' },
-              { num: 'III', title: 'Royal Birds Food', desc: 'Specialized mixes for pigeons, budgies, and exotic birds.', image: '/images/birds-food.png' },
-              { num: 'IV', title: 'Oil Cake (Punnakku)', desc: 'High-protein seed meals for optimal digestion and condition.', image: '/images/royal-punnakku.png' },
-              { num: 'V', title: 'Farmer\'s Bran Types', desc: 'Essential daily nutrition and dietary fiber for livestock.', image: '/images/royal-nutrition.png' },
-              { num: 'VI', title: 'Oil Seeds & Millets', desc: 'Premium multi-grain seed & pulse blend for birds.', image: '/images/royal-grains.png' },
-              { num: 'VII', title: 'Cereals, Millets & Grains', desc: 'Complete mix of essential grains for optimal nutrition.', image: '/images/royal-cereals.jpg' },
-              { num: 'VIII', title: 'Cattle Feed & Seed Cake', desc: 'Balanced feed pellets and seed mixes for all stages.', image: '/images/royal-seed-theevanam.png' },
-              { num: 'IX', title: 'Pulses Husk & Feed Waste', desc: 'Traditional multi-bran mix for maximum digestive aid.', image: '/images/royal-thoosu-vagaigal.jpg' },
-              { num: 'X', title: 'Pigeon Health Supplements', desc: 'Calcium, grit, and tonics for optimal animal health.', image: '/images/hen-pigeon-supplement.png' }
-            ].map((item, i) => (
+            {CATEGORY_DATA.map((item, i) => (
               <Link to={`/shop?category=${encodeURIComponent(item.title)}`} key={item.num} className="group flex flex-col items-center text-center">
                 <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
@@ -150,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* Featured Products */}
-      {!loading && featuredProducts.length > 0 && (
+      {featuredProducts.length > 0 && (
         <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
           {/* Natural Greenery Background */}
           <div
@@ -160,7 +157,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/20"></div>
 
           <div className="container mx-auto px-4 md:px-12 relative z-10">
-            <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+            <motion.div
+              className="flex flex-col md:flex-row items-center justify-between mb-12"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div>
                 <h2 className="text-3xl md:text-4xl font-serif text-white mb-3 drop-shadow-md">Featured Products</h2>
                 <p className="text-white/90 text-sm drop-shadow-md">Top recommendations for your livestock and poultry.</p>
@@ -168,9 +171,15 @@ export default function Home() {
               <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-white text-xs uppercase tracking-widest hover:text-gray-200 transition-colors mt-4 md:mt-0 border-b border-transparent hover:border-white pb-1 drop-shadow-md">
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
+            </motion.div>
             
-            <div className="w-full h-[500px] mb-8">
+            <motion.div
+              className="w-full h-[500px] mb-8"
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            >
               <Smooth3DSlideshow 
                 slides={featuredProducts.map(p => ({
                   image: { src: p.image, alt: p.name },
@@ -188,19 +197,25 @@ export default function Home() {
                   lineHeight: "1.2",
                 }}
               />
-            </div>
+            </motion.div>
             
-            <div className="mt-12 text-center md:hidden">
+            <motion.div
+              className="mt-12 text-center md:hidden"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
               <Link to="/shop" className="inline-flex items-center gap-2 bg-[var(--color-wabi-bg)] text-[var(--color-wabi-green)] font-bold px-8 py-4 rounded-full text-sm">
                 View All Products
               </Link>
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
 
       {/* New Launches — Coverflow Carousel */}
-      {!loading && newLaunches.length > 0 && (
+      {newLaunches.length > 0 && (
         <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
           {/* Premium Blurred Background */}
           <div
@@ -210,7 +225,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
 
           <div className="container mx-auto px-4 md:px-12 relative z-10">
-            <div className="flex items-end justify-between mb-12">
+            <motion.div
+              className="flex items-end justify-between mb-12"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            >
               <div>
                 <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-wabi-green)]">New Arrivals</h2>
                 <p className="text-gray-700 font-medium text-sm mt-2">Freshly added to our collection — swipe to explore.</p>
@@ -218,10 +239,17 @@ export default function Home() {
               <Link to="/shop" className="hidden md:inline-flex items-center gap-2 font-bold text-[var(--color-wabi-green)] text-xs uppercase tracking-widest hover:text-[var(--color-wabi-earth)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-earth)] pb-1">
                 Browse All <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
-            <div className="w-full h-[480px]">
+            </motion.div>
+            <motion.div
+              className="w-full h-[480px]"
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            >
               <CoverflowCarousel
                 products={newLaunches}
+                onProductClick={(product) => navigate(`/product/${product.id}`)}
                 activeWidth={420}
                 activeHeight={400}
                 restWidth={140}
@@ -233,7 +261,7 @@ export default function Home() {
                 autoplayDirection="leftToRight"
                 transition={{ duration: 0.3, delay: 2.5 }}
               />
-            </div>
+            </motion.div>
           </div>
         </section>
       )}
