@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { query, getClient } from "../db/pool.js";
 import { requireAuth, optionalAuth } from "../middleware/auth.js";
-import { sendOrderConfirmationWhatsApp } from "../services/whatsapp.js";
+import {
+  generateOrderWhatsAppLink,
+  sendOrderConfirmation,
+  isWhatsAppConfigured,
+} from "../services/whatsapp.js";
 
 const router = Router();
 
@@ -70,8 +74,37 @@ router.post("/", optionalAuth, async (req, res) => {
 
     const order = result.rows[0];
 
-    // Trigger WhatsApp notification asynchronously (do not block the response)
-    sendOrderConfirmationWhatsApp(customerPhone, order.id, customerName);
+    // Generate WhatsApp Click-to-Chat link (free fallback)
+    const whatsappLink = generateOrderWhatsAppLink({
+      orderId: order.id,
+      customerName,
+      items: items.map((item: any) => ({
+        name: item.name || item.productName || "Product",
+        quantity: item.quantity || 1,
+        price: item.price || 0,
+      })),
+      total,
+    });
+
+    // Auto-send WhatsApp order confirmation via Meta API (fire-and-forget)
+    if (isWhatsAppConfigured()) {
+      sendOrderConfirmation({
+        orderId: order.id,
+        customerName,
+        customerPhone,
+        items: items.map((item: any) => ({
+          name: item.name || item.productName || "Product",
+          quantity: item.quantity || 1,
+          price: item.price || 0,
+        })),
+        total,
+        subtotal,
+        shippingFee,
+        paymentMethod: paymentMethod || "cod",
+      }).catch((err) => {
+        console.error("WhatsApp auto-send failed (non-blocking):", err);
+      });
+    }
 
     res.status(201).json({
       message: "Order placed successfully!",
@@ -80,6 +113,7 @@ router.post("/", optionalAuth, async (req, res) => {
         status: order.status,
         createdAt: order.created_at,
       },
+      whatsappLink,
     });
   } catch (error) {
     await client.query("ROLLBACK");
@@ -87,6 +121,45 @@ router.post("/", optionalAuth, async (req, res) => {
     res.status(500).json({ error: "Failed to create order" });
   } finally {
     client.release();
+  }
+});
+
+// GET /api/orders/lookup — guest order lookup by email or phone
+router.get("/lookup", async (req, res) => {
+  try {
+    const { email, phone } = req.query;
+
+    if (!email && !phone) {
+      res.status(400).json({ error: "Provide email or phone to look up orders" });
+      return;
+    }
+
+    const conditions: string[] = [];
+    const params: any[] = [];
+
+    if (email) {
+      conditions.push(`customer_email = $${params.length + 1}`);
+      params.push((email as string).toLowerCase());
+    }
+    if (phone) {
+      conditions.push(`customer_phone = $${params.length + 1}`);
+      params.push(phone);
+    }
+
+    const result = await query(
+      `SELECT id, customer_name, items, subtotal, shipping_fee, total, status,
+              payment_method, created_at, updated_at
+       FROM orders
+       WHERE ${conditions.join(" OR ")}
+       ORDER BY created_at DESC
+       LIMIT 20`,
+      params
+    );
+
+    res.json({ orders: result.rows });
+  } catch (error) {
+    console.error("Order lookup error:", error);
+    res.status(500).json({ error: "Failed to look up orders" });
   }
 });
 

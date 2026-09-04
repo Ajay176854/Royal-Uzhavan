@@ -73,7 +73,7 @@ export default function Shop() {
         {/* Page Header */}
         <div className="mb-8 border-b border-gray-200 pb-6">
           <h1 className="text-3xl font-black uppercase tracking-tighter text-[#0B4D26] mb-2">
-            {searchQuery ? `Search Results for "${searchQuery}"` : 'Shop All Produce'}
+            {searchQuery ? `Search Results for "${searchQuery}"` : 'Shop All Products'}
           </h1>
           <p className="text-gray-500 text-sm">Showing {products.length} products</p>
         </div>

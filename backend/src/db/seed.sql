@@ -1,112 +1,142 @@
 -- Royal Uzhavan - Seed Data
--- Seeds all 5 categories and 12 products from frontend data.ts
+-- Seeds all new animal nutrition categories and products.
+
+-- ============================================
+-- Clean existing data
+-- ============================================
+TRUNCATE TABLE products CASCADE;
+TRUNCATE TABLE categories CASCADE;
 
 -- ============================================
 -- Categories
 -- ============================================
 INSERT INTO categories (name, image) VALUES
-  ('Traditional Rice', 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400'),
-  ('Cold Pressed Edible Oil', 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=400'),
-  ('Vegetables', 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=400'),
-  ('Keerai Greens', 'https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400'),
-  ('Farm Pantry', 'https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400')
+  ('Royal Cattle Feed', '/images/cattle-food.png'),
+  ('Royal Hen Feed', '/images/hen-food.png'),
+  ('Royal Birds Food', '/images/birds-food.png'),
+  ('Oil Cake (Punnakku)', '/images/royal-punnakku.png'),
+  ('Farmer''s Bran Types', '/images/royal-nutrition.png'),
+  ('Oil Seeds & Millets', '/images/royal-grains.png'),
+  ('Cereals, Millets & Grains', '/images/royal-cereals.jpg'),
+  ('Cattle Feed & Seed Cake', '/images/royal-seed-theevanam.png'),
+  ('Pulses Husk & Feed Waste', '/images/royal-thoosu-vagaigal.jpg'),
+  ('Pigeon Health Supplements', '/images/hen-pigeon-supplement.png')
 ON CONFLICT (name) DO NOTHING;
 
 -- ============================================
 -- Products
 -- ============================================
-
--- Traditional Rice products
-INSERT INTO products (slug, name, category_id, animal_type, price, original_price, discount, rating, reviews, image, tags, variants, in_stock)
+INSERT INTO products (slug, name, category_id, animal_type, price, image, tags, variants, in_stock)
 VALUES
-  ('rathasali-rice', 'Rathasali Rice',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 180.00, 200.00, 10, 4.8, 156,
-    'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Royal Uzhavan Favourites', 'Organic'], ARRAY[1, 5, 10], true),
-
-  ('mapillai-samba-rice', 'Mapillai Samba Rice',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 180.00, 200.00, 10, 4.9, 345,
-    'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Bestseller', 'Organic'], ARRAY[1, 5, 10], true),
-
-  ('karuppu-kavuni-rice', 'Karuppu Kavuni Rice (Black Rice)',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 250.00, NULL, 0, 4.9, 210,
-    'https://images.unsplash.com/photo-1621066793649-e26090eeb6ce?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Health Focused', 'Organic'], ARRAY[1, 5], true),
-
-  ('kichili-samba-rice', 'Kichili Samba Rice',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 160.00, NULL, 0, 4.8, 420,
-    'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?auto=format&fit=crop&q=80&w=600',
-    ARRAY[]::TEXT[], ARRAY[1, 5, 10, 25], true),
-
-  ('thooyamalli-rice', 'Thooyamalli Rice',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 150.00, NULL, 0, 4.7, 310,
-    'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=600',
-    ARRAY[]::TEXT[], ARRAY[1, 5, 10], true),
-
-  ('mysore-malli-rice', 'Mysore Malli Rice',
-    (SELECT id FROM categories WHERE name = 'Traditional Rice'),
-    'Human', 175.00, NULL, 0, 4.8, 189,
-    'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?auto=format&fit=crop&q=80&w=600',
-    ARRAY[]::TEXT[], ARRAY[1, 5], true),
-
--- Cold Pressed Edible Oil products
-  ('ground-nut-oil', 'Ground Nut Oil (Cold Pressed)',
-    (SELECT id FROM categories WHERE name = 'Cold Pressed Edible Oil'),
-    'Human', 320.00, 350.00, 8, 4.9, 512,
-    'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Bestseller'], ARRAY[1, 5], true),
-
-  ('sesame-oil', 'Sesame Oil / Gingelly Oil (Cold Pressed)',
-    (SELECT id FROM categories WHERE name = 'Cold Pressed Edible Oil'),
-    'Human', 450.00, NULL, 0, 4.8, 310,
-    'https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Premium'], ARRAY[1, 5], true),
-
-  ('coconut-oil', 'Coconut Oil (Cold Pressed)',
-    (SELECT id FROM categories WHERE name = 'Cold Pressed Edible Oil'),
-    'Human', 280.00, NULL, 0, 4.7, 180,
-    'https://images.unsplash.com/photo-1626806787426-5910811b6325?auto=format&fit=crop&q=80&w=600',
-    ARRAY[]::TEXT[], ARRAY[1, 5], true),
-
--- Vegetables
-  ('organic-veggie-basket', 'Organic Veggie Basket',
-    (SELECT id FROM categories WHERE name = 'Vegetables'),
-    'Human', 350.00, NULL, 0, 4.9, 156,
-    'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Fresh Daily'], ARRAY[5, 10], true),
-
--- Keerai Greens
-  ('organic-spinach-keerai', 'Organic Spinach (Keerai)',
-    (SELECT id FROM categories WHERE name = 'Keerai Greens'),
-    'Human', 60.00, NULL, 0, 4.7, 89,
-    'https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Morning Harvest'], ARRAY[1], true),
-
--- Farm Pantry products
-  ('pure-desi-cow-ghee', 'Pure Desi Cow Ghee',
-    (SELECT id FROM categories WHERE name = 'Farm Pantry'),
-    'Human', 850.00, 950.00, 10, 5.0, 420,
-    'https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Premium'], ARRAY[1, 2], true),
-
-  ('raw-forest-honey', 'Raw Forest Honey',
-    (SELECT id FROM categories WHERE name = 'Farm Pantry'),
-    'Human', 450.00, NULL, 0, 4.8, 215,
-    'https://images.unsplash.com/photo-1587049352847-81a56d773c1c?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Unprocessed'], ARRAY[1], true),
-
-  ('traditional-jaggery-powder', 'Traditional Jaggery Powder',
-    (SELECT id FROM categories WHERE name = 'Farm Pantry'),
-    'Human', 120.00, NULL, 0, 4.9, 320,
-    'https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?auto=format&fit=crop&q=80&w=600',
-    ARRAY['Bestseller', 'Royal Uzhavan Favourites'], ARRAY[1, 2], true)
-
+  ('royal-kalappu-theevanam-50kg', 'Royal Kalappu Theevanam (50kg)', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 1280.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-standard-mix-theevanam-45kg', 'Royal Standard Mix Theevanam (45kg)', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 1380.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-gold-kalappu-theevanam-45kg', 'Royal Gold Kalappu Theevanam (45kg)', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 1450.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-arisitham-mix-50kg', 'Royal Arisitham Mix (50kg)', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 2430.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-kandra-weight-gain-50kg', 'Royal Kandra Weight gain (50kg)', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 1550.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-makka-cholam-maavu', 'Royal Makka Cholam Maavu', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 250.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-makka-cholam-kurunai', 'Royal Makka Cholam Kurunai', (SELECT id FROM categories WHERE name = 'Royal Cattle Feed'), 'Cattle', 220.0, (SELECT image FROM categories WHERE name = 'Royal Cattle Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-pre-starter-feed', 'Royal Pre Starter Feed', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 450.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-starter-feed', 'Royal Starter Feed', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 480.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-grower-feed', 'Royal Grower Feed', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 520.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-layer-feed', 'Royal Layer Feed', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 550.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-hen-crumble-feed', 'Royal Hen Crumble Feed', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 600.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-chicken-bran', 'Royal Chicken Bran', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 350.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-high-quality-broken-maize-grits', 'Royal High-Quality Broken Maize Grits', (SELECT id FROM categories WHERE name = 'Royal Hen Feed'), 'Poultry', 400.0, (SELECT image FROM categories WHERE name = 'Royal Hen Feed'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-pigeon-sf-25kg', 'Royal Pigeon SF (25kg)', (SELECT id FROM categories WHERE name = 'Royal Birds Food'), 'Birds', 1280.0, (SELECT image FROM categories WHERE name = 'Royal Birds Food'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-pigeon-pt-25kg', 'Royal Pigeon PT (25kg)', (SELECT id FROM categories WHERE name = 'Royal Birds Food'), 'Birds', 1620.0, (SELECT image FROM categories WHERE name = 'Royal Birds Food'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-budgies-finches-mix-25kg', 'Royal Budgies & Finches Mix (25kg)', (SELECT id FROM categories WHERE name = 'Royal Birds Food'), 'Birds', 1750.0, (SELECT image FROM categories WHERE name = 'Royal Birds Food'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-african-cockatiel-mix-25kg', 'Royal African & Cockatiel Mix (25kg)', (SELECT id FROM categories WHERE name = 'Royal Birds Food'), 'Birds', 1800.0, (SELECT image FROM categories WHERE name = 'Royal Birds Food'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('sunflower-oil-cake', 'Sunflower Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 300.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('lekka-extract-oil-cake', 'Lekka Extract Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 320.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-multi-mix-oil-cake-50kg', 'Royal Multi Mix Oil Cake 50kg', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 1500.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('groundnut-oil-cake', 'Groundnut Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 400.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('groundnut-oil-cake-powder', 'Groundnut Oil Cake Powder', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 420.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('mixed-sesame-oil-cake', 'Mixed Sesame Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 350.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('sesame-oil-cake-powder', 'Sesame Oil Cake Powder', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 370.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('coconut-oil-cake', 'Coconut Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 380.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('mustard-oil-cake', 'Mustard Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 310.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('soya-oil-cake', 'Soya Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 450.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('cotton-seed-oil-cake', 'Cotton Seed Oil Cake', (SELECT id FROM categories WHERE name = 'Oil Cake (Punnakku)'), 'Livestock', 290.0, (SELECT image FROM categories WHERE name = 'Oil Cake (Punnakku)'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('wheat-bran', 'Wheat Bran', (SELECT id FROM categories WHERE name = 'Farmer''s Bran Types'), 'Livestock', 200.0, (SELECT image FROM categories WHERE name = 'Farmer''s Bran Types'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('rice-bran', 'Rice Bran', (SELECT id FROM categories WHERE name = 'Farmer''s Bran Types'), 'Livestock', 180.0, (SELECT image FROM categories WHERE name = 'Farmer''s Bran Types'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('corn-bran-mix', 'Corn Bran Mix', (SELECT id FROM categories WHERE name = 'Farmer''s Bran Types'), 'Livestock', 220.0, (SELECT image FROM categories WHERE name = 'Farmer''s Bran Types'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('sorghum-bran', 'Sorghum Bran', (SELECT id FROM categories WHERE name = 'Farmer''s Bran Types'), 'Livestock', 210.0, (SELECT image FROM categories WHERE name = 'Farmer''s Bran Types'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('royal-coarse-bran', 'Royal Coarse Bran', (SELECT id FROM categories WHERE name = 'Farmer''s Bran Types'), 'Livestock', 250.0, (SELECT image FROM categories WHERE name = 'Farmer''s Bran Types'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('austrian-peas', 'Austrian Peas', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 150.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-millets', 'White Millets', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 120.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('red-millets', 'Red Millets', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 130.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('japanese-millet', 'Japanese Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 140.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('foxtail-millet', 'Foxtail Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 110.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('yellow-millet', 'Yellow Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 125.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('cardi-seed', 'Cardi Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 180.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('small-black-sunflower', 'Small Black Sunflower', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 160.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-sunflower', 'White Sunflower', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 170.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('canary-seed', 'Canary Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 200.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('hemp-seed', 'Hemp Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 220.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('sesame-seed', 'Sesame Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 150.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('niger-seed', 'Niger Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 190.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('rapeseed', 'Rapeseed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 140.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('mustard-seed', 'Mustard Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 130.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('buckwheat', 'Buckwheat', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 160.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('quinoa', 'Quinoa', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 250.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('chia-seed', 'Chia Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 280.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('pumpkin-seed', 'Pumpkin Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 300.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('flax-seed', 'Flax Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 150.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('vetch-seed', 'Vetch Seed', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 140.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('maple-peas', 'Maple Peas', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 160.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-sunflower-seeds', 'Black Sunflower Seeds', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 170.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-sunflower-seeds', 'White Sunflower Seeds', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 180.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('sorghum-millet', 'Sorghum Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 110.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('field-bean', 'Field Bean', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 120.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('little-millet', 'Little Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 130.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('kodo-millet', 'Kodo Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 125.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('barnyard-millet', 'Barnyard Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 135.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('proso-millet', 'Proso Millet', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 145.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('linseed-groundnut-kernels', 'Linseed & Groundnut Kernels', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 190.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('oats', 'Oats', (SELECT id FROM categories WHERE name = 'Oil Seeds & Millets'), 'Birds', 110.0, (SELECT image FROM categories WHERE name = 'Oil Seeds & Millets'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('green-gram', 'Green Gram', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 120.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-chickpea', 'Black Chickpea', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 130.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-chickpea', 'White Chickpea', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 140.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('paddy', 'Paddy', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 90.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-peas', 'White Peas', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 110.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('green-peas', 'Green Peas', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 120.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('red-rice', 'Red Rice', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 135.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-horse-gram', 'Black Horse Gram', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 145.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-horse-gram', 'White Horse Gram', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 150.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('barley', 'Barley', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 160.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-wheat', 'Black Wheat', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 170.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('maize', 'Maize', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 90.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('corn-grits', 'Corn Grits', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 95.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('maize-flour', 'Maize Flour', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 100.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('white-sorghum', 'White Sorghum', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 110.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('red-sorghum', 'Red Sorghum', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 115.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('pearl-millet', 'Pearl Millet', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 120.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('finger-millet', 'Finger Millet', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 125.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('wheat', 'Wheat', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 130.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('roasted-gram', 'Roasted Gram', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 140.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('groundnut', 'Groundnut', (SELECT id FROM categories WHERE name = 'Cereals, Millets & Grains'), 'Livestock', 150.0, (SELECT image FROM categories WHERE name = 'Cereals, Millets & Grains'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('tamarind-seed-broken', 'Tamarind Seed Broken', (SELECT id FROM categories WHERE name = 'Cattle Feed & Seed Cake'), 'Livestock', 180.0, (SELECT image FROM categories WHERE name = 'Cattle Feed & Seed Cake'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('tamarind-seed-powder', 'Tamarind Seed Powder', (SELECT id FROM categories WHERE name = 'Cattle Feed & Seed Cake'), 'Livestock', 190.0, (SELECT image FROM categories WHERE name = 'Cattle Feed & Seed Cake'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('cotton-seed-cake', 'Cotton Seed Cake', (SELECT id FROM categories WHERE name = 'Cattle Feed & Seed Cake'), 'Livestock', 250.0, (SELECT image FROM categories WHERE name = 'Cattle Feed & Seed Cake'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('desi-cotton-seed', 'Desi Cotton Seed', (SELECT id FROM categories WHERE name = 'Cattle Feed & Seed Cake'), 'Livestock', 260.0, (SELECT image FROM categories WHERE name = 'Cattle Feed & Seed Cake'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-cotton-seed', 'Black Cotton Seed', (SELECT id FROM categories WHERE name = 'Cattle Feed & Seed Cake'), 'Livestock', 270.0, (SELECT image FROM categories WHERE name = 'Cattle Feed & Seed Cake'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-gram-husk-powder', 'Black Gram Husk Powder', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 100.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-gram-broken', 'Black Gram Broken', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 110.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('cowpea-husk-powder', 'Cowpea Husk Powder', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 90.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('black-green-gram-waste', 'Black Green Gram Waste', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 95.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('dried-peas-husk', 'Dried Peas Husk', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 85.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('toor-dal-husk', 'Toor Dal Husk', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 80.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('masoor-dal-husk', 'Masoor Dal Husk', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 80.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('millet-husk-powder', 'Millet Husk Powder', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 70.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('mixed-grains-husk-powder', 'Mixed Grains Husk Powder', (SELECT id FROM categories WHERE name = 'Pulses Husk & Feed Waste'), 'Livestock', 75.0, (SELECT image FROM categories WHERE name = 'Pulses Husk & Feed Waste'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('pigeon-grit', 'Pigeon Grit', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 150.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('calcium-tonic', 'Calcium Tonic', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 180.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('calcium-powder', 'Calcium Powder', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 160.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('mineral-mixture', 'Mineral Mixture', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 220.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('rock-salt-2kg', 'Rock Salt (2kg)', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 80.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('liver-tonic', 'Liver Tonic', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 250.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('theeni-juice-energy-tonic', 'Theeni Juice / Energy Tonic', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 200.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true),
+  ('cuttlefish-bone', 'Cuttlefish Bone', (SELECT id FROM categories WHERE name = 'Pigeon Health Supplements'), 'Birds', 300.0, (SELECT image FROM categories WHERE name = 'Pigeon Health Supplements'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true)
 ON CONFLICT (slug) DO NOTHING;
 
 

@@ -12,7 +12,7 @@ export default function OurFarms() {
           <span className="text-[var(--color-wabi-gold)] font-bold tracking-[0.3em] text-[10px] uppercase mb-6 block">ESTD 1984</span>
           <h1 className="text-5xl md:text-7xl font-serif mb-8">Our Farming Heritage</h1>
           <p className="text-lg text-[var(--color-wabi-bg)]/80 max-w-2xl mx-auto leading-relaxed font-medium">
-            Rooted in Sathya Nagar, Vandavasi, Tiruvannamalai District. Royal Uzhavan is dedicated to bringing authentic, chemical-free farm produce directly to your home.
+            Rooted in Sathya Nagar, Vandavasi, Tiruvannamalai District. Royal Uzhavan is dedicated to producing and supplying reliable nutrition and feed for farmers, livestock, and poultry.
           </p>
         </div>
       </div>
@@ -24,13 +24,13 @@ export default function OurFarms() {
           </div>
           <div>
             <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Our Story</span>
-            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">From Our Fields to Your Kitchen</h2>
+            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">From Our Farm to Your Livestock</h2>
             <div className="prose prose-sm md:prose-base text-gray-600">
               <p className="mb-6 leading-relaxed">
-                We started with a simple mission in Tiruvannamalai: to restore the natural way of eating. We recognized that the modern diet is missing the vital nutrients found in traditional, native grains and unrefined oils.
+                We started with a simple mission in Tiruvannamalai: to support farmers with high-quality, reliable nutrition for their animals. We recognize that healthy livestock, productive poultry, and thriving birds depend on proper, balanced diets.
               </p>
               <p className="leading-relaxed">
-                Today, we cultivate and source the finest Mapillai Samba, Karuppu Kavuni, and cold-pressed mara chekku oils. We harvest fresh organic greens (Keerai) and vegetables daily, ensuring that when you eat with Royal Uzhavan, you are eating directly from the earth.
+                Today, we produce and source the finest cattle feed, bird food, poultry supplements, and seed cakes. We ensure that when you feed your animals with Royal Uzhavan, you are giving them the absolute best nutrition directly from nature.
               </p>
             </div>
           </div>
@@ -40,12 +40,12 @@ export default function OurFarms() {
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
             <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">100%</h3>
             <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Natural</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Committed to chemical-free, organic farming practices.</p>
+            <p className="text-gray-500 text-sm leading-relaxed">Committed to chemical-free, high-quality agricultural practices.</p>
           </div>
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
             <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">24hr</h3>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Farm to Table</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Fresh vegetables and greens harvested and delivered daily.</p>
+            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Farm to Farm</h4>
+            <p className="text-gray-500 text-sm leading-relaxed">Fresh agricultural feed and nutrition delivered directly to you.</p>
           </div>
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
             <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">T.V.M</h3>
@@ -57,9 +57,9 @@ export default function OurFarms() {
       
       {/* Banner */}
       <div className="bg-[var(--color-wabi-green)] text-center py-24 px-4 relative overflow-hidden">
-        <h2 className="text-4xl md:text-5xl font-serif text-[var(--color-wabi-bg)] mb-10 relative z-10">Ready to bring nature<br/><i className="text-[var(--color-wabi-gold)]">back to your table?</i></h2>
+        <h2 className="text-4xl md:text-5xl font-serif text-[var(--color-wabi-bg)] mb-10 relative z-10">Ready to bring health<br/><i className="text-[var(--color-wabi-gold)]">back to your farm?</i></h2>
         <Link to="/shop" className="relative z-10 inline-block bg-[var(--color-wabi-gold)] hover:bg-[#a68636] text-white px-10 py-4 font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-sm">
-          Explore Our Produce
+          Explore Our Feed
         </Link>
       </div>
     </div>

@@ -71,9 +71,16 @@ export default function Checkout() {
         body: JSON.stringify(orderPayload)
       });
 
-      if (!res.ok) {
+      if (res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Failed to place order');
+        clearCart();
+        
+        // Backend handles WhatsApp automation via Meta API
+        
+        navigate('/account');
+      } else {
+        const error = await res.json();
+        alert('Failed to place order: ' + error.error);
       }
 
       // Success! Clear cart (if the method exists, we'll implement it or just reset state here)
