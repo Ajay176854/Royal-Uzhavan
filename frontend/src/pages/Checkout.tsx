@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
+import { motion, AnimatePresence } from 'motion/react';
+
 export default function Checkout() {
   const [step, setStep] = useState(1);
   const { items, cartTotal, clearCart } = useCart();
@@ -21,13 +23,14 @@ export default function Checkout() {
   const [addressError, setAddressError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   const subtotal = cartTotal;
 
   const handlePlaceOrder = async () => {
     setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('ru_token');
+      const token = localStorage.getItem('token');
       const orderData = {
         customerName: `${address.firstName} ${address.lastName}`.trim(),
         customerEmail: address.email,
@@ -62,7 +65,10 @@ export default function Checkout() {
         
         // Backend handles WhatsApp automation via Meta API
         
-        navigate('/account');
+        setOrderSuccess(true);
+        setTimeout(() => {
+          navigate('/account');
+        }, 2200);
       } else {
         const error = await res.json();
         alert('Failed to place order: ' + error.error);
@@ -212,6 +218,50 @@ export default function Checkout() {
 
         </div>
       </div>
+
+      {/* Success Animation Overlay */}
+      <AnimatePresence>
+        {orderSuccess && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          >
+            <motion.div 
+              initial={{ scale: 0.8, y: 50, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className="bg-white rounded-3xl p-10 max-w-sm w-full mx-4 flex flex-col items-center text-center shadow-2xl"
+            >
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: 1, rotate: [0, 10, -10, 0] }}
+                transition={{ type: 'spring', delay: 0.2, damping: 10, stiffness: 200 }}
+                className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-6"
+              >
+                <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </motion.div>
+              <h2 className="text-3xl font-playfair font-bold text-gray-900 mb-3">Order Placed!</h2>
+              <p className="text-gray-600 font-medium mb-8">
+                Thank you for your purchase. We are preparing your order for shipment.
+              </p>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 2, ease: "linear" }}
+                  className="h-full bg-green-600 rounded-full"
+                />
+              </div>
+              <p className="text-xs text-gray-400 mt-4 font-bold tracking-widest uppercase">Redirecting...</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }

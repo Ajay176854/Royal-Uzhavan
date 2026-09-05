@@ -14,6 +14,7 @@ import Blog from './pages/Blog';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Account from './pages/Account';
+import AdminDashboard from './pages/AdminDashboard';
 import Contact from './pages/Contact';
 import TrackOrder from './pages/TrackOrder';
 import Policies from './pages/Policies';
@@ -58,6 +59,7 @@ export default function App() {
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/account" element={<Account />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/track" element={<TrackOrder />} />
                   <Route path="/policies" element={<Policies />} />

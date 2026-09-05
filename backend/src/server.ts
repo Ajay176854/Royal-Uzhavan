@@ -11,6 +11,7 @@ import { requireAuth, requireAdmin } from "./middleware/auth.js";
 import { getWhatsAppStatus } from "./services/whatsapp.js";
 
 dotenv.config();
+// Trigger reload to load new WhatsApp token
 
 const app = express();
 const PORT = process.env.PORT || 8000;

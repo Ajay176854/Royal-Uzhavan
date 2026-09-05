@@ -172,7 +172,7 @@ export default function Header() {
                 <button
                   className="flex items-center gap-1 text-gray-800 hover:text-[#86B841] transition-colors py-2 text-[10px] xl:text-xs font-bold uppercase tracking-wider cursor-default"
                 >
-                  MY ACCOUNT <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#86B841]" strokeWidth={2.5} />
+                  {user?.role === 'admin' ? 'ADMIN PANEL' : 'MY ACCOUNT'} <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#86B841]" strokeWidth={2.5} />
                 </button>
                 
                 {/* Hover Bridge & Dropdown Menu */}
@@ -183,10 +183,10 @@ export default function Header() {
                       <p className="text-sm font-bold text-gray-900 truncate">{user?.name || 'User'}</p>
                     </div>
                     <Link
-                      to="/account"
+                      to={user?.role === 'admin' ? '/admin' : '/account'}
                       className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50 hover:text-[#1B4332] transition-colors"
                     >
-                      My Account
+                      {user?.role === 'admin' ? 'Admin Dashboard' : 'My Account'}
                     </Link>
                     <button
                       onClick={() => { logout(); }}
