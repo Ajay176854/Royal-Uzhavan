@@ -230,6 +230,7 @@ export default function Home() {
                 radius={10}
                 autoplay={true}
                 onSlideChange={setActiveFeaturedIndex}
+                onSlideClick={(slide) => slide.link && navigate(slide.link)}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",

@@ -13,6 +13,7 @@ interface Slide {
     id?: string
     image?: { src?: string; srcSet?: string; alt?: string }
     title?: string
+    link?: string
 }
 
 type AutoplayDir = "leftToRight" | "rightToLeft"

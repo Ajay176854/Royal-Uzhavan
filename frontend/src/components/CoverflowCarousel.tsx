@@ -539,7 +539,6 @@ export default function CoverflowCarousel(props: Props) {
         outline: "none",
     }
 
-    const selectable = !autoplay
     const cards = products.map((product, i) => (
         <Card
             key={product.id}
@@ -552,14 +551,10 @@ export default function CoverflowCarousel(props: Props) {
             gap={gap}
             radius={radius}
             gradient={GRADIENT_FALLBACKS[i % GRADIENT_FALLBACKS.length]}
-            onSelect={
-                selectable
-                    ? (idx) => {
-                        goTo(idx)
-                        onProductClick?.(products[idx])
-                    }
-                    : undefined
-            }
+            onSelect={(idx) => {
+                goTo(idx)
+                onProductClick?.(products[idx])
+            }}
         />
     ))
 
