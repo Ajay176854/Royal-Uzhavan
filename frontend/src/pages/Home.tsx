@@ -15,20 +15,44 @@ export default function Home() {
     const fetchHomeProducts = async () => {
       try {
         setLoading(true);
-        // Fetch featured/popular
-        const featuredRes = await fetch('http://localhost:8000/api/products?sort=popular&limit=6');
-        const newRes = await fetch('http://localhost:8000/api/products?sort=created_at&limit=6');
+        // Fetch a large pool of products and shuffle them for variety
+        const res = await fetch('http://localhost:8000/api/products?limit=100');
         
-        if (featuredRes.ok) {
-          const featuredData = await featuredRes.json();
-          setFeaturedProducts(featuredData.products);
-        }
-        if (newRes.ok) {
-          const newData = await newRes.json();
-          setNewLaunches(newData.products);
+        if (res.ok) {
+          const data = await res.json();
+          
+          // Shuffle the products to ensure diverse items show up
+          const shuffled = [...data.products].sort(() => 0.5 - Math.random());
+          
+          // Dedup slightly by name to ensure we don't show identical sounding variants too close
+          const uniqueProducts = [];
+          const seenNames = new Set();
+          for (const p of shuffled) {
+            const baseName = p.name.split(' ')[0] + p.name.split(' ')[1]; // rough uniqueness
+            if (!seenNames.has(baseName)) {
+              seenNames.add(baseName);
+              uniqueProducts.push(p);
+            }
+          }
+          
+          const finalPool = uniqueProducts.length >= 10 ? uniqueProducts : shuffled;
+          
+          setFeaturedProducts(finalPool.slice(0, 8));
+          setNewLaunches(finalPool.slice(8, 20));
         }
       } catch (err) {
         console.error('Failed to fetch home products', err);
+        // Fallback to mock data if backend is not running
+        const mockProducts = [
+          { id: '1', name: 'Royal Cattle Feed', price: 1250, image: '/images/cattle-food.png' },
+          { id: '2', name: 'Royal Hen Feed', price: 850, image: '/images/hen-food.png' },
+          { id: '3', name: 'Royal Birds Food', price: 450, image: '/images/birds-food.png' },
+          { id: '4', name: 'Oil Cake (Punnakku)', price: 1100, image: '/images/royal-punnakku.png' },
+          { id: '5', name: 'Farmer\'s Bran Types', price: 600, image: '/images/royal-nutrition.png' },
+          { id: '6', name: 'Oil Seeds & Millets', price: 700, image: '/images/royal-grains.png' },
+        ];
+        setFeaturedProducts(mockProducts);
+        setNewLaunches(mockProducts);
       } finally {
         setLoading(false);
       }
@@ -49,11 +73,10 @@ export default function Home() {
             playsInline
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/70 via-[var(--color-wabi-bg)]/30 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
-          <div className="max-w-2xl w-full">
+          <div className="max-w-2xl w-full -mt-16 md:-mt-28">
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
             <h1 className="text-[var(--color-wabi-green)] text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
               Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-earth)]">Animals.</span>
@@ -99,15 +122,14 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 xl:gap-8">
             {[
               { num: 'I', title: 'Royal Cattle Feed', desc: 'Premium feeds and mixes for healthy, productive cattle.', image: '/images/cattle-food.png' },
-              { num: 'II', title: 'Royal Hen Feed', desc: 'Starter, grower, and layer feeds for healthy hens.', image: '/images/hen-food.png' },
+              { num: 'II', title: 'Royal Hen Feed / Royal Kozhi Theevanam*', desc: 'Starter, grower, and layer feeds for healthy hens.', image: '/images/hen-food.png' },
               { num: 'III', title: 'Royal Birds Food', desc: 'Specialized mixes for pigeons, budgies, and exotic birds.', image: '/images/birds-food.png' },
-              { num: 'IV', title: 'Oil Cake (Punnakku)', desc: 'High-protein seed meals for optimal digestion and condition.', image: '/images/royal-punnakku.png' },
-              { num: 'V', title: 'Farmer\'s Bran Types', desc: 'Essential daily nutrition and dietary fiber for livestock.', image: '/images/royal-nutrition.png' },
-              { num: 'VI', title: 'Oil Seeds & Millets', desc: 'Premium multi-grain seed & pulse blend for birds.', image: '/images/royal-grains.png' },
-              { num: 'VII', title: 'Cereals, Millets & Grains', desc: 'Complete mix of essential grains for optimal nutrition.', image: '/images/royal-cereals.jpg' },
-              { num: 'VIII', title: 'Cattle Feed & Seed Cake', desc: 'Balanced feed pellets and seed mixes for all stages.', image: '/images/royal-seed-theevanam.png' },
-              { num: 'IX', title: 'Pulses Husk & Feed Waste', desc: 'Traditional multi-bran mix for maximum digestive aid.', image: '/images/royal-thoosu-vagaigal.jpg' },
-              { num: 'X', title: 'Pigeon Health Supplements', desc: 'Calcium, grit, and tonics for optimal animal health.', image: '/images/hen-pigeon-supplement.png' }
+              { num: 'IV', title: 'Royal oil-cake(Punnaku)', desc: 'High-protein seed meals for optimal digestion and condition.', image: '/images/royal-punnakku.png' },
+              { num: 'V', title: 'Uzhavan Thavitu Vagaigal - nutrition', desc: 'Essential daily nutrition and dietary fiber for livestock.', image: '/images/royal-nutrition.png' },
+              { num: 'VI', title: 'Cereals and Grains Category', desc: 'Complete mix of essential grains for optimal nutrition.', image: '/images/royal-cereals.jpg' },
+              { num: 'VII', title: 'Uzhavan Thusi Vagaigal', desc: 'Traditional multi-bran mix for maximum digestive aid.', image: '/images/royal-thoosu-vagaigal.jpg' },
+              { num: 'VIII', title: 'Uzhavan Vittha Mattum Theevana Vagaigal', desc: 'Balanced feed pellets and seed mixes for all stages.', image: '/images/royal-seed-theevanam.png' },
+              { num: 'IX', title: 'Hen and Pigeon Supplements', desc: 'Calcium, grit, and tonics for optimal animal health.', image: '/images/hen-pigeon-supplement.png' }
             ].map((item, i) => (
               <Link to={`/shop?category=${encodeURIComponent(item.title)}`} key={item.num} className="group flex flex-col items-center text-center">
                 <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
@@ -205,12 +227,12 @@ export default function Home() {
       {/* New Launches — Coverflow Carousel */}
       {!loading && newLaunches.length > 0 && (
         <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
-          {/* Premium Blurred Background */}
+          {/* Farm Field Background */}
           <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
-            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url("/farm-field-bg.jpg")' }}
           ></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f0e8]/40 via-[#1a3a1a]/20 to-[#f5f0e8]/40"></div>
 
           <div className="container mx-auto px-4 md:px-12 relative z-10">
             <div className="flex items-end justify-between mb-12">

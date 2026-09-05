@@ -67,60 +67,52 @@ export default function Header() {
 
                   {/* Col 1 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to="/shop?category=Traditional%20Rice" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Traditional Rice</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Royal Cattle Feed')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Royal Cattle Feed</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to="/shop?category=Ready%20to%20Cook" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Ready to Cook & Flour</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Royal Hen Feed / Royal Kozhi Theevanam*</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to="/shop?category=Combo%20Offer" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Combo Offer</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Royal Birds Food')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Royal Birds Food</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
                   </div>
 
                   {/* Col 2 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to="/shop?category=Millets" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Millets</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Royal oil-cake(Punnaku)')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Royal oil-cake(Punnaku)</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to="/shop?category=Health%20Mix" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Health Mix & Malt</span>
-                      <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
-                    </Link>
-                    <Link to="/shop?category=Noodles" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Noodles & Vermicelli</span>
-                      <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
-                    </Link>
-                    <Link to="/shop?category=Grocery" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Grocery & Pulses</span>
-                      <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
-                    </Link>
-                    <Link to="/shop?category=Vadagam" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Vadagam & Vathal</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thavitu Vagaigal - nutrition')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Uzhavan Thavitu Vagaigal - nutrition</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
                   </div>
 
                   {/* Col 3 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to="/shop?category=Sweet" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Sweet & Snacks</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Cereals and Grains Category')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Cereals and Grains Category</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to="/shop?category=Sugar" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Traditional Sugar</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thusi Vagaigal')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Uzhavan Thusi Vagaigal</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
                   </div>
 
                   {/* Col 4 */}
                   <div className="flex flex-col gap-5">
-                    <Link to="/shop?category=Oils%20%26%20Ghee" className="flex justify-between items-start group/item">
-                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Oils & Ghee</span>
+                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Vittha Mattum Theevana Vagaigal')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Uzhavan Vittha Mattum Theevana Vagaigal</span>
+                      <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
+                    </Link>
+                    <Link to={`/shop?category=${encodeURIComponent('Hen and Pigeon Supplements')}`} className="flex justify-between items-start group/item">
+                      <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#1B4332] leading-tight pr-2 capitalize">Hen and Pigeon Supplements</span>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
                   </div>

@@ -19,6 +19,8 @@ import TrackOrder from './pages/TrackOrder';
 import Policies from './pages/Policies';
 import { CartProvider } from './context/CartContext';
 
+import SiteLoader from './components/SiteLoader';
+
 // Scroll to top on route change
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -31,6 +33,7 @@ function ScrollToTop() {
 export default function App() {
   return (
     <CartProvider>
+      <SiteLoader />
       <BrowserRouter>
         <ScrollToTop />
         <div className="flex flex-col min-h-screen text-[#1A1A1A]">

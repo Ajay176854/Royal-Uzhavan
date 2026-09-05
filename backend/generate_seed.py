@@ -3,146 +3,144 @@ import re
 
 categories = [
     ("Royal Cattle Feed", "/images/cattle-food.png"),
-    ("Royal Hen Feed", "/images/hen-food.png"),
+    ("Royal Hen Feed / Royal Kozhi Theevanam*", "/images/hen-food.png"),
     ("Royal Birds Food", "/images/birds-food.png"),
-    ("Oil Cake (Punnakku)", "/images/royal-punnakku.png"),
-    ("Farmer's Bran Types", "/images/royal-nutrition.png"),
-    ("Oil Seeds & Millets", "/images/royal-grains.png"),
-    ("Cereals, Millets & Grains", "/images/royal-cereals.jpg"),
-    ("Cattle Feed & Seed Cake", "/images/royal-seed-theevanam.png"),
-    ("Pulses Husk & Feed Waste", "/images/royal-thoosu-vagaigal.jpg"),
-    ("Pigeon Health Supplements", "/images/hen-pigeon-supplement.png")
+    ("Royal oil-cake(Punnaku)", "/images/royal-punnakku.png"),
+    ("Uzhavan Thavitu Vagaigal - nutrition", "/images/royal-nutrition.png"),
+    ("Cereals and Grains Category", "/images/royal-cereals.jpg"),
+    ("Uzhavan Thusi Vagaigal", "/images/royal-thoosu-vagaigal.jpg"),
+    ("Uzhavan Vittha Mattum Theevana Vagaigal", "/images/royal-seed-theevanam.png"),
+    ("Hen and Pigeon Supplements", "/images/hen-pigeon-supplement.png")
 ]
 
 products = [
-    # Royal Cattle Feed
-    ("Royal Kalappu Theevanam (50kg)", "Royal Cattle Feed", "Cattle", 1280.00, "/images/cattle-food.png"),
-    ("Royal Standard Mix Theevanam (45kg)", "Royal Cattle Feed", "Cattle", 1380.00, "/images/cattle-food.png"),
-    ("Royal Gold Kalappu Theevanam (45kg)", "Royal Cattle Feed", "Cattle", 1450.00, "/images/cattle-food.png"),
-    ("Royal Arisitham Mix (50kg)", "Royal Cattle Feed", "Cattle", 2430.00, "/images/cattle-food.png"),
-    ("Royal Kandra Weight gain (50kg)", "Royal Cattle Feed", "Cattle", 1550.00, "/images/cattle-food.png"),
-    ("Royal Makka Cholam Maavu", "Royal Cattle Feed", "Cattle", 250.00, "/images/cattle-food.png"),
-    ("Royal Makka Cholam Kurunai", "Royal Cattle Feed", "Cattle", 220.00, "/images/cattle-food.png"),
-    
-    # Royal Hen Feed
-    ("Royal Pre Starter Feed", "Royal Hen Feed", "Poultry", 450.00, "/images/hen-food.png"),
-    ("Royal Starter Feed", "Royal Hen Feed", "Poultry", 480.00, "/images/hen-food.png"),
-    ("Royal Grower Feed", "Royal Hen Feed", "Poultry", 520.00, "/images/hen-food.png"),
-    ("Royal Layer Feed", "Royal Hen Feed", "Poultry", 550.00, "/images/hen-food.png"),
-    ("Royal Hen Crumble Feed", "Royal Hen Feed", "Poultry", 600.00, "/images/hen-food.png"),
-    ("Royal Chicken Bran", "Royal Hen Feed", "Poultry", 350.00, "/images/hen-food.png"),
-    ("Royal High-Quality Broken Maize Grits", "Royal Hen Feed", "Poultry", 400.00, "/images/hen-food.png"),
-    
-    # Royal Birds Food
-    ("Royal Pigeon SF (25kg)", "Royal Birds Food", "Birds", 1280.00, "/images/birds-food.png"),
-    ("Royal Pigeon PT (25kg)", "Royal Birds Food", "Birds", 1620.00, "/images/birds-food.png"),
-    ("Royal Budgies & Finches Mix (25kg)", "Royal Birds Food", "Birds", 1750.00, "/images/birds-food.png"),
-    ("Royal African & Cockatiel Mix (25kg)", "Royal Birds Food", "Birds", 1800.00, "/images/birds-food.png"),
-    
-    # Oil Cake
-    ("Sunflower Oil Cake", "Oil Cake (Punnakku)", "Livestock", 300.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Lekka Extract Oil Cake", "Oil Cake (Punnakku)", "Livestock", 320.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Royal Multi Mix Oil Cake 50kg", "Oil Cake (Punnakku)", "Livestock", 1500.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Groundnut Oil Cake", "Oil Cake (Punnakku)", "Livestock", 400.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Groundnut Oil Cake Powder", "Oil Cake (Punnakku)", "Livestock", 420.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Mixed Sesame Oil Cake", "Oil Cake (Punnakku)", "Livestock", 350.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Sesame Oil Cake Powder", "Oil Cake (Punnakku)", "Livestock", 370.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Coconut Oil Cake", "Oil Cake (Punnakku)", "Livestock", 380.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Mustard Oil Cake", "Oil Cake (Punnakku)", "Livestock", 310.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Soya Oil Cake", "Oil Cake (Punnakku)", "Livestock", 450.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    ("Cotton Seed Oil Cake", "Oil Cake (Punnakku)", "Livestock", 290.00, "https://images.unsplash.com/photo-1620588628028-0916964a2754?auto=format&fit=crop&q=80&w=400"),
-    
-    # Farmer's Bran Types
-    ("Wheat Bran", "Farmer's Bran Types", "Livestock", 200.00, "https://images.unsplash.com/photo-1574316071802-0d684efa7ab5?auto=format&fit=crop&q=80&w=400"),
-    ("Rice Bran", "Farmer's Bran Types", "Livestock", 180.00, "https://images.unsplash.com/photo-1574316071802-0d684efa7ab5?auto=format&fit=crop&q=80&w=400"),
-    ("Corn Bran Mix", "Farmer's Bran Types", "Livestock", 220.00, "https://images.unsplash.com/photo-1574316071802-0d684efa7ab5?auto=format&fit=crop&q=80&w=400"),
-    ("Sorghum Bran", "Farmer's Bran Types", "Livestock", 210.00, "https://images.unsplash.com/photo-1574316071802-0d684efa7ab5?auto=format&fit=crop&q=80&w=400"),
-    ("Royal Coarse Bran", "Farmer's Bran Types", "Livestock", 250.00, "https://images.unsplash.com/photo-1574316071802-0d684efa7ab5?auto=format&fit=crop&q=80&w=400"),
-    
-    # Oil Seeds & Millets
-    ("Austrian Peas", "Oil Seeds & Millets", "Birds", 150.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("White Millets", "Oil Seeds & Millets", "Birds", 120.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Red Millets", "Oil Seeds & Millets", "Birds", 130.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Japanese Millet", "Oil Seeds & Millets", "Birds", 140.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Foxtail Millet", "Oil Seeds & Millets", "Birds", 110.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Yellow Millet", "Oil Seeds & Millets", "Birds", 125.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Cardi Seed", "Oil Seeds & Millets", "Birds", 180.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Small Black Sunflower", "Oil Seeds & Millets", "Birds", 160.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("White Sunflower", "Oil Seeds & Millets", "Birds", 170.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Canary Seed", "Oil Seeds & Millets", "Birds", 200.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Hemp Seed", "Oil Seeds & Millets", "Birds", 220.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Sesame Seed", "Oil Seeds & Millets", "Birds", 150.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Niger Seed", "Oil Seeds & Millets", "Birds", 190.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Rapeseed", "Oil Seeds & Millets", "Birds", 140.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Mustard Seed", "Oil Seeds & Millets", "Birds", 130.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Buckwheat", "Oil Seeds & Millets", "Birds", 160.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Quinoa", "Oil Seeds & Millets", "Birds", 250.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Chia Seed", "Oil Seeds & Millets", "Birds", 280.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Pumpkin Seed", "Oil Seeds & Millets", "Birds", 300.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Flax Seed", "Oil Seeds & Millets", "Birds", 150.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Vetch Seed", "Oil Seeds & Millets", "Birds", 140.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Maple Peas", "Oil Seeds & Millets", "Birds", 160.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Black Sunflower Seeds", "Oil Seeds & Millets", "Birds", 170.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("White Sunflower Seeds", "Oil Seeds & Millets", "Birds", 180.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Sorghum Millet", "Oil Seeds & Millets", "Birds", 110.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Field Bean", "Oil Seeds & Millets", "Birds", 120.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Little Millet", "Oil Seeds & Millets", "Birds", 130.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Kodo Millet", "Oil Seeds & Millets", "Birds", 125.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Barnyard Millet", "Oil Seeds & Millets", "Birds", 135.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Proso Millet", "Oil Seeds & Millets", "Birds", 145.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Linseed & Groundnut Kernels", "Oil Seeds & Millets", "Birds", 190.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    ("Oats", "Oil Seeds & Millets", "Birds", 110.00, "https://images.unsplash.com/photo-1596489370605-64906f362ef7?auto=format&fit=crop&q=80&w=400"),
-    
-    # Cereals, Millets & Grains
-    ("Green Gram", "Cereals, Millets & Grains", "Livestock", 120.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Black Chickpea", "Cereals, Millets & Grains", "Livestock", 130.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("White Chickpea", "Cereals, Millets & Grains", "Livestock", 140.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Paddy", "Cereals, Millets & Grains", "Livestock", 90.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("White Peas", "Cereals, Millets & Grains", "Livestock", 110.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Green Peas", "Cereals, Millets & Grains", "Livestock", 120.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Red Rice", "Cereals, Millets & Grains", "Livestock", 135.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Black Horse Gram", "Cereals, Millets & Grains", "Livestock", 145.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("White Horse Gram", "Cereals, Millets & Grains", "Livestock", 150.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Barley", "Cereals, Millets & Grains", "Livestock", 160.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Black Wheat", "Cereals, Millets & Grains", "Livestock", 170.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Maize", "Cereals, Millets & Grains", "Livestock", 90.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Corn Grits", "Cereals, Millets & Grains", "Livestock", 95.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Maize Flour", "Cereals, Millets & Grains", "Livestock", 100.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("White Sorghum", "Cereals, Millets & Grains", "Livestock", 110.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Red Sorghum", "Cereals, Millets & Grains", "Livestock", 115.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Pearl Millet", "Cereals, Millets & Grains", "Livestock", 120.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Finger Millet", "Cereals, Millets & Grains", "Livestock", 125.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Wheat", "Cereals, Millets & Grains", "Livestock", 130.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Roasted Gram", "Cereals, Millets & Grains", "Livestock", 140.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
-    ("Groundnut", "Cereals, Millets & Grains", "Livestock", 150.00, "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400"),
+    # 1.Royal Cattle Feed
+    ("Royal Kalappu", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Standard Mix", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Gold Kalappu Theevanam", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Arisitham", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Kandra Weight gain", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Makka Cholam Maavu", "Royal Cattle Feed", "Cattle", 1000.00, ""),
+    ("Royal Makka Cholam Kurunai", "Royal Cattle Feed", "Cattle", 1000.00, ""),
 
-    # Cattle Feed & Seed Cake
-    ("Tamarind Seed Broken", "Cattle Feed & Seed Cake", "Livestock", 180.00, "/images/cattle-food.png"),
-    ("Tamarind Seed Powder", "Cattle Feed & Seed Cake", "Livestock", 190.00, "/images/cattle-food.png"),
-    ("Cotton Seed Cake", "Cattle Feed & Seed Cake", "Livestock", 250.00, "/images/cattle-food.png"),
-    ("Desi Cotton Seed", "Cattle Feed & Seed Cake", "Livestock", 260.00, "/images/cattle-food.png"),
-    ("Black Cotton Seed", "Cattle Feed & Seed Cake", "Livestock", 270.00, "/images/cattle-food.png"),
-    
-    # Pulses Husk & Feed Waste
-    ("Black Gram Husk Powder", "Pulses Husk & Feed Waste", "Livestock", 100.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Black Gram Broken", "Pulses Husk & Feed Waste", "Livestock", 110.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Cowpea Husk Powder", "Pulses Husk & Feed Waste", "Livestock", 90.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Black Green Gram Waste", "Pulses Husk & Feed Waste", "Livestock", 95.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Dried Peas Husk", "Pulses Husk & Feed Waste", "Livestock", 85.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Toor Dal Husk", "Pulses Husk & Feed Waste", "Livestock", 80.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Masoor Dal Husk", "Pulses Husk & Feed Waste", "Livestock", 80.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Millet Husk Powder", "Pulses Husk & Feed Waste", "Livestock", 70.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
-    ("Mixed Grains Husk Powder", "Pulses Husk & Feed Waste", "Livestock", 75.00, "https://images.unsplash.com/photo-1647427022241-11c52dcd0000?auto=format&fit=crop&q=80&w=400"),
+    # 2.Royal Hen Feed / Royal Kozhi Theevanam*
+    ("Royal Pre Stater", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal Stater", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal Grower", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal Layer", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal Hen Crumble", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal கோழி தவிடு", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
+    ("Royal பக்கா சோளம் குருணை", "Royal Hen Feed / Royal Kozhi Theevanam*", "Poultry", 1000.00, ""),
 
-    # Pigeon Health Supplements
-    ("Pigeon Grit", "Pigeon Health Supplements", "Birds", 150.00, "/images/birds-food.png"),
-    ("Calcium Tonic", "Pigeon Health Supplements", "Birds", 180.00, "/images/birds-food.png"),
-    ("Calcium Powder", "Pigeon Health Supplements", "Birds", 160.00, "/images/birds-food.png"),
-    ("Mineral Mixture", "Pigeon Health Supplements", "Birds", 220.00, "/images/birds-food.png"),
-    ("Rock Salt (2kg)", "Pigeon Health Supplements", "Birds", 80.00, "/images/birds-food.png"),
-    ("Liver Tonic", "Pigeon Health Supplements", "Birds", 250.00, "/images/birds-food.png"),
-    ("Theeni Juice / Energy Tonic", "Pigeon Health Supplements", "Birds", 200.00, "/images/birds-food.png"),
-    ("Cuttlefish Bone", "Pigeon Health Supplements", "Birds", 300.00, "/images/birds-food.png")
+    # 3.Royal Birds Food
+    ("Royal Pigeon SF", "Royal Birds Food", "Birds", 1000.00, ""),
+    ("Royal Pigeon PT", "Royal Birds Food", "Birds", 1000.00, ""),
+    ("Royal Budgies & Finches Mix", "Royal Birds Food", "Birds", 1000.00, ""),
+    ("Royal African & Cockatiel Mix", "Royal Birds Food", "Birds", 1000.00, ""),
+
+    # 4.Royal oil-cake(Punnaku)
+    ("Royal Multi Mix Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Groundnut Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Groundnut Oil Cake Powder", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Mixed Sesame Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Sesame Oil Cake Powder", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Coconut Oil Cake / Copra Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Mustard Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Soya Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Mustard / Kadu Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+    ("Cotton Seed Oil Cake", "Royal oil-cake(Punnaku)", "Livestock", 1000.00, ""),
+
+    # 5.Uzhavan Thavitu Vagaigal - nutrition
+    ("Wheat Bran(kothambu tavudu)", "Uzhavan Thavitu Vagaigal - nutrition", "Livestock", 1000.00, ""),
+    ("Rice Bran(arisi tavudu)", "Uzhavan Thavitu Vagaigal - nutrition", "Livestock", 1000.00, ""),
+    ("Corn Bran", "Uzhavan Thavitu Vagaigal - nutrition", "Livestock", 1000.00, ""),
+    ("Sorghum Bran(singaariya tavudu)", "Uzhavan Thavitu Vagaigal - nutrition", "Livestock", 1000.00, ""),
+    ("Coarse Bran", "Uzhavan Thavitu Vagaigal - nutrition", "Livestock", 1000.00, ""),
+
+    # 6.Cereals and Grains Category
+    ("Maize / Corn", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Broken Maize / Corn Grits", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Maize Flour / Corn Flour", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Sorghum / White Jowar", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Red Sorghum / Red Jowar", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Pearl Millet / Bajra", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Finger Millet / Ragi", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Foxtail Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Wheat", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Roasted Gram / Puffed Chickpea", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Groundnut / Peanut", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Green Gram / Moong Dal", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Black Chickpea / Kala Chana", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Chickpea / Kabuli Chana", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Paddy / Unpolished Rice Grain", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Peas", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Green Peas", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Red Rice", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Black Horse Gram / Black Cowpea", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Horse Gram / White Cowpea", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Barley", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Black Wheat", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Black Sunflower Seeds", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Striped / White Sunflower Seeds", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Sorghum Millet - Small Grain", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Flat Bean / Field Bean", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Little Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Kodo Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Barnyard Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Proso Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Linseed & Groundnut Kernels", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Oats", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Sesame Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Niger Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Rapeseed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Mustard Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Buckwheat", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Quinoa", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Chia Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Pumpkin Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Flax Seed / Lin Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Vetch Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Maple Peas", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Austrian Peas", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Millets", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Red Millets", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Japanese Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Yellow Millet", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Cardi Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Small Black Sunflower", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("White Sunflower", "Cereals and Grains Category", "Birds", 1000.00, ""),
+    ("Canary Seed", "Cereals and Grains Category", "Birds", 1000.00, ""),
+
+    # 7.Uzhavan Thusi Vagaigal
+    ("Black Gram Husk Powder", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Black Gram Small Broken / Powder", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Black Gram Broken & Waste Mix", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Cowpea / Lobia Husk Powder", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Black Green Gram Broken Waste", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Black Karamani / Black Cowpea Husk", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Dried Peas Husk", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Toor Dal / Pigeon Pea Husk", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Masoor Dal / Lentil Husk", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Millet Husk Powder", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+    ("Mixed Grains Husk Powder", "Uzhavan Thusi Vagaigal", "Livestock", 1000.00, ""),
+
+    # 8.Uzhavan Vittha Mattum Theevana Vagaigal
+    ("Tamarind Seed Broken / Crush", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+    ("Tamarind Seed Broken", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+    ("Tamarind Seed Powder", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+    ("Cotton Seed Cake", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+    ("Country Cotton Seed / Desi Cotton Seed", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+    ("Black Cotton Seed", "Uzhavan Vittha Mattum Theevana Vagaigal", "Livestock", 1000.00, ""),
+
+    # 9.Hen and Pigeon Supplements
+    ("Pigeon Grit", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Calcium Tonic", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Calcium Powder", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Mineral Mixture", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Salt", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Liver Tonic", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Kadal chippi, powder", "Hen and Pigeon Supplements", "Birds", 1000.00, ""),
+    ("Kanava thoodu", "Hen and Pigeon Supplements", "Birds", 1000.00, "")
 ]
 
 def slugify(name):
@@ -183,10 +181,12 @@ for name, category, animal_type, price, _ in products:
     slug = slugify(name)
     name_esc = name.replace("'", "''")
     cat_esc = category.replace("'", "''")
-    prod_inserts.append(f"  ('{slug}', '{name_esc}', (SELECT id FROM categories WHERE name = '{cat_esc}'), '{animal_type}', {price}, (SELECT image FROM categories WHERE name = '{cat_esc}'), ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true)")
+    # Fetch category image to use as fallback product image
+    cat_img = next((img for cat, img in categories if cat == category), "/images/cattle-food.png")
+    prod_inserts.append(f"  ('{slug}', '{name_esc}', (SELECT id FROM categories WHERE name = '{cat_esc}'), '{animal_type}', {price}, '{cat_img}', ARRAY['Royal Uzhavan Quality'], ARRAY[1, 5, 25], true)")
 
 sql += ",\n".join(prod_inserts) + "\nON CONFLICT (slug) DO NOTHING;\n"
 
-with open("seed.sql", "w") as f:
+with open("seed.sql", "w", encoding='utf-8') as f:
     f.write(sql)
 print("seed.sql generated successfully!")
