@@ -24,6 +24,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './contexts/WishlistContext';
 import AuthDrawer from './components/AuthDrawer';
+import AnimalNeedPage from './pages/AnimalNeedPage';
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -62,6 +63,10 @@ export default function App() {
                 <Route path="/refund-policy" element={<RefundPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/cow" element={<AnimalNeedPage />} />
+                <Route path="/pigeon" element={<AnimalNeedPage />} />
+                <Route path="/hen" element={<AnimalNeedPage />} />
+                <Route path="/pig" element={<AnimalNeedPage />} />
               </Routes>
             </main>
 
