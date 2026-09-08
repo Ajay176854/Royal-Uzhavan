@@ -37,7 +37,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-gray-500 text-sm leading-relaxed mb-5 sm:mb-6 max-w-md lg:max-w-none">
-              Farm fresh, grow with nature. Bringing you 100% natural, traditional rice, cold-pressed oils, and fresh greens directly from our farms.
+              Premium quality animal feeds and nutritional supplements. Bringing you 100% natural, traditional feeds directly from our farms.
             </p>
 
             <div className="flex gap-3">
@@ -72,51 +72,41 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/shop"
+                  to="/shop?category=Royal%20Cattle%20Feed"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
-                  Shop All
+                  Cattle Feeds
                 </Link>
               </li>
 
               <li>
                 <Link
-                  to="/shop?category=Traditional%20Rice"
+                  to="/shop?category=Royal%20Hen%20Feed"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
-                  Traditional Rice
+                  Poultry Feeds
                 </Link>
               </li>
 
               <li>
                 <Link
-                  to="/shop?category=Cold%20Pressed%20Edible%20Oil"
+                  to="/shop?category=Royal%20Birds%20Food"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
-                  Cold Pressed Oils
+                  Pigeon & Birds Foods
                 </Link>
               </li>
 
               <li>
                 <Link
-                  to="/shop?category=Vegetables"
+                  to="/shop?category=Hen%20and%20Pigeon%20Supplements"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
-                  Fresh Keerai & Veggies
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/shop?category=Farm%20Pantry"
-                  className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
-                >
-                  <ArrowRight className="w-3 h-3 shrink-0" />
-                  Farm Pantry
+                  Nutritional Supplements
                 </Link>
               </li>
             </ul>

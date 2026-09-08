@@ -74,7 +74,7 @@ export default function App() {
               <CartDrawer />
               <AuthDrawer />
               <a
-                href="https://wa.me/919159944366"
+                href="https://wa.me/918072864890"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="fixed bottom-6 right-6 hidden md:flex w-12 h-12 bg-[#25D366] rounded-full items-center justify-center shadow-lg cursor-pointer text-white hover:scale-110 transition-transform z-50"

@@ -194,25 +194,28 @@ router.put("/orders/:id/status", async (req, res) => {
   }
 });
 
-// DELETE /api/admin/orders/:id — delete/cancel an order
+// DELETE /api/admin/orders/:id — soft-delete (cancel) an order
+// Orders are financial records and should never be permanently deleted
 router.delete("/orders/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await query(
-      `DELETE FROM orders WHERE id = $1 RETURNING id`,
+      `UPDATE orders SET status = 'cancelled'
+       WHERE id = $1 AND status != 'cancelled'
+       RETURNING id, status`,
       [id]
     );
 
     if (result.rows.length === 0) {
-      res.status(404).json({ error: "Order not found" });
+      res.status(404).json({ error: "Order not found or already cancelled" });
       return;
     }
 
-    res.json({ message: "Order deleted", orderId: result.rows[0].id });
+    res.json({ message: "Order cancelled", orderId: result.rows[0].id });
   } catch (error) {
-    console.error("Admin order delete error:", error);
-    res.status(500).json({ error: "Failed to delete order" });
+    console.error("Admin order cancel error:", error);
+    res.status(500).json({ error: "Failed to cancel order" });
   }
 });
 

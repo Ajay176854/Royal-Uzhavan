@@ -15,7 +15,7 @@ export default function MobileNav() {
     { name: 'Shop', path: '/shop', icon: ShoppingBag },
     { 
       name: 'WhatsApp', 
-      path: 'https://wa.me/919159944366', 
+      path: 'https://wa.me/918072864890', 
       icon: MessageCircle,
       external: true 
     },

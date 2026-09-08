@@ -103,10 +103,7 @@ async function callMetaAPI(
   }
 
   // Normalize phone: ensure country code, remove +, spaces, dashes
-  // const phone = to.replace(/[\s\-\+]/g, "").replace(/^0/, "91");
-  
-  // OVERRIDE FOR TESTING: Meta test accounts can only send to verified numbers
-  const phone = "917092466027";
+  const phone = to.replace(/[\s\-\+]/g, "").replace(/^0/, "91");
 
   const url = `https://graph.facebook.com/${META_CONFIG.apiVersion}/${META_CONFIG.phoneNumberId}/messages`;
 

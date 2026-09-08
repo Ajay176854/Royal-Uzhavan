@@ -16,7 +16,13 @@ declare global {
   }
 }
 
-const JWT_SECRET = process.env.JWT_SECRET || "royal-uzhavan-dev-secret";
+// ─── JWT Secret — MUST be set in production ─────────────────────
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL: JWT_SECRET environment variable is not set.");
+  console.error("       Set it in your .env or hosting provider.");
+  process.exit(1);
+}
+const JWT_SECRET: string = process.env.JWT_SECRET;
 
 /**
  * Generate a JWT token for a user.
@@ -43,7 +49,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as AuthUser;
     req.user = decoded;
     next();
   } catch {
@@ -61,7 +67,7 @@ export function optionalAuth(req: Request, _res: Response, next: NextFunction): 
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as AuthUser;
+      const decoded = jwt.verify(token, JWT_SECRET) as unknown as AuthUser;
       req.user = decoded;
     } catch {
       // Invalid token — proceed as guest
@@ -80,4 +86,29 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction): v
     return;
   }
   next();
+}
+
+// ─── Validation Helpers ─────────────────────────────────────────
+
+/**
+ * Validate email format.
+ */
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email) && email.length <= 200;
+}
+
+/**
+ * Validate Indian phone number format (10 digits, optionally prefixed with +91 or 91).
+ */
+export function isValidPhone(phone: string): boolean {
+  const cleaned = phone.replace(/[\s\-\+]/g, "");
+  return /^(91)?[6-9]\d{9}$/.test(cleaned);
+}
+
+/**
+ * Sanitize a string — trim and limit length.
+ */
+export function sanitizeString(value: string, maxLength: number = 200): string {
+  return value.trim().slice(0, maxLength);
 }

@@ -5,7 +5,7 @@ import ProductCard from '../components/ProductCard';
 import { cn } from '../lib/utils';
 
 export default function Shop() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category');
   const searchQuery = searchParams.get('search'); // Use 'search' as per header query string
 
@@ -38,7 +38,7 @@ export default function Shop() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        let url = `http://localhost:8000/api/products?sort=${sortOption}&limit=50`;
+        let url = `http://localhost:8000/api/products?sort=${sortOption}&limit=200`;
         if (activeCategory !== 'All') {
           url += `&category=${encodeURIComponent(activeCategory)}`;
         }
@@ -92,7 +92,10 @@ export default function Shop() {
               <ul className="space-y-3">
                 <li>
                   <button 
-                    onClick={() => setActiveCategory('All')}
+                    onClick={() => {
+                      setActiveCategory('All');
+                      setSearchParams({});
+                    }}
                     className={cn("flex items-center gap-2 text-sm transition-colors", activeCategory === 'All' ? "font-bold text-[#0B4D26]" : "text-gray-600 hover:text-[#0B4D26]")}
                   >
                     <div className={cn("w-4 h-4 rounded border flex items-center justify-center", activeCategory === 'All' ? "border-[#0B4D26] bg-[#0B4D26]" : "border-gray-300")}>
@@ -104,7 +107,10 @@ export default function Shop() {
                 {categories.map(cat => (
                   <li key={cat.id}>
                     <button 
-                      onClick={() => setActiveCategory(cat.name)}
+                      onClick={() => {
+                        setActiveCategory(cat.name);
+                        setSearchParams({}); // optional, but good for resetting search if they click a category manually
+                      }}
                       className={cn("flex items-center gap-2 text-sm transition-colors text-left", activeCategory === cat.name ? "font-bold text-[#0B4D26]" : "text-gray-600 hover:text-[#0B4D26]")}
                     >
                       <div className={cn("w-4 h-4 rounded border flex items-center justify-center shrink-0", activeCategory === cat.name ? "border-[#0B4D26] bg-[#0B4D26]" : "border-gray-300")}>
@@ -174,7 +180,13 @@ export default function Shop() {
                   <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
                     <p className="text-gray-500">Try adjusting your filters or search query.</p>
-                    <button onClick={() => {setActiveCategory('All'); window.history.replaceState({}, '', '/shop')}} className="mt-6 text-[#0B4D26] font-bold underline">
+                    <button 
+                      onClick={() => {
+                        setActiveCategory('All'); 
+                        setSearchParams({});
+                      }} 
+                      className="mt-6 text-[#0B4D26] font-bold underline"
+                    >
                       Clear all filters
                     </button>
                   </div>

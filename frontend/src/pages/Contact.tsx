@@ -53,7 +53,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1 text-lg">Main Office</h3>
-                  <p className="text-gray-600">123 Farm Road, Uzhavan District,<br/>Tamil Nadu 600001, India</p>
+                  <p className="text-gray-600">Kuruthencode,<br/>Kanniyakumari District,<br/>Tamil Nadu, India</p>
                 </div>
               </div>
             </div>
@@ -62,34 +62,55 @@ export default function Contact() {
           {/* Form */}
           <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100">
             <h2 className="text-2xl font-playfair font-bold text-gray-900 mb-6">Send us a Message</h2>
-            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert("Form submission disabled in demo."); }}>
+            <form className="space-y-6" onSubmit={(e) => { 
+                e.preventDefault(); 
+                const formData = new FormData(e.currentTarget);
+                const name = formData.get('name');
+                const phone = formData.get('phone');
+                const email = formData.get('email');
+                const subject = formData.get('subject');
+                const message = formData.get('message');
+                
+                const waMessage = `*New Contact Message*
+*Name:* ${name}
+*Phone:* ${phone}
+*Email:* ${email || 'N/A'}
+*Subject:* ${subject}
+
+*Message:*
+${message}`;
+                
+                const waUrl = `https://wa.me/918072864890?text=${encodeURIComponent(waMessage)}`;
+                window.open(waUrl, '_blank');
+                e.currentTarget.reset();
+              }}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
-                  <input type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" required />
+                  <input type="text" name="name" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" required />
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
-                  <input type="tel" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" required />
+                  <input type="tel" name="phone" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" required />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Email Address (Optional)</label>
-                <input type="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" />
+                <input type="email" name="email" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Subject</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors cursor-pointer">
-                  <option>Bulk Order Inquiry</option>
-                  <option>Product Information</option>
-                  <option>Order Tracking</option>
-                  <option>Farm Consultation</option>
-                  <option>Other</option>
+                <select name="subject" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors cursor-pointer">
+                  <option value="Bulk Order Inquiry">Bulk Order Inquiry</option>
+                  <option value="Product Information">Product Information</option>
+                  <option value="Order Tracking">Order Tracking</option>
+                  <option value="Farm Consultation">Farm Consultation</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
-                <textarea rows={4} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors resize-none" required></textarea>
+                <textarea name="message" rows={4} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26] bg-gray-50 focus:bg-white transition-colors resize-none" required></textarea>
               </div>
               <button type="submit" className="w-full bg-[#0B4D26] hover:bg-[#07361a] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-md text-lg">
                 <Send className="w-5 h-5" /> Send Message

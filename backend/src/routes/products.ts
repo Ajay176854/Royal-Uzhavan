@@ -91,7 +91,7 @@ router.get("/", async (req, res) => {
 
     // Pagination
     const pageNum = Math.max(1, parseInt(page as string));
-    const limitNum = Math.min(50, Math.max(1, parseInt(limit as string)));
+    const limitNum = Math.min(200, Math.max(1, parseInt(limit as string)));
     const offset = (pageNum - 1) * limitNum;
 
     // Count total

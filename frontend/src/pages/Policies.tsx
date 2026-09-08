@@ -21,10 +21,6 @@ export default function Policies() {
                 <Phone className="w-5 h-5" />
                 Inquire for Bulk Orders
               </Link>
-              <Link to="/shop" className="inline-flex items-center justify-center gap-2 bg-gray-100 text-gray-800 px-8 py-3.5 rounded-full font-bold hover:bg-gray-200 transition-colors">
-                <Truck className="w-5 h-5" />
-                Continue Shopping
-              </Link>
             </div>
           </div>
         </div>

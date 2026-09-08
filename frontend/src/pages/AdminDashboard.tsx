@@ -4,26 +4,31 @@ import { useAuth } from '../contexts/AuthContext';
 import {
   LayoutDashboard,
   Package,
-  MessageCircle,
   LogOut,
   TrendingUp,
   Users,
-  AlertCircle,
-  Search,
-  CheckCircle,
   Clock,
-  XCircle,
-  Truck
+  Plus,
+  Edit,
+  Trash2,
+  X
 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const { user, isLoggedIn, isLoading, logout } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'feedbacks'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products'>('dashboard');
 
   const [stats, setStats] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
-  const [feedbacks, setFeedbacks] = useState<any[]>([]);
+  
+  // Product State
+  const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
+  const [isSavingProduct, setIsSavingProduct] = useState(false);
+
   const [isFetching, setIsFetching] = useState(true);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
@@ -52,11 +57,13 @@ export default function AdminDashboard() {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) setOrders((await res.json()).orders);
-      } else if (tab === 'feedbacks') {
-        const res = await fetch(`${API_URL}/admin/feedbacks`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.ok) setFeedbacks((await res.json()).feedbacks);
+      } else if (tab === 'products') {
+        const [prodRes, catRes] = await Promise.all([
+          fetch(`${API_URL}/products?limit=1000`, { headers: { 'Authorization': `Bearer ${token}` } }),
+          fetch(`${API_URL}/products/categories`, { headers: { 'Authorization': `Bearer ${token}` } })
+        ]);
+        if (prodRes.ok) setProducts((await prodRes.json()).products);
+        if (catRes.ok) setCategories((await catRes.json()).categories);
       }
     } catch (error) {
       console.error("Failed to fetch admin data", error);
@@ -86,16 +93,71 @@ export default function AdminDashboard() {
     }
   };
 
-  const markFeedbackAsRead = async (feedbackId: string) => {
+  const handleSaveProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingProduct(true);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const productData = Object.fromEntries(formData.entries());
+    
+    // Parse complex fields
+    const payload = {
+      ...productData,
+      price: parseFloat(productData.price as string),
+      original_price: productData.original_price ? parseFloat(productData.original_price as string) : null,
+      discount: parseInt(productData.discount as string) || 0,
+      tags: (productData.tags as string).split(',').map(s => s.trim()).filter(Boolean),
+      variants: (productData.variants as string).split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n)),
+      in_stock: productData.in_stock === 'true',
+    };
+
+    const token = localStorage.getItem('token');
+    const url = editingProduct 
+      ? `${API_URL}/admin/products/${editingProduct.id}`
+      : `${API_URL}/admin/products`;
+    const method = editingProduct ? 'PUT' : 'POST';
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (res.ok) {
+        setIsProductModalOpen(false);
+        setEditingProduct(null);
+        fetchData('products');
+      } else {
+        const errorData = await res.json();
+        alert(`Error saving product: ${errorData.error}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save product');
+    } finally {
+      setIsSavingProduct(false);
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`${API_URL}/admin/feedbacks/${feedbackId}/read`, {
-        method: 'PUT',
+      const res = await fetch(`${API_URL}/admin/products/${id}`, {
+        method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (res.ok) fetchData('feedbacks');
-    } catch (error) {
-      console.error("Failed to mark as read", error);
+      if (res.ok) {
+        fetchData('products');
+      } else {
+        alert('Failed to delete product');
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -147,10 +209,10 @@ export default function AdminDashboard() {
                   <Package className="w-5 h-5" /> Orders Management
                 </button>
                 <button
-                  onClick={() => setActiveTab('feedbacks')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'feedbacks' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  onClick={() => setActiveTab('products')}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'products' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
-                  <MessageCircle className="w-5 h-5" /> Contact Messages
+                  <Package className="w-5 h-5" /> Products Management
                 </button>
                 <div className="my-2 border-t border-gray-100"></div>
                 <button onClick={() => { logout(); navigate('/'); }} className="flex items-center gap-3 px-4 py-3 rounded-lg text-red-500 hover:bg-red-50 font-bold transition-colors w-full text-left">
@@ -202,14 +264,6 @@ export default function AdminDashboard() {
                         <h3 className="font-bold text-lg">Total Users</h3>
                       </div>
                       <p className="text-3xl font-black text-purple-900">{stats?.totalUsers || 0}</p>
-                    </div>
-
-                    <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-2xl border border-red-200">
-                      <div className="flex items-center gap-4 mb-4 text-red-800">
-                        <MessageCircle className="w-8 h-8" />
-                        <h3 className="font-bold text-lg">Unread Messages</h3>
-                      </div>
-                      <p className="text-3xl font-black text-red-900">{stats?.unreadFeedbacks || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -275,36 +329,82 @@ export default function AdminDashboard() {
                 </div>
               ) : (
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Contact Messages</h2>
-                  <div className="space-y-4">
-                    {feedbacks.length === 0 ? (
-                      <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <CheckCircle className="w-12 h-12 mx-auto text-gray-300 mb-3" />
-                        <p>No messages to display.</p>
-                      </div>
-                    ) : (
-                      feedbacks.map((fb) => (
-                        <div key={fb.id} className={`p-5 rounded-xl border ${fb.is_read ? 'bg-white border-gray-100' : 'bg-green-50 border-green-100'}`}>
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <h4 className="font-bold text-gray-900">{fb.name} <span className="text-sm font-normal text-gray-500">({fb.email})</span></h4>
-                              <p className="text-sm font-bold text-[#0B4D26]">{fb.subject}</p>
-                            </div>
-                            <span className="text-xs text-gray-500">{new Date(fb.created_at).toLocaleString()}</span>
-                          </div>
-                          <p className="text-gray-700 text-sm mt-3 bg-white p-4 rounded-lg border border-gray-100">{fb.message}</p>
-                          
-                          {!fb.is_read && (
-                            <button 
-                              onClick={() => markFeedbackAsRead(fb.id)}
-                              className="mt-4 text-sm font-bold text-[#C9A227] hover:text-[#b08d20]"
-                            >
-                              Mark as Read
-                            </button>
-                          )}
-                        </div>
-                      ))
-                    )}
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                      Products Management
+                      <span className="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full">{products.length} items</span>
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setEditingProduct(null);
+                        setIsProductModalOpen(true);
+                      }}
+                      className="bg-[#0B4D26] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm hover:bg-[#083a1c] transition-colors"
+                    >
+                      <Plus className="w-4 h-4" /> Add Product
+                    </button>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm text-gray-600">
+                      <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
+                        <tr>
+                          <th className="px-6 py-4 rounded-tl-lg w-16">Image</th>
+                          <th className="px-6 py-4">Product Info</th>
+                          <th className="px-6 py-4">Category</th>
+                          <th className="px-6 py-4">Price</th>
+                          <th className="px-6 py-4">Stock Status</th>
+                          <th className="px-6 py-4 rounded-tr-lg">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {products.map((product) => (
+                          <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-6 py-4">
+                              <img src={product.image || '/images/placeholder.png'} alt={product.name} className="w-12 h-12 object-cover rounded bg-gray-100" />
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-gray-900 line-clamp-1">{product.name}</p>
+                              <p className="text-xs text-gray-500 font-mono mt-1">{product.slug}</p>
+                            </td>
+                            <td className="px-6 py-4 font-medium text-gray-800">
+                              {product.category || '-'}
+                            </td>
+                            <td className="px-6 py-4 font-bold text-[#0B4D26]">
+                              ₹{Number(product.price).toLocaleString('en-IN')}
+                            </td>
+                            <td className="px-6 py-4">
+                              {product.in_stock ? (
+                                <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded font-bold uppercase tracking-wide">In Stock</span>
+                              ) : (
+                                <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded font-bold uppercase tracking-wide">Out of Stock</span>
+                              )}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <button 
+                                  onClick={() => {
+                                    setEditingProduct(product);
+                                    setIsProductModalOpen(true);
+                                  }}
+                                  className="text-blue-600 hover:text-blue-800"
+                                  title="Edit Product"
+                                >
+                                  <Edit className="w-5 h-5" />
+                                </button>
+                                <button 
+                                  onClick={() => handleDeleteProduct(product.id)}
+                                  className="text-red-500 hover:text-red-700"
+                                  title="Delete Product"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               )}
@@ -312,6 +412,112 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Product Form Modal */}
+      {isProductModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex justify-between items-center z-10">
+              <h3 className="text-xl font-bold text-gray-900">
+                {editingProduct ? 'Edit Product' : 'Add New Product'}
+              </h3>
+              <button 
+                onClick={() => setIsProductModalOpen(false)}
+                className="text-gray-400 hover:text-gray-900 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveProduct} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Product Name <span className="text-red-500">*</span></label>
+                  <input required name="name" defaultValue={editingProduct?.name || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Slug (URL string) <span className="text-red-500">*</span></label>
+                  <input required name="slug" defaultValue={editingProduct?.slug || ''} placeholder="e.g. fresh-cow-milk" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
+                  <select name="category_name" defaultValue={editingProduct?.category || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
+                    <option value="">Select Category...</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.name}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Animal Type</label>
+                  <select name="animal_type" defaultValue={editingProduct?.animal_type || 'Livestock'} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
+                    <option value="Cattle">Cattle</option>
+                    <option value="Poultry">Poultry</option>
+                    <option value="Birds">Birds</option>
+                    <option value="Livestock">Livestock</option>
+                    <option value="Human">Human</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Current Price (₹) <span className="text-red-500">*</span></label>
+                  <input required type="number" step="0.01" name="price" defaultValue={editingProduct?.price || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Original Price (₹)</label>
+                  <input type="number" step="0.01" name="original_price" defaultValue={editingProduct?.original_price || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Image URL</label>
+                  <input name="image" defaultValue={editingProduct?.image || ''} placeholder="/images/example.png" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Discount %</label>
+                  <input type="number" name="discount" defaultValue={editingProduct?.discount || '0'} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Tags (Comma Separated)</label>
+                  <input name="tags" defaultValue={editingProduct?.tags?.join(', ') || ''} placeholder="Fresh, Farm, Quality" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Size Variants (Comma Separated)</label>
+                  <input name="variants" defaultValue={editingProduct?.variants?.join(', ') || '1, 5, 25'} placeholder="1, 5, 25" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
+                  <textarea name="description" rows={3} defaultValue={editingProduct?.description || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"></textarea>
+                </div>
+                
+                <div className="md:col-span-2 flex items-center gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <input type="checkbox" id="in_stock" name="in_stock" value="true" defaultChecked={editingProduct ? editingProduct.in_stock : true} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  <label htmlFor="in_stock" className="font-bold text-gray-700 cursor-pointer">Product is In Stock</label>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                <button 
+                  type="button" 
+                  onClick={() => setIsProductModalOpen(false)}
+                  className="px-6 py-2 border rounded-lg font-bold text-gray-600 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={isSavingProduct}
+                  className="px-6 py-2 bg-[#0B4D26] text-white rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50"
+                >
+                  {isSavingProduct ? 'Saving...' : 'Save Product'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

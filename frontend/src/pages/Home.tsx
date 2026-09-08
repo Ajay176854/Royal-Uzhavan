@@ -44,7 +44,7 @@ export default function Home() {
     const fetchHomeProducts = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:8000/api/products?limit=100');
+        const res = await fetch('http://localhost:8000/api/products?limit=200');
 
         if (res.ok) {
           const data = await res.json();
@@ -93,7 +93,7 @@ export default function Home() {
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/60 via-[var(--color-wabi-bg)]/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/40 via-[var(--color-wabi-bg)]/10 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">

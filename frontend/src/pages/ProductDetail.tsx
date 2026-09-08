@@ -49,19 +49,14 @@ export default function ProductDetail() {
   const handleAddToCart = () => {
     if (!product) return;
     
-    const variantMultiplier = selectedVariant;
-    const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
-    
     addToCart({
       productId: product.id,
       name: product.name,
-      price: currentPrice,
+      price: product.price,
       image: product.image,
       quantity,
       selectedVariant,
-      originalPrice: product.originalPrice 
-        ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
-        : undefined
+      originalPrice: product.originalPrice
     });
   };
 
@@ -82,11 +77,8 @@ export default function ProductDetail() {
     );
   }
 
-  const variantMultiplier = selectedVariant;
-  const currentPrice = product.price * (variantMultiplier / (product.variants[0] || 1));
-  const currentOriginalPrice = product.originalPrice 
-    ? product.originalPrice * (variantMultiplier / (product.variants[0] || 1)) 
-    : undefined;
+  const currentPrice = product.price;
+  const currentOriginalPrice = product.originalPrice;
 
   return (
     <div className="bg-white min-h-screen pb-20">
@@ -146,9 +138,9 @@ export default function ProductDetail() {
               </h1>
               
               <div className="flex items-end gap-3 mb-6">
-                <span className="text-3xl font-bold text-[#0B4D26]">₹{currentPrice.toLocaleString('en-IN')}</span>
+                <span className="text-3xl font-bold text-[#0B4D26]">₹{(currentPrice * quantity).toLocaleString('en-IN')}</span>
                 {currentOriginalPrice && (
-                  <span className="text-lg text-gray-400 line-through mb-1">₹{currentOriginalPrice.toLocaleString('en-IN')}</span>
+                  <span className="text-lg text-gray-400 line-through mb-1">₹{(currentOriginalPrice * quantity).toLocaleString('en-IN')}</span>
                 )}
                 <span className="text-sm text-gray-500 mb-1 ml-2">(Incl. of all taxes)</span>
               </div>
@@ -166,7 +158,10 @@ export default function ProductDetail() {
                 {product.variants?.map((v: number) => (
                   <button 
                     key={v}
-                    onClick={() => setSelectedVariant(v)}
+                    onClick={() => {
+                      setSelectedVariant(v);
+                      setQuantity(v);
+                    }}
                     className={cn(
                       "py-3 border rounded-lg text-center font-bold transition-all",
                       selectedVariant === v 
@@ -180,26 +175,7 @@ export default function ProductDetail() {
               </div>
             </div>
 
-            {/* Bulk Pricing Widget */}
-            <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-8">
-              <div className="flex items-center gap-2 mb-2 text-amber-800 font-bold">
-                <Info className="w-4 h-4" /> Bulk/Wholesale Savings
-              </div>
-              <div className="grid grid-cols-3 gap-2 text-sm">
-                <div className="bg-white p-2 rounded text-center border border-amber-100">
-                  <span className="block font-bold text-gray-900">10+ Bags</span>
-                  <span className="text-amber-600 font-medium">-5% Off</span>
-                </div>
-                <div className="bg-white p-2 rounded text-center border border-amber-100">
-                  <span className="block font-bold text-gray-900">25+ Bags</span>
-                  <span className="text-amber-600 font-medium">-8% Off</span>
-                </div>
-                <div className="bg-white p-2 rounded text-center border border-amber-100">
-                  <span className="block font-bold text-gray-900">50+ Bags</span>
-                  <span className="text-amber-600 font-medium">-12% Off</span>
-                </div>
-              </div>
-            </div>
+
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">

@@ -245,8 +245,8 @@ export default function Checkout() {
                 </svg>
               </motion.div>
               <h2 className="text-3xl font-playfair font-bold text-gray-900 mb-3">Order Placed!</h2>
-              <p className="text-gray-600 font-medium mb-8">
-                Thank you for your purchase. We are preparing your order for shipment.
+              <p className="text-gray-600 font-medium mb-8 text-sm leading-relaxed">
+                Thank you for choosing Royal Uzhavan! Your order has been successfully placed. Our team is now preparing your premium farm-fresh products for dispatch. You will receive a WhatsApp confirmation shortly with your tracking details.
               </p>
               <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
                 <motion.div 

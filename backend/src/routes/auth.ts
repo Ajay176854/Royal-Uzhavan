@@ -1,7 +1,7 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { query } from "../db/pool.js";
-import { generateToken, requireAuth } from "../middleware/auth.js";
+import { generateToken, requireAuth, isValidEmail, sanitizeString } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -16,14 +16,27 @@ router.post("/signup", async (req, res) => {
       return;
     }
 
+    const cleanName = sanitizeString(name, 200);
+    const cleanEmail = email.toLowerCase().trim();
+
+    if (!isValidEmail(cleanEmail)) {
+      res.status(400).json({ error: "Invalid email address" });
+      return;
+    }
+
     if (password.length < 6) {
       res.status(400).json({ error: "Password must be at least 6 characters" });
       return;
     }
 
+    if (password.length > 128) {
+      res.status(400).json({ error: "Password is too long" });
+      return;
+    }
+
     // Check if user exists
     const existing = await query("SELECT id FROM users WHERE email = $1", [
-      email.toLowerCase(),
+      cleanEmail,
     ]);
     if (existing.rows.length > 0) {
       res.status(409).json({ error: "An account with this email already exists" });
@@ -39,7 +52,7 @@ router.post("/signup", async (req, res) => {
       `INSERT INTO users (name, email, phone, password_hash)
        VALUES ($1, $2, $3, $4)
        RETURNING id, name, email, phone, role, created_at`,
-      [name, email.toLowerCase(), phone || null, passwordHash]
+      [cleanName, cleanEmail, phone || null, passwordHash]
     );
 
     const user = result.rows[0];

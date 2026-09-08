@@ -7,6 +7,8 @@ import { useAuth } from '../contexts/AuthContext';
 import logoImg from '../assets/images/001.jpg';
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
@@ -16,6 +18,40 @@ export default function Header() {
   const { wishlist } = useWishlist();
   const { cartCount, setIsCartOpen } = useCart();
   const { user, isLoggedIn, logout, setIsAuthOpen } = useAuth();
+
+  const isProductsActive = location.pathname.startsWith('/shop') || location.pathname.startsWith('/product');
+  const isPolicyActive = ['/refund-policy', '/terms-of-service', '/privacy-policy'].includes(location.pathname);
+  const isOurFarmsActive = location.pathname === '/our-farms';
+  const isShippingActive = location.pathname === '/policies';
+  const isBlogActive = location.pathname.startsWith('/blog');
+  const isContactActive = location.pathname === '/contact';
+
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const res = await fetch(`http://localhost:8000/api/products?search=${encodeURIComponent(searchQuery)}&limit=5`);
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data.products || []);
+        } else {
+          setSearchResults([]);
+        }
+      } catch (err) {
+        console.error('Search failed', err);
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -48,7 +84,7 @@ export default function Header() {
           <Wheat className="w-4 h-4" /> Direct From Tamilnadu Farmers
         </div>
         <div className="flex items-center gap-2">
-          <Droplet className="w-4 h-4" /> Wood Cold-Pressed Oils Available
+          <Droplet className="w-4 h-4" /> Premium Animal Feeds Available
         </div>
       </div>
 
@@ -76,11 +112,11 @@ export default function Header() {
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex flex-1 justify-start items-center gap-3 lg:gap-4 xl:gap-6 text-[10px] lg:text-[11px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
 
-          <Link to="/our-farms" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">ABOUT US</Link>
+          <Link to="/our-farms" className={`rounded-full transition-colors py-2 px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
 
           <div className="group">
-            <button className="flex items-center gap-1 group-hover:bg-[#86B841] group-hover:text-white rounded-full transition-colors py-2 px-3">
-              PRODUCTS <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white" strokeWidth={2.5} />
+            <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
+              PRODUCTS <ChevronDown className={`w-3.5 h-3.5 ${isProductsActive ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} strokeWidth={2.5} />
             </button>
             {/* Full-width Mega Menu Wrapper with hover bridge */}
             <div className="absolute top-[100%] left-0 w-full pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 cursor-default">
@@ -145,8 +181,8 @@ export default function Header() {
           </div>
 
           <div className="relative group">
-            <button className="flex items-center gap-1 group-hover:bg-[#86B841] group-hover:text-white rounded-full transition-colors py-2 px-3">
-              POLICY <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-white" strokeWidth={2.5} />
+            <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isPolicyActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
+              POLICY <ChevronDown className={`w-3.5 h-3.5 ${isPolicyActive ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} strokeWidth={2.5} />
             </button>
             {/* Dropdown with hover bridge */}
             <div className="absolute top-full left-0 pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
@@ -157,9 +193,9 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Link to="/policies?tab=shipping" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">SHIPPING & BULK ORDERS</Link>
-          <Link to="/blog" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">BLOG</Link>
-          <Link to="/contact" className="hover:bg-[#86B841] hover:text-white rounded-full transition-colors py-2 px-3">CONTACT US</Link>
+          <Link to="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
+          <Link to="/blog" className={`rounded-full transition-colors py-2 px-3 ${isBlogActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
+          <Link to="/contact" className={`rounded-full transition-colors py-2 px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
         </nav>
 
         {/* Actions */}
@@ -268,33 +304,33 @@ export default function Header() {
           <div>
             <button 
               onClick={() => setIsMobileProductsOpen(!isMobileProductsOpen)} 
-              className="w-full px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              className={`w-full px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 flex items-center justify-between transition-colors ${isProductsActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}
             >
               Shop Products 
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isMobileProductsOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileProductsOpen ? 'rotate-180' : ''} ${isProductsActive ? 'text-white' : 'text-gray-400'}`} />
             </button>
             <div className={`bg-gray-50/50 overflow-hidden transition-all duration-300 ${isMobileProductsOpen ? 'max-h-[500px]' : 'max-h-0'}`}>
               <div className="py-2 flex flex-col border-b border-gray-50">
-                <Link to="/shop?category=Traditional%20Rice" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Traditional Rice</Link>
-                <Link to="/shop?category=Millets" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Millets</Link>
-                <Link to="/shop?category=Ready%20to%20Cook" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Ready to Cook & Flour</Link>
-                <Link to="/shop?category=Health%20Mix" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Health Mix & Malt</Link>
-                <Link to="/shop?category=Combo%20Offer" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Combo Offer</Link>
+                <Link to="/shop?category=Royal%20Cattle%20Feed" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Cattle Feed</Link>
+                <Link to="/shop?category=Royal%20Hen%20Feed" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Hen Feed</Link>
+                <Link to="/shop?category=Royal%20Birds%20Food" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Birds Food</Link>
+                <Link to="/shop?category=Royal%20oil-cake(Punnaku)" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Oil-cake(Punnaku)</Link>
+                <Link to="/shop?category=Hen%20and%20Pigeon%20Supplements" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-medium text-gray-600 hover:text-[#86B841]">Supplements</Link>
                 <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-8 py-3 text-xs font-bold text-[#1B4332] hover:text-[#86B841] border-t border-gray-100/50 mt-2">View All Products</Link>
               </div>
             </div>
           </div>
 
-          <Link to="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">About Us</Link>
+          <Link to="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className={`block px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 transition-colors ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}>About Us</Link>
           
           {/* Policies Accordion */}
           <div>
             <button 
               onClick={() => setIsMobilePoliciesOpen(!isMobilePoliciesOpen)} 
-              className="w-full px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              className={`w-full px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 flex items-center justify-between transition-colors ${isPolicyActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}
             >
               Policies 
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isMobilePoliciesOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobilePoliciesOpen ? 'rotate-180' : ''} ${isPolicyActive ? 'text-white' : 'text-gray-400'}`} />
             </button>
             <div className={`bg-gray-50/50 overflow-hidden transition-all duration-300 ${isMobilePoliciesOpen ? 'max-h-[300px]' : 'max-h-0'}`}>
               <div className="py-2 flex flex-col border-b border-gray-50">
@@ -306,9 +342,9 @@ export default function Header() {
             </div>
           </div>
 
-          <Link to="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
-          <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
-          <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
+          <Link to="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className={`block px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 transition-colors ${isShippingActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}>Shipping & Bulk Orders</Link>
+          <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className={`block px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 transition-colors ${isBlogActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}>Blog</Link>
+          <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-6 py-4 text-xs font-bold uppercase tracking-wider border-b border-gray-50 transition-colors ${isContactActive ? 'bg-[#86B841] text-white' : 'text-gray-800 hover:bg-gray-50'}`}>Contact Us</Link>
         </div>
 
         
@@ -316,7 +352,7 @@ export default function Header() {
 
       {/* Search Dropdown */}
       <div 
-        className={`absolute top-full left-0 w-full bg-white shadow-md border-b border-gray-100 transition-all duration-300 overflow-hidden z-40 ${isSearchOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'}`}
+        className={`absolute top-[100%] left-0 w-full bg-white shadow-md border-b border-gray-100 transition-all duration-300 z-40 origin-top ${isSearchOpen ? 'scale-y-100 opacity-100 visible' : 'scale-y-0 opacity-0 invisible'}`}
       >
         <div className="container mx-auto px-4 xl:px-8 py-4">
           <form onSubmit={handleSearch} className="flex items-center gap-3">
@@ -330,6 +366,44 @@ export default function Header() {
                 autoComplete="off"
                 className="w-full pl-12 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-[#86B841] focus:ring-1 focus:ring-[#86B841] text-sm"
               />
+              
+              {/* Autocomplete Suggestions */}
+              {searchQuery.trim() && isSearchOpen && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden z-50">
+                  {isSearching ? (
+                    <div className="p-4 text-center text-sm text-gray-500">Searching...</div>
+                  ) : searchResults.length > 0 ? (
+                    <div className="max-h-[350px] overflow-y-auto">
+                      {searchResults.map((product) => (
+                        <Link 
+                          key={product.id}
+                          to={`/product/${product.id}`}
+                          onClick={() => {
+                            setIsSearchOpen(false);
+                            setSearchQuery('');
+                          }}
+                          className="flex items-center gap-4 p-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
+                        >
+                          <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded-md" />
+                          <div className="flex-1 text-left">
+                            <div className="text-sm font-bold text-gray-800 line-clamp-1">{product.name}</div>
+                            <div className="text-xs text-[#86B841] font-medium">₹{product.price}</div>
+                          </div>
+                        </Link>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={handleSearch}
+                        className="w-full p-3 text-center text-sm text-[#86B841] font-bold hover:bg-gray-50 transition-colors border-t border-gray-100"
+                      >
+                        View all results for "{searchQuery}"
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-4 text-center text-sm text-gray-500">No products found.</div>
+                  )}
+                </div>
+              )}
             </div>
             <button 
               type="button" 
@@ -337,7 +411,7 @@ export default function Header() {
                 setSearchQuery('');
                 setIsSearchOpen(false);
               }}
-              className="p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 rounded-full transition-colors"
+              className="p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 rounded-full transition-colors shrink-0"
             >
               <X className="w-6 h-6" />
             </button>

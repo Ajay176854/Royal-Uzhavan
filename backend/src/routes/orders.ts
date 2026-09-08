@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { query, getClient } from "../db/pool.js";
 import { requireAuth, optionalAuth } from "../middleware/auth.js";
+import { isValidEmail, sanitizeString } from "../middleware/auth.js";
 import {
   generateOrderWhatsAppLink,
   sendOrderConfirmation,
@@ -125,6 +126,7 @@ router.post("/", optionalAuth, async (req, res) => {
 });
 
 // GET /api/orders/lookup — guest order lookup by email or phone
+// Returns limited data — no personal info leaked
 router.get("/lookup", async (req, res) => {
   try {
     const { email, phone } = req.query;
@@ -139,7 +141,7 @@ router.get("/lookup", async (req, res) => {
 
     if (email) {
       conditions.push(`customer_email = $${params.length + 1}`);
-      params.push((email as string).toLowerCase());
+      params.push((email as string).toLowerCase().trim());
     }
     if (phone) {
       conditions.push(`customer_phone = $${params.length + 1}`);
@@ -147,7 +149,7 @@ router.get("/lookup", async (req, res) => {
     }
 
     const result = await query(
-      `SELECT id, customer_name, items, subtotal, shipping_fee, total, status,
+      `SELECT id, items, subtotal, shipping_fee, total, status,
               payment_method, created_at, updated_at
        FROM orders
        WHERE ${conditions.join(" OR ")}
@@ -182,15 +184,15 @@ router.get("/my-orders", requireAuth, async (req, res) => {
   }
 });
 
-// GET /api/orders/:id
-router.get("/:id", async (req, res) => {
+// GET /api/orders/:id — get order details (auth recommended)
+router.get("/:id", optionalAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
     const result = await query(
       `SELECT id, customer_name, customer_email, customer_phone,
               shipping_address, items, subtotal, shipping_fee, total,
-              status, payment_method, tracking_info, created_at, updated_at
+              status, payment_method, tracking_info, user_id, created_at, updated_at
        FROM orders
        WHERE id = $1`,
       [id]
@@ -201,7 +203,27 @@ router.get("/:id", async (req, res) => {
       return;
     }
 
-    res.json({ order: result.rows[0] });
+    const order = result.rows[0];
+
+    // If user is logged in and is the order owner OR admin, return full details
+    if (req.user && (req.user.id === order.user_id || req.user.role === "admin")) {
+      res.json({ order });
+      return;
+    }
+
+    // For unauthenticated / non-owner requests, return limited data
+    res.json({
+      order: {
+        id: order.id,
+        items: order.items,
+        subtotal: order.subtotal,
+        shipping_fee: order.shipping_fee,
+        total: order.total,
+        status: order.status,
+        payment_method: order.payment_method,
+        created_at: order.created_at,
+      },
+    });
   } catch (error) {
     console.error("Order fetch error:", error);
     res.status(500).json({ error: "Failed to fetch order" });
