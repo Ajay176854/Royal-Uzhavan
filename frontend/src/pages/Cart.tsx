@@ -63,16 +63,16 @@ export default function Cart() {
                       
                       <div className="col-span-2 flex justify-center w-full md:w-auto">
                         <div className="flex items-center border border-gray-300 rounded-lg h-10 w-32 bg-white">
-                          <button onClick={() => updateQuantity(item.productId, item.selectedVariant, item.quantity - 1)} className="px-3 h-full text-gray-500 hover:text-[#0B4D26]"><Minus className="w-4 h-4" /></button>
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} className="px-3 h-full text-gray-500 hover:text-[#0B4D26]"><Minus className="w-4 h-4" /></button>
                           <span className="flex-1 text-center font-bold text-gray-900">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.productId, item.selectedVariant, item.quantity + 1)} className="px-3 h-full text-gray-500 hover:text-[#0B4D26]"><Plus className="w-4 h-4" /></button>
+                          <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} className="px-3 h-full text-gray-500 hover:text-[#0B4D26]"><Plus className="w-4 h-4" /></button>
                         </div>
                       </div>
 
                       <div className="col-span-2 flex items-center justify-between md:justify-end w-full md:w-auto gap-4">
                         <div className="md:hidden font-bold">Total:</div>
                         <div className="font-bold text-lg text-[#0B4D26]">₹{total.toLocaleString('en-IN')}</div>
-                        <button onClick={() => removeFromCart(item.productId, item.selectedVariant)} className="text-gray-400 hover:text-red-500 transition-colors">
+                        <button onClick={() => removeFromCart(item.cartItemId)} className="text-gray-400 hover:text-red-500 transition-colors">
                           <Trash2 className="w-5 h-5" />
                         </button>
                       </div>

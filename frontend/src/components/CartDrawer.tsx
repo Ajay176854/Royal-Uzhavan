@@ -62,7 +62,7 @@ export default function CartDrawer() {
                         </Link>
                       </h3>
                       <button 
-                        onClick={() => removeFromCart(item.productId, item.selectedVariant)}
+                        onClick={() => removeFromCart(item.cartItemId)}
                         className="text-gray-400 hover:text-red-500 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -74,14 +74,14 @@ export default function CartDrawer() {
                     <div className="flex items-center justify-between mt-3">
                       <div className="flex items-center border border-gray-300 rounded-lg h-8 w-24 bg-white">
                         <button 
-                          onClick={() => updateQuantity(item.productId, item.selectedVariant, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                           className="px-2 h-full text-gray-500 hover:text-[#0B4D26]"
                         >
                           <Minus className="w-3 h-3" />
                         </button>
                         <span className="flex-1 text-center font-bold text-gray-900 text-sm">{item.quantity}</span>
                         <button 
-                          onClick={() => updateQuantity(item.productId, item.selectedVariant, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                           className="px-2 h-full text-gray-500 hover:text-[#0B4D26]"
                         >
                           <Plus className="w-3 h-3" />
