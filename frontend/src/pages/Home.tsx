@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat } from 'lucide-react';
 import { motion } from 'motion/react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
@@ -22,7 +22,11 @@ const CATEGORY_DATA = [
 export default function Home() {
   const navigate = useNavigate();
   const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [newLaunches, setNewLaunches] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fallback products mapped from CATEGORY_DATA
   const mappedProducts = CATEGORY_DATA.map((item, index) => ({
     id: String(index + 1),
     name: item.title,
@@ -36,13 +40,48 @@ export default function Home() {
     in_stock: true,
   }));
 
-  const featuredProducts = mappedProducts.slice(0, 5);
-  const newLaunches = mappedProducts.slice(5, 10);
+  useEffect(() => {
+    const fetchHomeProducts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch('http://localhost:8000/api/products?limit=100');
+
+        if (res.ok) {
+          const data = await res.json();
+          const shuffled = [...data.products].sort(() => 0.5 - Math.random());
+
+          const uniqueProducts: any[] = [];
+          const seenNames = new Set();
+          for (const p of shuffled) {
+            const baseName = p.name.split(' ')[0] + p.name.split(' ')[1];
+            if (!seenNames.has(baseName)) {
+              seenNames.add(baseName);
+              uniqueProducts.push(p);
+            }
+          }
+
+          const finalPool = uniqueProducts.length >= 10 ? uniqueProducts : shuffled;
+          setFeaturedProducts(finalPool.slice(0, 8));
+          setNewLaunches(finalPool.slice(8, 20));
+        } else {
+          setFeaturedProducts(mappedProducts.slice(0, 5));
+          setNewLaunches(mappedProducts.slice(5, 10));
+        }
+      } catch (err) {
+        console.error('Failed to fetch home products', err);
+        setFeaturedProducts(mappedProducts.slice(0, 5));
+        setNewLaunches(mappedProducts.slice(5, 10));
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHomeProducts();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[85vh] min-h-[600px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
+      <section className="relative h-screen min-h-[700px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           <video
             autoPlay
@@ -54,11 +93,11 @@ export default function Home() {
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/90 via-[var(--color-wabi-bg)]/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/60 via-[var(--color-wabi-bg)]/30 to-transparent"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
-          <div className="max-w-2xl w-full">
+          <div className="max-w-2xl w-full -mt-16 md:-mt-28">
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
             <h1 className="text-[var(--color-wabi-green)] text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
               Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-earth)]">Animals.</span>
@@ -77,21 +116,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Floating trust badges - softer approach */}
-        <div className="hidden lg:flex absolute bottom-12 right-12 gap-16 z-20 bg-white/70 backdrop-blur-sm p-8 rounded-3xl shadow-sm border border-white">
-          <div className="flex flex-col items-center">
-            <span className="text-[var(--color-wabi-earth)] text-2xl font-serif italic mb-1">100%</span>
-            <span className="text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest">Organic Base</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-[var(--color-wabi-earth)] text-2xl font-serif italic mb-1">24hr</span>
-            <span className="text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest">Farm to Door</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="text-[var(--color-wabi-earth)] text-2xl font-serif italic mb-1">4th Gen</span>
-            <span className="text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest">Farmers Led</span>
-          </div>
-        </div>
       </section>
 
       {/* Category Editorial Grid */}
@@ -119,35 +143,284 @@ export default function Home() {
       </section>
 
       {/* Shop By Need - Softened */}
-      <section className="bg-[var(--color-wabi-bg)] py-16 lg:py-24 border-y border-[var(--color-wabi-earth)]/10">
-        <div className="container mx-auto px-4 md:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          <div className="flex-shrink-0 text-center lg:text-left">
+      <section id="shop-by-need" className="bg-[var(--color-wabi-bg)] py-16 lg:py-24 border-y border-[var(--color-wabi-earth)]/10">
+        <div className="container mx-auto px-4 md:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          <div className="flex-shrink-0 text-center lg:text-left max-w-sm">
+            <span className="text-[#86B841] font-bold text-xs uppercase tracking-widest block mb-2">Targeted Nutrition</span>
             <h2 className="text-[var(--color-wabi-green)] font-serif text-3xl md:text-5xl leading-tight mb-4">
               Curated for<br /><i className="text-[var(--color-wabi-earth)]">Your Farm</i>
             </h2>
-            <p className="text-gray-600 max-w-sm mx-auto lg:mx-0">Find exactly what your livestock and poultry require for healthy growth.</p>
+            <p className="text-gray-600 text-sm leading-relaxed mb-6">
+              Find exactly what your livestock and poultry require for peak productivity, disease resistance, and healthy growth.
+            </p>
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--color-wabi-green)] bg-white px-4 py-2 rounded-full border border-gray-200/80 shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#86B841] animate-pulse"></span>
+              Dedicated care & feeding guides
+            </div>
           </div>
-          <div className="flex-1 flex flex-wrap justify-center lg:justify-start gap-4 w-full">
+
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 w-full">
             {[
-              { image: '/images/cattle-food.png', title: 'Cattle', desc: 'Milk & Health' },
-              { image: '/images/hen-food.png', title: 'Poultry', desc: 'Growth & Layers' },
-              { image: '/images/birds-food.png', title: 'Birds', desc: 'Pigeon & Exotic' },
-              { image: '/images/royal-seed-theevanam.png', title: 'Agriculture', desc: 'Seeds & Husks' }
-            ].map((need, i) => (
-              <Link to={`/shop?need=${encodeURIComponent(need.title)}`} key={need.title} className="w-[calc(50%-8px)] md:w-[220px] bg-white p-6 rounded-2xl flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-                <div className="w-28 h-28 rounded-full overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-4 shadow-sm border border-gray-100">
-                  <img src={need.image} alt={need.title} className="w-full h-full object-cover" />
+              { 
+                to: '/cow', 
+                image: '/images/cattle-food.png', 
+                title: 'Cow (Cattle)', 
+                tamil: 'பசு & மாடுகள்', 
+                desc: 'Milk & Health',
+                badge: 'Dairy Special'
+              },
+              { 
+                to: '/pigeon', 
+                image: '/images/birds-food.png', 
+                title: 'Pigeon', 
+                tamil: 'புறா தானியங்கள்', 
+                desc: 'Stamina & Grit',
+                badge: 'Racing Blend'
+              },
+              { 
+                to: '/pig', 
+                image: '/images/pig-food.png', 
+                title: 'Pig', 
+                tamil: 'பன்றி வளர்ப்பு', 
+                desc: 'Growth & FCR',
+                badge: 'Fast Weight'
+              },
+              { 
+                to: `/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`, 
+                image: '/images/hen-food.png', 
+                title: 'Poultry', 
+                tamil: 'நாட்டுக்கோழி', 
+                desc: 'Growth & Layers',
+                badge: 'Egg & Broiler'
+              },
+              { 
+                to: `/shop?category=${encodeURIComponent('Uzhavan Vittha Mattum Theevana Vagaigal')}`, 
+                image: '/images/royal-seed-theevanam.png', 
+                title: 'Agriculture', 
+                tamil: 'விதைகள் & தவிடு', 
+                desc: 'Seeds & Husks',
+                badge: 'Farm Pure'
+              }
+            ].map((need) => (
+              <Link 
+                to={need.to} 
+                key={need.title} 
+                className="group bg-white p-4 sm:p-5 rounded-2xl flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100 relative overflow-hidden"
+              >
+                <span className="text-[9px] font-bold uppercase tracking-wider text-[#86B841] bg-[#86B841]/10 px-2 py-0.5 rounded-full mb-3">
+                  {need.badge}
+                </span>
+
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-3 shadow-inner border border-gray-100 p-2 group-hover:bg-[#86B841]/10 transition-colors">
+                  <img 
+                    src={need.image} 
+                    alt={need.title} 
+                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ease-out" 
+                  />
                 </div>
-                <span className="text-sm font-serif text-[var(--color-wabi-green)] mb-1">{need.title}</span>
-                <span className="text-xs text-gray-500">{need.desc}</span>
+
+                <span className="text-sm font-serif font-bold text-[var(--color-wabi-green)] group-hover:text-[#86B841] transition-colors leading-tight">
+                  {need.title}
+                </span>
+                <span className="text-[10px] text-[var(--color-wabi-earth)] font-serif italic mb-1">
+                  {need.tamil}
+                </span>
+                <span className="text-[11px] text-gray-500 font-medium">
+                  {need.desc}
+                </span>
+
+                <span className="mt-3 text-[10px] font-bold text-[#1B4332] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                  View Feeds →
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Discover Our Animals — Highlight Section */}
+      <section className="py-20 lg:py-28 bg-gradient-to-b from-[var(--color-wabi-bg)] via-white to-[var(--color-wabi-bg)] relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute top-0 left-0 w-72 h-72 bg-[var(--color-wabi-gold)]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[var(--color-wabi-green)]/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+
+        <div className="container mx-auto px-4 md:px-12 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-14 lg:mb-20"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="inline-block text-[var(--color-wabi-gold)] font-bold text-xs uppercase tracking-[0.25em] mb-4 border-b-2 border-[var(--color-wabi-gold)]/30 pb-2">Our Beloved Animals</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[var(--color-wabi-green)] mb-5">
+              Discover Our <span className="italic text-[var(--color-wabi-earth)]">Animals</span>
+            </h2>
+            <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-medium">
+              We raise our animals with love, care, and the finest nutrition — ensuring they thrive in a natural, healthy environment.
+            </p>
+          </motion.div>
+
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            {/* Pigeon Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                to="/pigeon"
+                className="group block bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(43,69,34,0.15)] transition-all duration-500 hover:-translate-y-2 border border-gray-100/80"
+              >
+                {/* Image Container */}
+                <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+                  <img
+                    src="/images/pigeon-highlight.jpg"
+                    alt="Beautiful white pigeon on a farm"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  {/* Tag */}
+                  <div className="absolute bottom-5 left-5">
+                    <span className="bg-white/90 backdrop-blur-md text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm">
+                      Racing & Fancy Breeds
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-7 lg:p-8">
+                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-2 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                    Pigeons
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-5 font-medium">
+                    Graceful and intelligent — our pigeons are nurtured with premium seed blends, minerals, and grit mixes for peak stamina and vibrant plumage.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[var(--color-wabi-green)]/10 flex items-center justify-center">
+                        <Leaf className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                      </div>
+                      <span className="text-xs font-bold text-[var(--color-wabi-green)]/70 uppercase tracking-wider">Natural Feed</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-wabi-green)] uppercase tracking-wider group-hover:text-[var(--color-wabi-earth)] transition-colors">
+                      Explore
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Hen Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                to="/hen"
+                className="group block bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(43,69,34,0.15)] transition-all duration-500 hover:-translate-y-2 border border-gray-100/80"
+              >
+                {/* Image Container */}
+                <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden bg-emerald-50">
+                  <img
+                    src="/images/hen-food.png"
+                    alt="Country Hen & Poultry"
+                    className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  {/* Tag */}
+                  <div className="absolute bottom-5 left-5">
+                    <span className="bg-white/90 backdrop-blur-md text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm">
+                      Nattu Kozhi & Layers
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-7 lg:p-8">
+                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-2 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                    Hens & Poultry
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-5 font-medium">
+                    Healthy and active — our country hens thrive on natural grain blends, chick starters, and shell calcium for high egg yield and strong immunity.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[var(--color-wabi-green)]/10 flex items-center justify-center">
+                        <Wheat className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                      </div>
+                      <span className="text-xs font-bold text-[var(--color-wabi-green)]/70 uppercase tracking-wider">Egg Booster</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-wabi-green)] uppercase tracking-wider group-hover:text-[var(--color-wabi-earth)] transition-colors">
+                      Explore
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Pig Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                to="/pig"
+                className="group block bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(43,69,34,0.15)] transition-all duration-500 hover:-translate-y-2 border border-gray-100/80"
+              >
+                {/* Image Container */}
+                <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
+                  <img
+                    src="/images/pig-highlight.jpg"
+                    alt="Healthy pig in a green farmyard"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  {/* Tag */}
+                  <div className="absolute bottom-5 left-5">
+                    <span className="bg-white/90 backdrop-blur-md text-[var(--color-wabi-green)] text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-sm">
+                      Growth & Nutrition
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-7 lg:p-8">
+                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-2 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                    Pigs
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-5 font-medium">
+                    Strong and thriving — our pigs are raised on balanced, high-protein feeds crafted for rapid, healthy growth and optimal feed conversion.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[var(--color-wabi-green)]/10 flex items-center justify-center">
+                        <Sprout className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                      </div>
+                      <span className="text-xs font-bold text-[var(--color-wabi-green)]/70 uppercase tracking-wider">High Protein</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--color-wabi-green)] uppercase tracking-wider group-hover:text-[var(--color-wabi-earth)] transition-colors">
+                      Explore
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products */}
-      {featuredProducts.length > 0 && (
+      {!loading && featuredProducts.length > 0 && (
         <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
           {/* Natural Greenery Background */}
           <div
@@ -172,7 +445,7 @@ export default function Home() {
                 View All <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
-            
+
             <motion.div
               className="w-full h-[500px] mb-8"
               initial={{ opacity: 0, y: 60, scale: 0.95 }}
@@ -180,7 +453,7 @@ export default function Home() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Smooth3DSlideshow 
+              <Smooth3DSlideshow
                 slides={featuredProducts.map(p => ({
                   image: { src: p.image, alt: p.name },
                   title: p.name + '\n₹' + p.price,
@@ -191,6 +464,7 @@ export default function Home() {
                 radius={10}
                 autoplay={true}
                 onSlideChange={setActiveFeaturedIndex}
+                onSlideClick={(slide) => slide.link && navigate(slide.link)}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",
@@ -198,7 +472,7 @@ export default function Home() {
                 }}
               />
             </motion.div>
-            
+
             <motion.div
               className="mt-12 text-center md:hidden"
               initial={{ opacity: 0, y: 20 }}
@@ -215,14 +489,14 @@ export default function Home() {
       )}
 
       {/* New Launches — Coverflow Carousel */}
-      {newLaunches.length > 0 && (
+      {!loading && newLaunches.length > 0 && (
         <section className="py-24 relative border-t border-[var(--color-wabi-earth)]/10 overflow-hidden">
-          {/* Premium Blurred Background */}
+          {/* Farm Field Background */}
           <div
-            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat blur-[12px] scale-110 opacity-[0.85]"
-            style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=2000")' }}
+            className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: 'url("/farm-field-bg.jpg")' }}
           ></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wabi-bg)]/30 via-transparent to-[var(--color-wabi-bg)]/30 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#f5f0e8]/40 via-[#1a3a1a]/20 to-[#f5f0e8]/40"></div>
 
           <div className="container mx-auto px-4 md:px-12 relative z-10">
             <motion.div
