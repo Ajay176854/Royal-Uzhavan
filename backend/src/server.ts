@@ -12,6 +12,8 @@ import { orderRoutes } from "./routes/orders.js";
 import { authRoutes } from "./routes/auth.js";
 import { contactRoutes } from "./routes/contact.js";
 import { adminRoutes } from "./routes/admin.js";
+import { wishlistRoutes } from "./routes/wishlist.js";
+import { cartRoutes } from "./routes/cart.js";
 import { requireAuth, requireAdmin } from "./middleware/auth.js";
 import { getWhatsAppStatus } from "./services/whatsapp.js";
 
@@ -117,6 +119,9 @@ app.use("/api/auth/signup", authLimiter);
 app.use("/api/auth", authRoutes);
 
 app.use("/api/products", productRoutes);
+
+app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.post("/api/orders", createLimiter); // rate limit order creation
 app.use("/api/orders", orderRoutes);

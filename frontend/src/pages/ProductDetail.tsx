@@ -4,6 +4,8 @@ import { Star, Truck, ShieldCheck, Heart, Share2, Plus, Minus, Info } from 'luci
 import { cn } from '../lib/utils';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -16,6 +18,8 @@ export default function ProductDetail() {
   const [activeTab, setActiveTab] = useState('description');
   
   const { addToCart } = useCart();
+  const { toggleWishlist, isLiked } = useWishlist();
+  const { isLoggedIn, setIsAuthOpen } = useAuth();
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -48,6 +52,10 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (!isLoggedIn) {
+      setIsAuthOpen(true);
+      return;
+    }
     
     addToCart({
       productId: product.id,
@@ -58,6 +66,20 @@ export default function ProductDetail() {
       selectedVariant,
       originalPrice: product.originalPrice
     });
+  };
+
+  const handleBuyNow = () => {
+    if (!isLoggedIn) {
+      setIsAuthOpen(true);
+      return;
+    }
+    handleAddToCart();
+    window.location.href = '/checkout';
+  };
+
+  const handleWishlistToggle = () => {
+    if (!product) return;
+    toggleWishlist(product.id);
   };
 
   if (loading) {
@@ -201,7 +223,7 @@ export default function ProductDetail() {
                   <button onClick={handleAddToCart} className="flex-1 bg-[#0B4D26] hover:bg-[#07361a] text-white rounded-lg h-14 font-bold text-lg shadow-sm transition-colors active:scale-[0.98]">
                     Add to Cart
                   </button>
-                  <button onClick={() => { handleAddToCart(); window.location.href='/checkout'; }} className="flex-1 bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 rounded-lg h-14 font-bold text-lg shadow-sm transition-colors active:scale-[0.98]">
+                  <button onClick={handleBuyNow} className="flex-1 bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 rounded-lg h-14 font-bold text-lg shadow-sm transition-colors active:scale-[0.98]">
                     Buy Now
                   </button>
                 </>
@@ -213,8 +235,17 @@ export default function ProductDetail() {
             </div>
 
             <div className="flex items-center gap-6 mb-8">
-              <button className="flex items-center gap-2 text-gray-500 hover:text-red-500 font-medium transition-colors">
-                <Heart className="w-5 h-5" /> Add to Wishlist
+              <button 
+                onClick={handleWishlistToggle}
+                className={cn(
+                  "flex items-center gap-2 font-medium transition-colors",
+                  product && isLiked(product.id)
+                    ? "text-red-500 hover:text-red-600"
+                    : "text-gray-500 hover:text-red-500"
+                )}
+              >
+                <Heart className={cn("w-5 h-5", product && isLiked(product.id) && "fill-red-500")} />
+                {product && isLiked(product.id) ? 'Wishlisted' : 'Add to Wishlist'}
               </button>
               <button className="flex items-center gap-2 text-gray-500 hover:text-blue-500 font-medium transition-colors">
                 <Share2 className="w-5 h-5" /> Share

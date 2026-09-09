@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Heart, Star } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useAuth } from '../contexts/AuthContext';
 
 interface Product {
   id: string;
@@ -29,6 +31,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || 1);
   const [isHovered, setIsHovered] = useState(false);
   const { addToCart } = useCart();
+  const { toggleWishlist, isLiked } = useWishlist();
+  const { isLoggedIn, setIsAuthOpen } = useAuth();
 
   // Simple pricing logic for mock data based on variant size
   const variantMultiplier = selectedVariant;
@@ -37,8 +41,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     ? product.original_price * (variantMultiplier / (product.variants?.[0] || 1)) 
     : undefined;
 
+  const liked = isLiked(product.id);
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      setIsAuthOpen(true);
+      return;
+    }
     addToCart({
       productId: product.id,
       name: product.name,
@@ -48,6 +58,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       selectedVariant,
       originalPrice: currentOriginalPrice
     });
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(product.id);
   };
 
   return (
@@ -87,8 +103,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Wishlist */}
-        <button className="absolute top-3 right-3 p-2 bg-white/80 hover:bg-white text-gray-500 hover:text-red-500 rounded-full shadow-sm transition-all">
-          <Heart className="w-4 h-4" />
+        <button 
+          onClick={handleWishlistToggle}
+          className={cn(
+            "absolute top-3 right-3 p-2 rounded-full shadow-sm transition-all",
+            liked 
+              ? "bg-red-50 text-red-500 hover:bg-red-100" 
+              : "bg-white/80 hover:bg-white text-gray-500 hover:text-red-500"
+          )}
+        >
+          <Heart className={cn("w-4 h-4", liked && "fill-red-500")} />
         </button>
 
         {!product.in_stock && (
