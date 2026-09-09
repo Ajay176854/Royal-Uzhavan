@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { query } from "../db/pool.js";
 
 export interface AuthUser {
   id: string;
   email: string;
   role: string;
+  token_version?: number;
 }
 
 // Extend Express Request to include user
@@ -29,7 +31,7 @@ const JWT_SECRET: string = process.env.JWT_SECRET;
  */
 export function generateToken(user: AuthUser): string {
   return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
+    { id: user.id, email: user.email, role: user.role, token_version: user.token_version || 1 },
     JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -38,7 +40,7 @@ export function generateToken(user: AuthUser): string {
 /**
  * Required auth middleware — rejects with 401 if no valid token.
  */
-export function requireAuth(req: Request, res: Response, next: NextFunction): void {
+export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -50,6 +52,20 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as unknown as AuthUser;
+    
+    // Check against DB to ensure token is not invalidated
+    const userRes = await query("SELECT id, token_version FROM users WHERE id = $1", [decoded.id]);
+    if (userRes.rows.length === 0) {
+      res.status(401).json({ error: "User no longer exists" });
+      return;
+    }
+    
+    const dbUser = userRes.rows[0];
+    if (dbUser.token_version !== decoded.token_version) {
+      res.status(401).json({ error: "Session expired. Please log in again." });
+      return;
+    }
+    
     req.user = decoded;
     next();
   } catch {
@@ -61,14 +77,18 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
  * Optional auth middleware — attaches user if token present, but doesn't reject.
  * Useful for routes that behave differently for logged-in vs guest users.
  */
-export function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
+export async function optionalAuth(req: Request, _res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
 
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.split(" ")[1];
     try {
       const decoded = jwt.verify(token, JWT_SECRET) as unknown as AuthUser;
-      req.user = decoded;
+      
+      const userRes = await query("SELECT id, token_version FROM users WHERE id = $1", [decoded.id]);
+      if (userRes.rows.length > 0 && userRes.rows[0].token_version === decoded.token_version) {
+        req.user = decoded;
+      }
     } catch {
       // Invalid token — proceed as guest
     }

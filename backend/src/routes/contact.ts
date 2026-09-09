@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { query } from "../db/pool.js";
+import { sanitizeString } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -20,11 +21,16 @@ router.post("/", async (req, res) => {
       return;
     }
 
+    const cleanName = sanitizeString(name, 200);
+    const cleanSubject = subject ? sanitizeString(subject, 300) : null;
+    // Allow a bit more length for the message (e.g., 2000 chars)
+    const cleanMessage = sanitizeString(message, 2000);
+
     const result = await query(
       `INSERT INTO contact_messages (name, email, phone, subject, message)
        VALUES ($1, $2, $3, $4, $5)
        RETURNING id, created_at`,
-      [name, email.toLowerCase(), phone || null, subject || null, message]
+      [cleanName, email.toLowerCase(), phone || null, cleanSubject, cleanMessage]
     );
 
     res.status(201).json({

@@ -3,7 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
-import { testConnection, closePool } from "./db/pool.js";
+import crypto from "crypto";
+import path from "path";
+import { fileURLToPath } from "url";
+import { testConnection, closePool, checkHealth } from "./db/pool.js";
 import { productRoutes } from "./routes/products.js";
 import { orderRoutes } from "./routes/orders.js";
 import { authRoutes } from "./routes/auth.js";
@@ -14,12 +17,21 @@ import { getWhatsAppStatus } from "./services/whatsapp.js";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 const isProduction = process.env.NODE_ENV === "production";
 
+// ─── Static Files ───────────────────────────────────────────────
+// Serve the local uploads folder (used when STORAGE_PROVIDER=local)
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+
 // ─── Security Headers ───────────────────────────────────────────
-app.use(helmet());
+app.use(helmet({
+  hsts: { maxAge: 31536000, includeSubDomains: true },
+}));
 
 // ─── CORS ────────────────────────────────────────────────────────
 const allowedOrigins: string[] = [];
@@ -69,6 +81,7 @@ const createLimiter = rateLimit({
 // ─── Request Logger ─────────────────────────────────────────────
 app.use((req, res, next) => {
   const start = Date.now();
+  const requestId = crypto.randomUUID();
   res.on("finish", () => {
     const duration = Date.now() - start;
     const logLevel = res.statusCode >= 500 ? "ERROR" : res.statusCode >= 400 ? "WARN" : "INFO";
@@ -76,6 +89,7 @@ app.use((req, res, next) => {
       JSON.stringify({
         level: logLevel,
         timestamp: new Date().toISOString(),
+        requestId,
         method: req.method,
         url: req.url,
         status: res.statusCode,
@@ -104,7 +118,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/products", productRoutes);
 
-app.use("/api/orders", createLimiter); // rate limit order creation
+app.post("/api/orders", createLimiter); // rate limit order creation
 app.use("/api/orders", orderRoutes);
 
 app.use("/api/contact", createLimiter);
@@ -115,22 +129,22 @@ app.use("/api/admin", requireAuth, requireAdmin, adminRoutes);
 // ─── Health Check ───────────────────────────────────────────────
 app.get("/", async (_req, res) => {
   try {
-    const dbOk = await testConnection();
-    const status = dbOk ? "healthy" : "degraded";
+    const dbOk = await checkHealth();
     const statusCode = dbOk ? 200 : 503;
-    res.status(statusCode).json({
-      status,
-      app: "Royal Uzhavan API",
-      version: "1.0.0",
-      environment: isProduction ? "production" : "development",
-      database: dbOk ? "connected" : "disconnected",
-    });
+    
+    if (isProduction) {
+      res.status(statusCode).json({ status: dbOk ? "healthy" : "unhealthy" });
+    } else {
+      res.status(statusCode).json({
+        status: dbOk ? "healthy" : "degraded",
+        app: "Royal Uzhavan API",
+        version: "1.0.0",
+        environment: "development",
+        database: dbOk ? "connected" : "disconnected",
+      });
+    }
   } catch {
-    res.status(503).json({
-      status: "unhealthy",
-      app: "Royal Uzhavan API",
-      database: "error",
-    });
+    res.status(503).json({ status: "unhealthy" });
   }
 });
 

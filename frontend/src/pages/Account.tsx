@@ -142,7 +142,7 @@ export default function Account() {
                         <div key={order.id} className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
-                              <span className="block text-sm text-gray-500 mb-1">Order #{order.id.split('-')[0].toUpperCase()}</span>
+                              <span className="block text-sm text-gray-500 mb-1">Order {order.order_number || `#${order.id.split('-')[0].toUpperCase()}`}</span>
                               <span className="font-bold text-gray-900">Placed on {new Date(order.created_at).toLocaleDateString()}</span>
                             </div>
                             <div className="text-left sm:text-right">

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { query } from "../db/pool.js";
-import { generateToken, requireAuth, isValidEmail, sanitizeString } from "../middleware/auth.js";
+import { generateToken, requireAuth, isValidEmail, sanitizeString, isValidPhone } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -51,7 +51,7 @@ router.post("/signup", async (req, res) => {
     const result = await query(
       `INSERT INTO users (name, email, phone, password_hash)
        VALUES ($1, $2, $3, $4)
-       RETURNING id, name, email, phone, role, created_at`,
+       RETURNING id, name, email, phone, role, token_version, created_at`,
       [cleanName, cleanEmail, phone || null, passwordHash]
     );
 
@@ -60,6 +60,7 @@ router.post("/signup", async (req, res) => {
       id: user.id,
       email: user.email,
       role: user.role,
+      token_version: user.token_version,
     });
 
     res.status(201).json({
@@ -91,7 +92,7 @@ router.post("/login", async (req, res) => {
 
     // Find user
     const result = await query(
-      "SELECT id, name, email, phone, password_hash, role, address FROM users WHERE email = $1",
+      "SELECT id, name, email, phone, password_hash, role, address, token_version FROM users WHERE email = $1",
       [email.toLowerCase()]
     );
 
@@ -113,6 +114,7 @@ router.post("/login", async (req, res) => {
       id: user.id,
       email: user.email,
       role: user.role,
+      token_version: user.token_version,
     });
 
     res.json({
@@ -158,6 +160,26 @@ router.put("/profile", requireAuth, async (req, res) => {
   try {
     const { name, phone, address } = req.body;
 
+    const cleanName = name ? sanitizeString(name, 200) : null;
+    const cleanPhone = phone ? phone.trim() : null;
+
+    if (cleanPhone && !isValidPhone(cleanPhone)) {
+      res.status(400).json({ error: "Invalid phone number format" });
+      return;
+    }
+
+    let cleanAddress = null;
+    if (address !== undefined) {
+      if (typeof address === "object" && address !== null) {
+        cleanAddress = JSON.stringify(address);
+      } else if (address === null) {
+        cleanAddress = null;
+      } else {
+        res.status(400).json({ error: "Address must be an object" });
+        return;
+      }
+    }
+
     const result = await query(
       `UPDATE users
        SET name = COALESCE($1, name),
@@ -165,7 +187,7 @@ router.put("/profile", requireAuth, async (req, res) => {
            address = COALESCE($3, address)
        WHERE id = $4
        RETURNING id, name, email, phone, role, address, updated_at`,
-      [name || null, phone || null, address ? JSON.stringify(address) : null, req.user!.id]
+      [cleanName, cleanPhone, cleanAddress, req.user!.id]
     );
 
     if (result.rows.length === 0) {
@@ -180,6 +202,21 @@ router.put("/profile", requireAuth, async (req, res) => {
   } catch (error) {
     console.error("Profile update error:", error);
     res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+// POST /api/auth/logout (protected)
+// Increments token_version to invalidate all existing sessions
+router.post("/logout", requireAuth, async (req, res) => {
+  try {
+    await query(
+      "UPDATE users SET token_version = token_version + 1 WHERE id = $1",
+      [req.user!.id]
+    );
+    res.json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ error: "Failed to logout" });
   }
 });
 

@@ -8,7 +8,7 @@ const { Pool } = pg;
 // Connection pool — uses DATABASE_URL from .env
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  max: 20,
+  max: process.env.DB_POOL_SIZE ? parseInt(process.env.DB_POOL_SIZE) : 5, // Supabase free tier friendly
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
 });
@@ -61,6 +61,18 @@ export async function testConnection(): Promise<boolean> {
     return true;
   } catch (err) {
     console.error("❌ PostgreSQL connection failed:", err);
+    return false;
+  }
+}
+
+/**
+ * Silent health check for the / endpoint.
+ */
+export async function checkHealth(): Promise<boolean> {
+  try {
+    await pool.query("SELECT 1");
+    return true;
+  } catch {
     return false;
   }
 }

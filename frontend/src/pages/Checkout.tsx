@@ -5,6 +5,8 @@ import { useCart } from '../context/CartContext';
 
 import { motion, AnimatePresence } from 'motion/react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
 export default function Checkout() {
   const [step, setStep] = useState(1);
   const { items, cartTotal, clearCart } = useCart();
@@ -18,64 +20,75 @@ export default function Checkout() {
     flat: '',
     area: '',
     city: '',
+    state: '',
     pincode: ''
   });
   const [addressError, setAddressError] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('upi');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState('');
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderNumber, setOrderNumber] = useState('');
 
   const subtotal = cartTotal;
+  const shippingFee = subtotal >= 500 ? 0 : 50;
+  const estimatedTotal = subtotal + shippingFee;
 
   const handlePlaceOrder = async () => {
     setIsSubmitting(true);
+    setOrderError('');
     try {
       const token = localStorage.getItem('token');
+
+      // Build the payload the backend expects:
+      // - items as [{ productId, quantity }] — backend looks up real prices
+      // - shippingAddress as a structured object — backend validates each field
+      // - NO subtotal/total — backend calculates everything server-side
       const orderData = {
         customerName: `${address.firstName} ${address.lastName}`.trim(),
         customerEmail: address.email,
         customerPhone: address.phone,
-        shippingAddress: `${address.flat}, ${address.area}, ${address.city} - ${address.pincode}`,
+        shippingAddress: {
+          street: `${address.flat}, ${address.area}`.trim(),
+          city: address.city,
+          state: address.state,
+          pincode: address.pincode,
+        },
         items: items.map(i => ({
-          product_id: i.productId,
-          name: i.name,
-          image: i.image,
-          variant: String(i.selectedVariant),
+          productId: i.productId,
           quantity: i.quantity,
-          price: i.price
         })),
-        subtotal: subtotal,
-        shippingFee: 0,
-        total: subtotal,
         paymentMethod: 'cod'
       };
 
-      const res = await fetch('http://localhost:8000/api/orders', {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const res = await fetch(`${API_URL}/orders`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers,
         body: JSON.stringify(orderData)
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        const data = await res.json();
         clearCart();
-        
-        // Backend handles WhatsApp automation via Meta API
-        
+        setOrderNumber(data.order?.orderNumber || '');
         setOrderSuccess(true);
         setTimeout(() => {
           navigate('/account');
-        }, 2200);
+        }, 2500);
       } else {
-        const error = await res.json();
-        alert('Failed to place order: ' + error.error);
+        // Show specific error from backend (out of stock, blacklisted, duplicate, validation, etc.)
+        setOrderError(data.error || 'Failed to place order. Please try again.');
       }
     } catch (err) {
       console.error(err);
-      alert('Error placing order. Please make sure you are logged in.');
+      setOrderError('Network error. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -129,14 +142,15 @@ export default function Checkout() {
                     <input type="text" placeholder="Last Name" value={address.lastName} onChange={e => setAddress({...address, lastName: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="tel" placeholder="Phone Number" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="tel" placeholder="Phone Number (10 digits)" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                     <input type="email" placeholder="Email Address" value={address.email} onChange={e => setAddress({...address, email: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   </div>
                   <input type="text" placeholder="Flat, House no., Building, Company, Apartment" value={address.flat} onChange={e => setAddress({...address, flat: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   <input type="text" placeholder="Area, Street, Sector, Village" value={address.area} onChange={e => setAddress({...address, area: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" placeholder="Town/City" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
-                    <input type="text" placeholder="PIN Code" value={address.pincode} onChange={e => setAddress({...address, pincode: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="text" placeholder="State" value={address.state} onChange={e => setAddress({...address, state: e.target.value})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
+                    <input type="text" placeholder="PIN Code" maxLength={6} value={address.pincode} onChange={e => setAddress({...address, pincode: e.target.value.replace(/\D/g, '').slice(0, 6)})} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#0B4D26] focus:ring-1 focus:ring-[#0B4D26]" />
                   </div>
                   
                   {addressError && (
@@ -147,12 +161,26 @@ export default function Checkout() {
                   
                   <button 
                     onClick={() => {
-                      const { firstName, lastName, phone, email, flat, area, city, pincode } = address;
-                      if (!firstName || !lastName || !phone || !email || !flat || !area || !city || !pincode) {
-                        setAddressError('Please fill out all the blank spaces before continuing.');
+                      const { firstName, lastName, phone, email, flat, area, city, state, pincode } = address;
+                      if (!firstName || !lastName || !phone || !email || !flat || !area || !city || !state || !pincode) {
+                        setAddressError('Please fill out all the fields before continuing.');
+                        return;
+                      }
+                      // Basic client-side validations (backend does thorough validation too)
+                      if (!/^[6-9]\d{9}$/.test(phone.replace(/[\s\-\+]/g, '').replace(/^91/, ''))) {
+                        setAddressError('Please enter a valid 10-digit Indian mobile number.');
+                        return;
+                      }
+                      if (!/^[1-9]\d{5}$/.test(pincode)) {
+                        setAddressError('Please enter a valid 6-digit PIN code.');
+                        return;
+                      }
+                      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        setAddressError('Please enter a valid email address.');
                         return;
                       }
                       setAddressError('');
+                      setOrderError('');
                       setStep(2);
                     }}
                     className="w-full bg-[#0B4D26] text-white font-bold py-4 rounded-xl mt-4"
@@ -172,17 +200,31 @@ export default function Checkout() {
               
               {step === 2 && (
                 <div className="space-y-4">
-                  <div className="p-4 border border-[#0B4D26]/20 bg-[#0B4D26]/5 rounded-lg mb-6">
+                  {/* Delivery address summary */}
+                  <div className="p-4 border border-gray-200 bg-gray-50 rounded-lg text-sm text-gray-700 space-y-1">
+                    <p className="font-bold text-gray-900">{address.firstName} {address.lastName}</p>
+                    <p>{address.flat}, {address.area}</p>
+                    <p>{address.city}, {address.state} - {address.pincode}</p>
+                    <p>{address.phone} · {address.email}</p>
+                  </div>
+
+                  <div className="p-4 border border-[#0B4D26]/20 bg-[#0B4D26]/5 rounded-lg">
                     <p className="font-bold text-[#0B4D26] mb-1">Payment Method: Cash on Delivery (COD)</p>
                     <p className="text-sm text-gray-700">You will pay for your order when it is delivered to your address.</p>
                   </div>
+
+                  {orderError && (
+                    <div className="p-4 border border-red-200 bg-red-50 rounded-lg">
+                      <p className="text-red-700 font-medium text-sm">{orderError}</p>
+                    </div>
+                  )}
                   
                   <button 
                     onClick={handlePlaceOrder}
                     disabled={isSubmitting}
                     className="w-full bg-[#C9A227] hover:bg-[#b08d20] text-gray-900 font-bold py-4 rounded-xl mt-6 flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                   >
-                    <Lock className="w-5 h-5" /> {isSubmitting ? 'Processing...' : `Place Order • ₹${subtotal.toLocaleString('en-IN')}`}
+                    <Lock className="w-5 h-5" /> {isSubmitting ? 'Processing...' : `Place Order • ₹${estimatedTotal.toLocaleString('en-IN')}`}
                   </button>
                 </div>
               )}
@@ -207,12 +249,16 @@ export default function Checkout() {
                 </div>
                 <div className="space-y-3 mb-6 pb-6 border-b border-gray-100 text-sm text-gray-600">
                   <div className="flex justify-between"><span>Subtotal</span><span className="font-medium text-gray-900">₹{subtotal.toLocaleString('en-IN')}</span></div>
-                  <div className="flex justify-between"><span>Shipping</span><span className="font-medium text-green-600">Free</span></div>
+                  <div className="flex justify-between"><span>Shipping</span><span className={`font-medium ${shippingFee === 0 ? 'text-green-600' : 'text-gray-900'}`}>{shippingFee === 0 ? 'Free' : `₹${shippingFee}`}</span></div>
+                  {shippingFee > 0 && (
+                    <p className="text-xs text-green-600">Add ₹{(500 - subtotal).toLocaleString('en-IN')} more for free shipping!</p>
+                  )}
                 </div>
                 <div className="flex justify-between items-end mb-4">
                   <span className="text-lg font-bold text-gray-900">Total</span>
-                  <span className="text-2xl font-bold text-[#0B4D26]">₹{subtotal.toLocaleString('en-IN')}</span>
+                  <span className="text-2xl font-bold text-[#0B4D26]">₹{estimatedTotal.toLocaleString('en-IN')}</span>
                 </div>
+                <p className="text-xs text-gray-400 text-center">Final total confirmed by server at checkout</p>
              </div>
           </div>
 
@@ -244,7 +290,10 @@ export default function Checkout() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </motion.div>
-              <h2 className="text-3xl font-playfair font-bold text-gray-900 mb-3">Order Placed!</h2>
+              <h2 className="text-3xl font-playfair font-bold text-gray-900 mb-2">Order Placed!</h2>
+              {orderNumber && (
+                <p className="text-[#0B4D26] font-bold text-lg mb-3">Order #{orderNumber}</p>
+              )}
               <p className="text-gray-600 font-medium mb-8 text-sm leading-relaxed">
                 Thank you for choosing Royal Uzhavan! Your order has been successfully placed. Our team is now preparing your premium farm-fresh products for dispatch. You will receive a WhatsApp confirmation shortly with your tracking details.
               </p>
@@ -252,7 +301,7 @@ export default function Checkout() {
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
-                  transition={{ duration: 2, ease: "linear" }}
+                  transition={{ duration: 2.3, ease: "linear" }}
                   className="h-full bg-green-600 rounded-full"
                 />
               </div>
