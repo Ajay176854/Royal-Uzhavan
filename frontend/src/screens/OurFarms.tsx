@@ -81,16 +81,16 @@ export default function OurFarms() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center mb-32 max-w-4xl mx-auto">
-          <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">100%</h3>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Natural</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Committed to chemical-free, high-quality agricultural practices.</p>
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-8 text-center mb-32 max-w-4xl mx-auto">
+          <div className="p-6 md:p-12 bg-[#EAE5D9] border border-[var(--color-wabi-earth)]/20 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+            <h3 className="text-3xl sm:text-5xl font-serif text-[var(--color-wabi-green)] mb-4 sm:mb-6 italic">100%</h3>
+            <h4 className="font-bold text-[10px] sm:text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-2 sm:mb-3">Natural</h4>
+            <p className="text-gray-500 text-[11px] sm:text-sm leading-relaxed">Committed to chemical-free, high-quality agricultural practices.</p>
           </div>
-          <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">KK</h3>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Kanyakumari</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Sourced directly from our farms in Nagercoil.</p>
+          <div className="p-6 md:p-12 bg-[#EAE5D9] border border-[var(--color-wabi-earth)]/20 rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
+            <h3 className="text-3xl sm:text-5xl font-serif text-[var(--color-wabi-green)] mb-4 sm:mb-6 italic">KK</h3>
+            <h4 className="font-bold text-[10px] sm:text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-2 sm:mb-3">Kanyakumari</h4>
+            <p className="text-gray-500 text-[11px] sm:text-sm leading-relaxed">Sourced directly from our farms in Nagercoil.</p>
           </div>
         </div>
       </div>
