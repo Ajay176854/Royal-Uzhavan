@@ -15,10 +15,250 @@ import {
   X,
   Search
 } from 'lucide-react';
+function HomePlacementTab({ products, categories, onSave }: { products: any[], categories: any[], onSave: () => void }) {
+  const [editedCategories, setEditedCategories] = useState<Record<string, any>>({});
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Extract unique categories and their initial state
+  const categoryMap = React.useMemo(() => {
+    const map: Record<string, { name: string; homeCategories: string[]; isActiveHome: boolean }> = {};
+    
+    // 1. Initialize with all actual categories, including any saved placements on them
+    categories.forEach(c => {
+      map[c.name] = {
+        name: c.name,
+        homeCategories: c.homeCategories || [],
+        isActiveHome: c.isActiveHome !== undefined ? c.isActiveHome : true
+      };
+    });
+
+    // 2. Populate actual saved assignments from products (for backwards compatibility)
+    products.forEach(p => {
+      const catName = p.category || 'Uncategorized';
+      if (!map[catName]) {
+        map[catName] = {
+          name: catName,
+          homeCategories: p.homeCategories || [],
+          isActiveHome: p.isActiveHome !== undefined ? p.isActiveHome : true
+        };
+      } else if ((!map[catName].homeCategories || map[catName].homeCategories.length === 0) && p.homeCategories && p.homeCategories.length > 0) {
+        // Overwrite defaults if this product has saved categories but the category didn't
+        map[catName].homeCategories = p.homeCategories;
+        map[catName].isActiveHome = p.isActiveHome !== undefined ? p.isActiveHome : true;
+      }
+    });
+    return map;
+  }, [products, categories]);
+
+  const filteredCategories = Object.values(categoryMap).filter(c => 
+    c.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleCheckboxChange = (catName: string, homeCat: string, checked: boolean) => {
+    setEditedCategories(prev => {
+      const current = prev[catName] || categoryMap[catName];
+      const currentCategories = current.homeCategories || [];
+      const newCategories = checked 
+        ? [...currentCategories, homeCat]
+        : currentCategories.filter((c: string) => c !== homeCat);
+      
+      return {
+        ...prev,
+        [catName]: { ...current, homeCategories: newCategories }
+      };
+    });
+  };
+
+  const handleActiveToggle = (catName: string, checked: boolean) => {
+    setEditedCategories(prev => {
+      const current = prev[catName] || categoryMap[catName];
+      return {
+        ...prev,
+        [catName]: { ...current, isActiveHome: checked }
+      };
+    });
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSuccessMessage('');
+    try {
+      const productUpdates: any[] = [];
+      const categoryUpdates: any[] = [];
+      
+      Object.entries(editedCategories).forEach(([catName, catData]) => {
+        // Schedule update for the category object itself
+        categoryUpdates.push(
+          localApi.updateCategory(catName, {
+            homeCategories: catData.homeCategories,
+            isActiveHome: catData.isActiveHome
+          })
+        );
+        
+        // Update all associated products
+        products.forEach(p => {
+          if ((p.category || 'Uncategorized') === catName) {
+            productUpdates.push({
+              id: p.id,
+              homeCategories: catData.homeCategories,
+              isActiveHome: catData.isActiveHome
+            });
+          }
+        });
+      });
+
+      // Await category updates
+      await Promise.all(categoryUpdates);
+
+      if (productUpdates.length > 0) {
+        await localApi.updateBulkProducts(productUpdates);
+      }
+      setSuccessMessage('Category placements updated successfully.');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      setEditedCategories({});
+      onSave(); // Refresh data
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save changes');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Home Page Placement</h2>
+          <p className="text-sm text-gray-500">Manage where product categories appear on the Home page tabs.</p>
+        </div>
+        <div className="flex gap-3 w-full md:w-auto">
+          <div className="relative flex-1 md:w-64">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search categories..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
+            />
+          </div>
+          <button 
+            onClick={handleSave}
+            disabled={isSaving || Object.keys(editedCategories).length === 0}
+            className="bg-[#0B4D26] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50 whitespace-nowrap transition-colors"
+          >
+            {isSaving ? 'Saving...' : 'Save Changes'}
+          </button>
+        </div>
+      </div>
+      
+      {successMessage && (
+        <div className="mb-6 p-4 bg-green-50 text-green-700 border border-green-200 rounded-lg flex items-center justify-between">
+          <span className="font-bold">{successMessage}</span>
+          <button onClick={() => setSuccessMessage('')}><X className="w-4 h-4" /></button>
+        </div>
+      )}
+
+      {/* Desktop Table */}
+      <div className="hidden md:block overflow-x-auto border border-gray-200 rounded-lg shadow-sm">
+        <table className="w-full text-left text-sm text-gray-600">
+          <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
+            <tr>
+              <th className="px-6 py-4">Category</th>
+              <th className="px-6 py-4 text-center">Feed</th>
+              <th className="px-6 py-4 text-center">Supplements & Accessories</th>
+              <th className="px-6 py-4 text-center">Other</th>
+              <th className="px-6 py-4 text-center">Active</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {filteredCategories.map(cat => {
+              const currentData = editedCategories[cat.name] || cat;
+              const cats = currentData.homeCategories || [];
+              const isActive = currentData.isActiveHome !== undefined ? currentData.isActiveHome : true;
+              
+              return (
+                <tr key={cat.name} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 font-bold text-gray-900">
+                    {cat.name}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <input type="checkbox" checked={cats.includes('Feed')} onChange={(e) => handleCheckboxChange(cat.name, 'Feed', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <input type="checkbox" checked={cats.includes('Supplements & Accessories')} onChange={(e) => handleCheckboxChange(cat.name, 'Supplements & Accessories', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <input type="checkbox" checked={cats.includes('Other')} onChange={(e) => handleCheckboxChange(cat.name, 'Other', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    <button 
+                      onClick={() => handleActiveToggle(cat.name, !isActive)}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-[#0B4D26]' : 'bg-gray-300'}`}
+                    >
+                      <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`} />
+                    </button>
+                    <span className="ml-2 text-xs font-bold">{isActive ? 'Active' : 'Hidden'}</span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-4">
+        {filteredCategories.map(cat => {
+          const currentData = editedCategories[cat.name] || cat;
+          const cats = currentData.homeCategories || [];
+          const isActive = currentData.isActiveHome !== undefined ? currentData.isActiveHome : true;
+          
+          return (
+            <div key={cat.name} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+              <div className="mb-4">
+                <p className="font-bold text-gray-900">{cat.name}</p>
+              </div>
+              <div className="space-y-3 mb-4 border-t border-b border-gray-100 py-3">
+                <label className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                  <input type="checkbox" checked={cats.includes('Feed')} onChange={(e) => handleCheckboxChange(cat.name, 'Feed', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  Feed
+                </label>
+                <label className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                  <input type="checkbox" checked={cats.includes('Supplements & Accessories')} onChange={(e) => handleCheckboxChange(cat.name, 'Supplements & Accessories', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  Supplements & Accessories
+                </label>
+                <label className="flex items-center gap-3 text-sm font-medium text-gray-700">
+                  <input type="checkbox" checked={cats.includes('Other')} onChange={(e) => handleCheckboxChange(cat.name, 'Other', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
+                  Other
+                </label>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-gray-700">Status</span>
+                <div className="flex items-center">
+                  <button 
+                    onClick={() => handleActiveToggle(cat.name, !isActive)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-[#0B4D26]' : 'bg-gray-300'}`}
+                  >
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`} />
+                  </button>
+                  <span className="ml-2 text-xs font-bold">{isActive ? 'Active' : 'Hidden'}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories' | 'home-categories' | 'settings'>('dashboard');
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -90,7 +330,7 @@ export default function AdminDashboard() {
       } else if (tab === 'orders') {
         const ordersData = await localApi.getOrders({ limit: 50 });
         setOrders(ordersData);
-      } else if (tab === 'products') {
+      } else if (tab === 'products' || tab === 'home-categories') {
         const [prodData, catData] = await Promise.all([
           localApi.getProducts({ limit: 1000 }),
           localApi.getCategories()
@@ -151,6 +391,8 @@ export default function AdminDashboard() {
       ...productData,
       image: imagePreview || editingProduct?.image || '', // use the base64 or existing
       in_stock: productData.in_stock === 'true',
+      slug: editingProduct?.slug || (productData.name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+      animal_type: editingProduct?.animal_type || 'Livestock'
     };
 
     try {
@@ -191,14 +433,13 @@ export default function AdminDashboard() {
     try {
       await localApi.addCategory({
         name: categoryData.name,
-        image: imagePreview || ''
+        image: imagePreview
       });
       setIsCategoryModalOpen(false);
-      setImagePreview('');
       fetchData('categories');
     } catch (err: any) {
       console.error(err);
-      alert(`Error saving category: ${err.message || 'Unknown error'}`);
+      alert('Failed to add category');
     } finally {
       setIsSavingCategory(false);
     }
@@ -328,6 +569,12 @@ export default function AdminDashboard() {
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <Package className="w-5 h-5" /> Categories Management
+                </button>
+                <button
+                  onClick={() => setActiveTab('home-categories')}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'home-categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                >
+                  <LayoutDashboard className="w-5 h-5" /> Home Placement
                 </button>
                 <div className="my-2 border-t border-gray-100"></div>
                 <button
@@ -497,6 +744,8 @@ export default function AdminDashboard() {
                     </table>
                   </div>
                 </div>
+              ) : activeTab === 'home-categories' ? (
+                <HomePlacementTab products={products} categories={categories} onSave={() => fetchData('products')} />
               ) : activeTab === 'settings' ? (
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Site Settings</h2>
@@ -631,10 +880,6 @@ export default function AdminDashboard() {
                   <label className="block text-sm font-bold text-gray-700 mb-2">Product Name <span className="text-red-500">*</span></label>
                   <input required name="name" defaultValue={editingProduct?.name || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Slug (URL string) <span className="text-red-500">*</span></label>
-                  <input required name="slug" defaultValue={editingProduct?.slug || ''} placeholder="e.g. fresh-cow-milk" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
-                </div>
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Tamil Name</label>
@@ -654,16 +899,6 @@ export default function AdminDashboard() {
                       <option key={c.id} value={c.name} />
                     ))}
                   </datalist>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Animal Type</label>
-                  <select name="animal_type" defaultValue={editingProduct?.animal_type || 'Livestock'} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
-                    <option value="Cattle">Cattle</option>
-                    <option value="Poultry">Poultry</option>
-                    <option value="Birds">Birds</option>
-                    <option value="Livestock">Livestock</option>
-                    <option value="Human">Human</option>
-                  </select>
                 </div>
 
 

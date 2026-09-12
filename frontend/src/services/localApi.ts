@@ -89,6 +89,26 @@ const saveSettings = (settings: any) => {
   safeSetItem('site_settings', JSON.stringify(settings));
 };
 
+const getSettings = () => {
+  const settings = localStorage.getItem('site_settings');
+  return settings ? JSON.parse(settings) : { 
+    whatsapp_link: 'https://chat.whatsapp.com/G5g2mJgAWhd6P08u1q0Z3r',
+    instagram_link: 'https://www.instagram.com/uzhavan_birds_food_accessories',
+    youtube_link: 'https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD',
+    contact_address: '2/11/9, Asaarivilai, Saral post,\nKanniyakumari District,\nTamil Nadu - 629203',
+    contact_phone: '+91 80-72864890',
+    contact_email: 'royaluzhavan@gmail.com',
+    support_start_day: 'Mon',
+    support_end_day: 'Sat',
+    support_start_time: '09:00',
+    support_end_time: '18:00'
+  };
+};
+
+const saveSettings = (settings: any) => {
+  localStorage.setItem('site_settings', JSON.stringify(settings));
+};
+
 // --- Product API ---
 export const localApi = {
   getProducts: async (params?: { category?: string; search?: string; limit?: number }) => {
@@ -169,6 +189,27 @@ export const localApi = {
     return newCategory;
   },
 
+  updateCategory: async (name: string, data: any) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const custom = getCustomCategories();
+    const index = custom.findIndex((c: any) => c.name === name);
+    if (index !== -1) {
+      custom[index] = { ...custom[index], ...data };
+      saveCustomCategories(custom);
+      return custom[index];
+    }
+    // If not found in custom, we create a custom override for the dynamic category
+    const newCategory = {
+      id: crypto.randomUUID(),
+      name: name,
+      ...data,
+      created_at: new Date().toISOString()
+    };
+    custom.push(newCategory);
+    saveCustomCategories(custom);
+    return newCategory;
+  },
+
   deleteCategory: async (name: string) => {
     await new Promise(resolve => setTimeout(resolve, 300));
     const custom = getCustomCategories();
@@ -219,6 +260,33 @@ export const localApi = {
     }
 
     throw new Error("Product not found");
+  },
+
+  updateBulkProducts: async (productsData: any[]) => {
+    await new Promise(resolve => setTimeout(resolve, 600));
+    
+    const custom = getCustomProducts();
+    const modified = getModifiedProducts();
+    
+    for (const data of productsData) {
+      const { id, ...updates } = data;
+      
+      const customIndex = custom.findIndex((p: any) => p.id === id);
+      if (customIndex !== -1) {
+        custom[customIndex] = { ...custom[customIndex], ...updates };
+      } else {
+        const baseProduct = baseProducts.find(p => p.id === id);
+        if (baseProduct) {
+          const currentData = modified[id] || baseProduct;
+          modified[id] = { ...currentData, ...updates };
+        }
+      }
+    }
+    
+    saveCustomProducts(custom);
+    saveModifiedProducts(modified);
+    
+    return { success: true };
   },
 
   deleteProduct: async (id: string) => {
