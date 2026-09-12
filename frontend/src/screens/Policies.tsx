@@ -15,7 +15,7 @@ export default function Policies() {
             <h3 className="text-xl font-bold text-gray-900 mt-6">1. Delivery Areas & Timeframes</h3>
             <p>We currently deliver across all districts in Tamil Nadu. Standard delivery takes 2-4 business days. Bulk orders (over 50 bags) may require up to 7 business days for specialized transport arrangement.</p>
             <h3 className="text-xl font-bold text-gray-900 mt-6">2. Shipping Costs</h3>
-            <p>We offer free standard shipping on all orders over ₹2,000. For orders below this amount, a flat rate of ₹150 applies.</p>
+            <p>We offer free shipping across Kanyakumari district, while deliveries to all other districts in Tamil Nadu are handled via courier on a "To-Pay" basis, payable upon arrival.</p>
             
             <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col sm:flex-row gap-4">
               <Link href="/contact" className="inline-flex items-center justify-center gap-2 bg-[#1B4332] text-white px-8 py-3.5 rounded-full font-bold hover:bg-[#0f291e] transition-colors">
