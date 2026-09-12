@@ -41,13 +41,13 @@ export default function Shop() {
         if (searchQuery) params.search = searchQuery;
 
         const data = await localApi.getProducts(params);
-        
+
         // Client-side sorting
         let sorted = [...data];
         if (sortOption === 'created_at') {
           sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         }
-        
+
         setProducts(sorted);
       } catch (err) {
         console.error('Error fetching products:', err);
@@ -61,7 +61,7 @@ export default function Shop() {
   return (
     <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto px-4">
-        
+
         {/* Page Header */}
         <div className="mb-8 border-b border-gray-200 pb-6">
           <h1 className="text-3xl font-black uppercase tracking-tighter text-[#0B4D26] mb-2">
@@ -89,7 +89,7 @@ export default function Shop() {
               </h3>
               <ul className="space-y-3">
                 <li>
-                  <button 
+                  <button
                     onClick={() => {
                       setActiveCategory('All');
                       setSearchParams({});
@@ -104,7 +104,7 @@ export default function Shop() {
                 </li>
                 {categories.map(cat => (
                   <li key={cat.id}>
-                    <button 
+                    <button
                       onClick={() => {
                         setActiveCategory(cat.name);
                         setSearchParams({}); // optional, but good for resetting search if they click a category manually
@@ -120,9 +120,9 @@ export default function Shop() {
                 ))}
               </ul>
             </div>
-            
+
             {isMobileFiltersOpen && (
-              <button 
+              <button
                 onClick={() => setIsMobileFiltersOpen(false)}
                 className="w-full bg-[#0B4D26] text-white py-3 rounded-lg font-bold mt-8"
               >
@@ -135,20 +135,20 @@ export default function Shop() {
           <div className="flex-1">
             {/* Toolbar */}
             <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-gray-100 mb-6">
-              <button 
+              <button
                 className="lg:hidden flex items-center gap-2 font-bold text-gray-700"
                 onClick={() => setIsMobileFiltersOpen(true)}
               >
                 <Filter className="w-4 h-4" /> Filters
               </button>
-              
+
               <div className="hidden lg:flex items-center gap-2 text-sm text-gray-500">
                 <Filter className="w-4 h-4" /> Filtered by: <span className="font-bold text-gray-900">{activeCategory}</span>
               </div>
 
               <div className="flex items-center gap-3 ml-auto">
                 <label className="text-sm text-gray-500 font-medium hidden sm:block">Sort by:</label>
-                <select 
+                <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
                   className="border-gray-200 rounded-md text-sm py-1.5 pl-3 pr-8 focus:border-[#0B4D26] focus:ring-[#0B4D26] bg-gray-50 font-medium"
@@ -171,16 +171,16 @@ export default function Shop() {
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
-                
+
                 {products.length === 0 && (
                   <div className="text-center py-20 bg-white rounded-xl border border-gray-100">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">No products found</h3>
                     <p className="text-gray-500">Try adjusting your filters or search query.</p>
-                    <button 
+                    <button
                       onClick={() => {
-                        setActiveCategory('All'); 
+                        setActiveCategory('All');
                         setSearchParams({});
-                      }} 
+                      }}
                       className="mt-6 text-[#0B4D26] font-bold underline"
                     >
                       Clear all filters
