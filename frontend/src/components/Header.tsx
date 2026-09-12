@@ -110,9 +110,9 @@ export default function Header() {
           <Link href="/blog" className={`rounded-full transition-colors py-2 px-3 ${pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
 
           <div className="group">
-            <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
+            <Link href="/shop" className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
               PRODUCTS <ChevronDown className={`w-3.5 h-3.5 ${isProductsActive ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} strokeWidth={2.5} />
-            </button>
+            </Link>
             {/* Full-width Mega Menu Wrapper with hover bridge */}
             <div className="absolute top-[100%] left-0 w-full pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 cursor-default">
               <div className="bg-white shadow-2xl border-t border-gray-100">
