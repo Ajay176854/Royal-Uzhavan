@@ -261,9 +261,15 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories' | 'home-categories' | 'settings'>('dashboard');
 
   // Auth State
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    (typeof window !== 'undefined' ? sessionStorage.getItem('adminAuth') : 'false') === 'true'
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (typeof window !== 'undefined') {
+      setIsAuthenticated(sessionStorage.getItem('adminAuth') === 'true');
+    }
+  }, []);
   const [loginError, setLoginError] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
@@ -498,6 +504,10 @@ export default function AdminDashboard() {
     }
   };
 
+  if (!mounted) {
+    return null; // Return null on first render (SSR) to match exactly and avoid hydration errors
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
@@ -722,7 +732,7 @@ export default function AdminDashboard() {
                         {categories.map((cat) => (
                           <tr key={cat.id} className="hover:bg-gray-50 transition-colors">
                             <td className="px-6 py-4">
-                              <img src={cat.image || '/images/placeholder.png'} alt={cat.name} className="w-12 h-12 object-cover rounded bg-gray-100" />
+                              <img src={cat.image || '/images/001.jpg'} alt={cat.name} className="w-12 h-12 object-cover rounded bg-gray-100" />
                             </td>
                             <td className="px-6 py-4">
                               <p className="font-bold text-gray-900">{cat.name}</p>

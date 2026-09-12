@@ -108,7 +108,7 @@ export default function Home() {
                     id: `cat-${c.name}`,
                     name: c.name,
                     category: c.name,
-                    image: c.image || '/images/placeholder.png',
+                    image: c.image || '/images/001.jpg',
                     description: `Browse all products in ${c.name}`,
                     to: `/shop?category=${encodeURIComponent(c.name)}`
                   });
@@ -131,7 +131,7 @@ export default function Home() {
                     id: `cat-${pCategory}`,
                     name: pCategory,
                     category: pCategory,
-                    image: p.image || '/images/placeholder.png',
+                    image: p.image || '/images/001.jpg',
                     description: `Browse all products in ${pCategory}`,
                     to: `/shop?category=${encodeURIComponent(pCategory)}`
                   });
@@ -558,7 +558,7 @@ export default function Home() {
               >
                 <Link href={item.to || `/shop?category=${encodeURIComponent(item.category || item.name || item.title || 'Feed')}`} className="group flex flex-col items-center text-center">
                   <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
-                    <img src={item.image || '/images/placeholder.png'} alt={item.name || item.title || 'Product'} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <img src={item.image || '/images/001.jpg'} alt={item.name || item.title || 'Product'} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
                     {(item as any).num && (
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm text-[var(--color-wabi-earth)] shadow-sm">
                         {(item as any).num}

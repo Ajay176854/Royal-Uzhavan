@@ -148,10 +148,17 @@ export const localApi = {
       };
     });
 
-    // Merge them, preferring custom ones if names overlap
+    // Merge them, preferring custom ones if names overlap, but preserving images from dynamic if missing
     const mergedMap = new Map();
     dynamicCats.forEach((c: any) => mergedMap.set(c.name, c));
-    customCats.forEach((c: any) => mergedMap.set(c.name, c));
+    customCats.forEach((c: any) => {
+      const existing = mergedMap.get(c.name);
+      if (existing) {
+        mergedMap.set(c.name, { ...existing, ...c, image: c.image || existing.image });
+      } else {
+        mergedMap.set(c.name, { ...c, image: c.image || '/images/001.jpg' });
+      }
+    });
 
     return Array.from(mergedMap.values());
   },
