@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Filter, ChevronDown, Check } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { cn } from '../lib/utils';
+import { localApi } from '../services/localApi';
 
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,11 +22,8 @@ export default function Shop() {
     // Fetch categories
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/products/categories');
-        if (res.ok) {
-          const data = await res.json();
-          setCategories(data.categories);
-        }
+        const data = await localApi.getCategories();
+        setCategories(data);
       } catch (err) {
         console.error('Error fetching categories:', err);
       }
@@ -38,19 +36,19 @@ export default function Shop() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        let url = `http://localhost:8000/api/products?sort=${sortOption}&limit=200`;
-        if (activeCategory !== 'All') {
-          url += `&category=${encodeURIComponent(activeCategory)}`;
-        }
-        if (searchQuery) {
-          url += `&search=${encodeURIComponent(searchQuery)}`;
-        }
+        const params: any = { limit: 200 };
+        if (activeCategory !== 'All') params.category = activeCategory;
+        if (searchQuery) params.search = searchQuery;
 
-        const res = await fetch(url);
-        if (res.ok) {
-          const data = await res.json();
-          setProducts(data.products);
+        const data = await localApi.getProducts(params);
+        
+        // Client-side sorting
+        let sorted = [...data];
+        if (sortOption === 'created_at') {
+          sorted.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         }
+        
+        setProducts(sorted);
       } catch (err) {
         console.error('Error fetching products:', err);
       } finally {
@@ -156,9 +154,7 @@ export default function Shop() {
                   className="border-gray-200 rounded-md text-sm py-1.5 pl-3 pr-8 focus:border-[#0B4D26] focus:ring-[#0B4D26] bg-gray-50 font-medium"
                 >
                   <option value="popular">Popularity</option>
-                  <option value="price_asc">Price: Low to High</option>
-                  <option value="price_desc">Price: High to Low</option>
-                  <option value="created_at">Newest Arrivals</option>
+                  <option value="created_at">Newest First</option>
                 </select>
               </div>
             </div>

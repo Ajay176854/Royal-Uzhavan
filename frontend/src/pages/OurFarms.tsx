@@ -9,10 +9,10 @@ export default function OurFarms() {
         {/* Soft background texture element */}
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(var(--color-wabi-gold) 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
         <div className="container mx-auto px-4 text-center max-w-4xl relative z-10">
-          <span className="text-[var(--color-wabi-gold)] font-bold tracking-[0.3em] text-[10px] uppercase mb-6 block">ESTD 1984</span>
+          <span className="text-[var(--color-wabi-gold)] font-bold tracking-[0.3em] text-[10px] uppercase mb-6 block">ESTD 2021</span>
           <h1 className="text-5xl md:text-7xl font-serif mb-8">Our Farming Heritage</h1>
           <p className="text-lg text-[var(--color-wabi-bg)]/80 max-w-2xl mx-auto leading-relaxed font-medium">
-            Rooted in Sathya Nagar, Vandavasi, Tiruvannamalai District. Royal Uzhavan is dedicated to producing and supplying reliable nutrition and feed for farmers, livestock, and poultry.
+            Rooted in Kurunthancode, Nagercoil, Kanyakumari District. Royal Uzhavan is dedicated to producing and supplying reliable nutrition and feed for farmers, livestock, and poultry.
           </p>
         </div>
       </div>
@@ -20,17 +20,17 @@ export default function OurFarms() {
       <div className="container mx-auto px-4 md:px-12 py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
           <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-earth)]/10 p-4">
-            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80" alt="Farmer in field" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+            <img src="/images/journey.jpg" alt="Our Journey" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
           </div>
           <div>
             <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Our Story</span>
-            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">From Our Farm to Your Livestock</h2>
+            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">Built by Hard Work, Perfected for Your Animals</h2>
             <div className="prose prose-sm md:prose-base text-gray-600">
               <p className="mb-6 leading-relaxed">
-                We started with a simple mission in Tiruvannamalai: to support farmers with high-quality, reliable nutrition for their animals. We recognize that healthy livestock, productive poultry, and thriving birds depend on proper, balanced diets.
+                In 2020, we started small right from home, setting up a farm—a bird farm. We bought bird feed from outside, used it, and shared it with people around us. From there, taking the next step, we bought cattle feed, stocked it at home, and began supplying it. For deliveries, we used the Swift car we had at home, eventually getting scolded by family for it.
               </p>
               <p className="leading-relaxed">
-                Today, we produce and source the finest cattle feed, bird food, poultry supplements, and seed cakes. We ensure that when you feed your animals with Royal Uzhavan, you are giving them the absolute best nutrition directly from nature.
+                Deciding to move on to the next phase, we opened a shop, worked hard there, lifted and loaded feed sacks, and delivered them—hauling three or four sacks at a time on small scooters. Gradually, step by step, we opened another branch, established a company, and grown to the level where we now manufacture and supply our own brand of feed from our very own company today. That's the journey.
               </p>
             </div>
           </div>
@@ -48,9 +48,9 @@ export default function OurFarms() {
             <p className="text-gray-500 text-sm leading-relaxed">Fresh agricultural feed and nutrition delivered directly to you.</p>
           </div>
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">T.V.M</h3>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Tiruvannamalai</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Sourced directly from our farms in Vandavasi.</p>
+            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">K.K</h3>
+            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Kanyakumari</h4>
+            <p className="text-gray-500 text-sm leading-relaxed">Sourced directly from our farms in Nagercoil.</p>
           </div>
         </div>
       </div>

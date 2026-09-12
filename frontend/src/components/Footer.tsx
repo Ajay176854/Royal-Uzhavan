@@ -7,6 +7,9 @@ import {
   Mail,
   Phone,
   ArrowRight,
+  ShieldCheck,
+  Leaf,
+  Sprout,
 } from 'lucide-react';
 
 export default function Footer() {
@@ -72,7 +75,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/shop?category=Royal%20Cattle%20Feed"
+                  to="/cow"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -82,7 +85,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/shop?category=Royal%20Hen%20Feed"
+                  to="/hen"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -92,7 +95,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/shop?category=Royal%20Birds%20Food"
+                  to="/pigeon"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -217,7 +220,7 @@ export default function Footer() {
             </span>
           </div>
 
-          {/* Payment Partners */}
+          {/* Trust Badges */}
           <div
             className="
               flex flex-col
@@ -229,58 +232,18 @@ export default function Footer() {
               w-full md:w-auto
             "
           >
-            <span className="uppercase tracking-widest text-[var(--color-wabi-green)]/50 text-[9px] sm:text-[10px] text-center whitespace-nowrap">
-              Payment Partners
-            </span>
-
-            <div className="flex flex-wrap justify-center gap-2">
-              {/* UPI */}
-              <div className="bg-white rounded-md shadow-sm border border-gray-200 flex items-center justify-center w-[46px] sm:w-[48px] h-[30px] shrink-0">
-                <div className="flex items-center">
-                  <span className="text-gray-700 font-black italic tracking-tighter text-[14px] leading-none pr-0.5">
-                    UPI
-                  </span>
-
-                  <div className="flex flex-col -ml-0.5">
-                    <div className="w-1.5 h-1.5 bg-[#F79E1B] rotate-45 transform translate-y-0.5"></div>
-                    <div className="w-1.5 h-1.5 bg-[#03A853] rotate-45 transform -translate-y-0.5"></div>
-                  </div>
-                </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity">
+                <ShieldCheck className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                <span className="uppercase tracking-widest text-[var(--color-wabi-green)] text-[9px] sm:text-[10px] font-bold">Quality Assured</span>
               </div>
-
-              {/* VISA */}
-              <div className="bg-[#1434CB] rounded-md shadow-sm border border-[#1434CB] flex items-center justify-center w-[46px] sm:w-[48px] h-[30px] shrink-0 overflow-hidden">
-                <span className="text-white font-black italic tracking-wider text-[13px] font-sans">
-                  VISA
-                </span>
+              <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity">
+                <Leaf className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                <span className="uppercase tracking-widest text-[var(--color-wabi-green)] text-[9px] sm:text-[10px] font-bold">100% Natural</span>
               </div>
-
-              {/* Mastercard */}
-              <div className="bg-white rounded-md shadow-sm border border-gray-200 flex items-center justify-center w-[46px] sm:w-[48px] h-[30px] shrink-0">
-                <svg viewBox="0 0 100 60" className="w-7 h-5">
-                  <circle cx="35" cy="30" r="24" fill="#EB001B" />
-                  <circle cx="65" cy="30" r="24" fill="#F79E1B" />
-                  <path
-                    d="M50 16.5a24 24 0 000 33a24 24 0 000-33z"
-                    fill="#FF5F00"
-                  />
-                </svg>
-              </div>
-
-              {/* RuPay */}
-              <div className="bg-white rounded-md shadow-sm border border-gray-200 flex items-center justify-center w-[46px] sm:w-[48px] h-[30px] shrink-0 gap-[1px]">
-                <span className="text-[#002E6E] font-black italic tracking-tighter text-[12px] ml-1">
-                  RuPay
-                </span>
-
-                <div className="flex flex-col mt-0.5">
-                  <span className="text-[#F79E1B] text-[10px] font-black leading-[0.35]">
-                    ›
-                  </span>
-                  <span className="text-[#03A853] text-[10px] font-black leading-[0.35]">
-                    ›
-                  </span>
-                </div>
+              <div className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity">
+                <Sprout className="w-4 h-4 text-[var(--color-wabi-green)]" />
+                <span className="uppercase tracking-widest text-[var(--color-wabi-green)] text-[9px] sm:text-[10px] font-bold">Farm Direct</span>
               </div>
             </div>
           </div>

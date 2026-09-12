@@ -3,17 +3,12 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MobileNav from './components/MobileNav';
-import CartDrawer from './components/CartDrawer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
-import ProductDetail from './pages/ProductDetail';
 import Subscriptions from './pages/Subscriptions';
 import OurFarms from './pages/OurFarms';
 import TraceProduct from './pages/TraceProduct';
-import Blog from './pages/Blog';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import Account from './pages/Account';
+
 import AdminDashboard from './pages/AdminDashboard';
 import Contact from './pages/Contact';
 import TrackOrder from './pages/TrackOrder';
@@ -21,10 +16,7 @@ import Policies from './pages/Policies';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import { AuthProvider } from './contexts/AuthContext';
-import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './contexts/WishlistContext';
-import AuthDrawer from './components/AuthDrawer';
 import SiteLoader from './components/SiteLoader';
 import AnimalNeedPage from './pages/AnimalNeedPage';
 
@@ -39,11 +31,9 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <WishlistProvider>
-        <CartProvider>
-          <SiteLoader />
-          <BrowserRouter>
+    <WishlistProvider>
+      <SiteLoader />
+      <BrowserRouter>
             <ScrollToTop />
             <div className="flex flex-col min-h-screen text-[#1A1A1A] overflow-x-hidden">
               <Header />
@@ -52,14 +42,10 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/shop" element={<Shop />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
                   <Route path="/subscriptions" element={<Subscriptions />} />
                   <Route path="/our-farms" element={<OurFarms />} />
                   <Route path="/trace" element={<TraceProduct />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/account" element={<Account />} />
+
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/track" element={<TrackOrder />} />
@@ -76,8 +62,6 @@ export default function App() {
 
               <Footer />
               <MobileNav />
-              <CartDrawer />
-              <AuthDrawer />
               <a
                 href="https://wa.me/918072864890"
                 target="_blank"
@@ -88,8 +72,6 @@ export default function App() {
               </a>
             </div>
           </BrowserRouter>
-        </CartProvider>
-      </WishlistProvider>
-    </AuthProvider>
+    </WishlistProvider>
   );
 }

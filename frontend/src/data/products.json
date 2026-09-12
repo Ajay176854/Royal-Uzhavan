@@ -1,0 +1,2182 @@
+[
+  {
+    "id": "4b590398-81f5-47b6-b562-7a2b3fb45bfa",
+    "slug": "royal-kalappu",
+    "name": "Royal Kalappu",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் கலப்பு"
+  },
+  {
+    "id": "93dc9ac4-a2d8-4bbe-acb1-6049b0069cb1",
+    "slug": "royal-standard-mix",
+    "name": "Royal Standard Mix",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் ஸ்டாண்டர்ட் மிக்ஸ்"
+  },
+  {
+    "id": "71beece5-a0fa-452e-a3d0-953d40bdb438",
+    "slug": "royal-gold-kalappu-theevanam",
+    "name": "Royal Gold Kalappu Theevanam",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் கோல்ட் கலப்பு தீவனம்"
+  },
+  {
+    "id": "d82cd1a3-1bf5-44e0-bc71-c0d1459f64f7",
+    "slug": "royal-arisitham",
+    "name": "Royal Arisitham",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரச அரிசிதம்"
+  },
+  {
+    "id": "9665b44b-b1c6-40c8-a7f3-76157f49d92b",
+    "slug": "royal-kandra-weight-gain",
+    "name": "Royal Kandra Weight gain",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் காந்த்ரா எடை அதிகரிப்பு"
+  },
+  {
+    "id": "a2883a0f-eb32-4b5a-9d68-157fdce4d5a3",
+    "slug": "royal-makka-cholam-maavu",
+    "name": "Royal Makka Cholam Maavu",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரச மக்க சோழம் மாவு"
+  },
+  {
+    "id": "a9e2abf0-2b3f-4f34-8885-e8dbcec627f1",
+    "slug": "royal-makka-cholam-kurunai",
+    "name": "Royal Makka Cholam Kurunai",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "",
+    "image": "/images/cattle-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரச மக்க சோழம் குருணை"
+  },
+  {
+    "id": "b156ef57-2787-44e2-a488-0c710ddf7b8f",
+    "slug": "royal-pre-stater",
+    "name": "Royal Pre Stater",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் ப்ரீ ஸ்டேட்டர்"
+  },
+  {
+    "id": "5b773f8a-eb80-4be6-9a99-39fb0e7aa15e",
+    "slug": "royal-stater",
+    "name": "Royal Stater",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் ஸ்டேட்டர்"
+  },
+  {
+    "id": "d847f22c-c915-47a7-bafe-352a79bbb4a5",
+    "slug": "royal-grower",
+    "name": "Royal Grower",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரசவை வளர்ப்பவர்"
+  },
+  {
+    "id": "e382019d-473c-47d2-842e-428edd0adc51",
+    "slug": "royal-layer",
+    "name": "Royal Layer",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் அடுக்கு"
+  },
+  {
+    "id": "c3403b55-b010-4042-bba1-0f33c980b33a",
+    "slug": "royal-hen-crumble",
+    "name": "Royal Hen Crumble",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் ஹென் க்ரம்பிள்"
+  },
+  {
+    "id": "ec31cab6-7ae5-44e8-a0b9-312888177f34",
+    "slug": "royal",
+    "name": "Royal கோழி தவிடு",
+    "category": "Royal Hen Feed / Royal Kozhi Theevanam*",
+    "animal_type": "Poultry",
+    "description": "",
+    "image": "/images/hen-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரச கோழி தவிடு"
+  },
+  {
+    "id": "758fc091-0a12-4607-9a80-61a2bce794fb",
+    "slug": "royal-pigeon-sf",
+    "name": "Royal Pigeon SF",
+    "category": "Royal Birds Food",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/birds-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் பிஜியன் எஸ்.எஃப்"
+  },
+  {
+    "id": "f1bb2837-200b-444d-b651-80cf666b7833",
+    "slug": "royal-pigeon-pt",
+    "name": "Royal Pigeon PT",
+    "category": "Royal Birds Food",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/birds-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரச புறா PT"
+  },
+  {
+    "id": "9ac4ee78-6de3-4641-a07a-4fc1ecf30007",
+    "slug": "royal-budgies-finches-mix",
+    "name": "Royal Budgies & Finches Mix",
+    "category": "Royal Birds Food",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/birds-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் பட்ஜிஸ்"
+  },
+  {
+    "id": "2c90cdbf-0209-4d9a-8729-f8b3c69c655e",
+    "slug": "royal-african-cockatiel-mix",
+    "name": "Royal African & Cockatiel Mix",
+    "category": "Royal Birds Food",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/birds-food.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் ஆப்பிரிக்கன்"
+  },
+  {
+    "id": "7353ae4c-cf3e-451d-b25e-98d10f874bcc",
+    "slug": "royal-multi-mix-oil-cake",
+    "name": "Royal Multi Mix Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ராயல் மல்டி மிக்ஸ் ஆயில் கேக்"
+  },
+  {
+    "id": "87d465f0-2793-4bd6-8160-37d92d79565b",
+    "slug": "groundnut-oil-cake",
+    "name": "Groundnut Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நிலக்கடலை எண்ணெய் கேக்"
+  },
+  {
+    "id": "66f75661-6076-4ea3-ac07-d7fd51389ccd",
+    "slug": "groundnut-oil-cake-powder",
+    "name": "Groundnut Oil Cake Powder",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நிலக்கடலை எண்ணெய் கேக் பொடி"
+  },
+  {
+    "id": "04a97b0c-bbbe-4b09-b197-7ae98e9877f9",
+    "slug": "mixed-sesame-oil-cake",
+    "name": "Mixed Sesame Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கலப்பு எள் எண்ணெய் கேக்"
+  },
+  {
+    "id": "f4a1b12a-a0bc-4c84-bc64-1748f6300110",
+    "slug": "sesame-oil-cake-powder",
+    "name": "Sesame Oil Cake Powder",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "எள் எண்ணெய் கேக் பவுடர்"
+  },
+  {
+    "id": "b5b59ed8-2e83-40a0-852c-cdae98dd4756",
+    "slug": "coconut-oil-cake-copra-cake",
+    "name": "Coconut Oil Cake / Copra Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "தேங்காய் எண்ணெய் கேக் / கொப்பரை கேக்"
+  },
+  {
+    "id": "6ae6dda7-faef-49a2-be3a-2a7b16b1aa5c",
+    "slug": "mustard-oil-cake",
+    "name": "Mustard Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கடுகு எண்ணெய் கேக்"
+  },
+  {
+    "id": "70ad8926-32aa-4c46-a4ae-bacc6211a8d5",
+    "slug": "soya-oil-cake",
+    "name": "Soya Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சோயா எண்ணெய் கேக்"
+  },
+  {
+    "id": "0046aa81-6c44-4e3f-974d-5fee7228bd03",
+    "slug": "mustard-kadu-oil-cake",
+    "name": "Mustard / Kadu Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கடுகு / கடு எண்ணெய் கேக்"
+  },
+  {
+    "id": "af8ff044-e1fc-41de-a3b9-875aab37c3f2",
+    "slug": "cotton-seed-oil-cake",
+    "name": "Cotton Seed Oil Cake",
+    "category": "Royal oil-cake(Punnaku)",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-punnakku.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பருத்தி விதை எண்ணெய் கேக்"
+  },
+  {
+    "id": "a81a899b-7019-49a8-bcc2-fd6e7c4141c6",
+    "slug": "wheat-brankothambu-tavudu",
+    "name": "Wheat Bran(kothambu tavudu)",
+    "category": "Uzhavan Thavitu Vagaigal - nutrition",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-nutrition.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கோதுமை தவிடு(கொத்தம்பு தவுடு)"
+  },
+  {
+    "id": "320219d6-66de-4668-97fa-68dc2390c5f9",
+    "slug": "rice-branarisi-tavudu",
+    "name": "Rice Bran(arisi tavudu)",
+    "category": "Uzhavan Thavitu Vagaigal - nutrition",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-nutrition.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "அரிசி தவிடு (அரிசி தவுடு)"
+  },
+  {
+    "id": "917e54a6-c5e7-49de-b8d7-f3a65cb7031f",
+    "slug": "corn-bran",
+    "name": "Corn Bran",
+    "category": "Uzhavan Thavitu Vagaigal - nutrition",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-nutrition.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சோள தவிடு"
+  },
+  {
+    "id": "ca124612-763b-45b8-977c-d9a2708b2d98",
+    "slug": "proso-millet",
+    "name": "Proso Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ப்ரோசோ மில்லட்"
+  },
+  {
+    "id": "d64e3a5f-2091-445b-9f04-94882db11ef1",
+    "slug": "sorghum-bransingaariya-tavudu",
+    "name": "Sorghum Bran(singaariya tavudu)",
+    "category": "Uzhavan Thavitu Vagaigal - nutrition",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-nutrition.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சோறு தவிடு(சிங்காராய தவுடு)"
+  },
+  {
+    "id": "e8c717b6-a6a0-4b5f-8fb6-0ebf41a4ecfc",
+    "slug": "coarse-bran",
+    "name": "Coarse Bran",
+    "category": "Uzhavan Thavitu Vagaigal - nutrition",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-nutrition.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கரடுமுரடான தவிடு"
+  },
+  {
+    "id": "4883ceba-2f60-40c3-9e9e-95f7034503dd",
+    "slug": "maize-corn",
+    "name": "Maize / Corn",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சோளம் / சோளம்"
+  },
+  {
+    "id": "0a9be31e-d3b3-4eb2-ad06-b2025e1956e8",
+    "slug": "broken-maize-corn-grits",
+    "name": "Broken Maize / Corn Grits",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "உடைந்த மக்காச்சோளம் / சோள கிரிட்ஸ்"
+  },
+  {
+    "id": "09a3028e-2989-4e06-b1f8-9feaff22baff",
+    "slug": "maize-flour-corn-flour",
+    "name": "Maize Flour / Corn Flour",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "மக்காச்சோள மாவு / சோள மாவு"
+  },
+  {
+    "id": "5c65c0aa-6635-46a7-9564-6b76bebdde65",
+    "slug": "white-sorghum-white-jowar",
+    "name": "White Sorghum / White Jowar",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை சோளம் / வெள்ளை ஜோவர்"
+  },
+  {
+    "id": "dd394da6-ae7e-42c5-9f11-7a46271d97d2",
+    "slug": "red-sorghum-red-jowar",
+    "name": "Red Sorghum / Red Jowar",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சிவப்பு சோளம் / சிவப்பு ஜோவர்"
+  },
+  {
+    "id": "9645e0c2-c329-4de5-8694-3e523759548e",
+    "slug": "pearl-millet-bajra",
+    "name": "Pearl Millet / Bajra",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "முத்து தினை / பஜ்ரா"
+  },
+  {
+    "id": "f45c13eb-ed1c-47b1-9211-524d4754ebe8",
+    "slug": "finger-millet-ragi",
+    "name": "Finger Millet / Ragi",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "தினை / ராகி"
+  },
+  {
+    "id": "4e7a125f-604a-45df-b692-d60837d1f0ec",
+    "slug": "foxtail-millet",
+    "name": "Foxtail Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஃபாக்ஸ்டெயில் தினை"
+  },
+  {
+    "id": "70eec3d2-1350-439f-bfee-aac2d36cf1aa",
+    "slug": "wheat",
+    "name": "Wheat",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கோதுமை"
+  },
+  {
+    "id": "4d390a28-605e-4a9b-b73c-f2ca4478e181",
+    "slug": "roasted-gram-puffed-chickpea",
+    "name": "Roasted Gram / Puffed Chickpea",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வறுத்த பருப்பு / கொப்பளித்த கொண்டைக்கடலை"
+  },
+  {
+    "id": "f8dd6401-9cc3-4628-a582-ae8c43da9c18",
+    "slug": "groundnut-peanut",
+    "name": "Groundnut / Peanut",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நிலக்கடலை / வேர்க்கடலை"
+  },
+  {
+    "id": "caaa0200-d002-4e73-b9c0-8140c10b1add",
+    "slug": "green-gram-moong-dal",
+    "name": "Green Gram / Moong Dal",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பச்சைப்பயறு / மூங் தால்"
+  },
+  {
+    "id": "81dc053c-2a2a-4c3f-9577-ca53209ef652",
+    "slug": "black-chickpea-kala-chana",
+    "name": "Black Chickpea / Kala Chana",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு கொண்டைக்கடலை / கலா சானா"
+  },
+  {
+    "id": "24f917c1-3a19-4b6a-bd51-27bd361ef9fc",
+    "slug": "white-chickpea-kabuli-chana",
+    "name": "White Chickpea / Kabuli Chana",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை கொண்டைக்கடலை / காபூலி சானா"
+  },
+  {
+    "id": "e60761e3-c0f9-41a4-8e5f-cb299640254f",
+    "slug": "paddy-unpolished-rice-grain",
+    "name": "Paddy / Unpolished Rice Grain",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நெல் / பாலிஷ் செய்யப்படாத அரிசி தானியம்"
+  },
+  {
+    "id": "0564aa0c-d844-4a78-8973-72b801025e86",
+    "slug": "white-peas",
+    "name": "White Peas",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை பட்டாணி"
+  },
+  {
+    "id": "11033eb9-2a18-44e5-b90c-ae058d2a75ba",
+    "slug": "green-peas",
+    "name": "Green Peas",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பச்சை பட்டாணி"
+  },
+  {
+    "id": "655f2757-620a-4aeb-b455-8338a7e99d52",
+    "slug": "red-rice",
+    "name": "Red Rice",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சிவப்பு அரிசி"
+  },
+  {
+    "id": "103d3456-64e3-412a-97dd-ece5a011f0f0",
+    "slug": "black-horse-gram-black-cowpea",
+    "name": "Black Horse Gram / Black Cowpea",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு குதிரை கிராம் / கருப்பு கவ்பியா"
+  },
+  {
+    "id": "9671d55a-8247-43a7-bcde-e656cbfbc009",
+    "slug": "white-horse-gram-white-cowpea",
+    "name": "White Horse Gram / White Cowpea",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை குதிரை கிராம் / வெள்ளை கவ்பி"
+  },
+  {
+    "id": "1a30dcad-e1e4-453d-a3c9-f1bf14aa436c",
+    "slug": "barley",
+    "name": "Barley",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பார்லி"
+  },
+  {
+    "id": "70f58d81-9ce1-41c5-9db3-8c1ad9d2eb0a",
+    "slug": "black-wheat",
+    "name": "Black Wheat",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு கோதுமை"
+  },
+  {
+    "id": "16fa8429-978d-4ef3-b121-ad01d71575e9",
+    "slug": "black-sunflower-seeds",
+    "name": "Black Sunflower Seeds",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு சூரியகாந்தி விதைகள்"
+  },
+  {
+    "id": "9a06c25f-c463-4798-a372-4e0e4e804a88",
+    "slug": "striped-white-sunflower-seeds",
+    "name": "Striped / White Sunflower Seeds",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கோடிட்ட / வெள்ளை சூரியகாந்தி விதைகள்"
+  },
+  {
+    "id": "ec01aad4-5397-4de8-b143-13e7b298165e",
+    "slug": "sorghum-millet-small-grain",
+    "name": "Sorghum Millet - Small Grain",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "உளுந்து - சிறுதானியம்"
+  },
+  {
+    "id": "23af16a2-6aa6-4d6f-b7ff-1f691acba0ec",
+    "slug": "flat-bean-field-bean",
+    "name": "Flat Bean / Field Bean",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பிளாட் பீன் / பீல்ட் பீன்"
+  },
+  {
+    "id": "4b474ae7-c4f1-421b-8b1f-7f2b7738be1e",
+    "slug": "little-millet",
+    "name": "Little Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சிறிய தினை"
+  },
+  {
+    "id": "5a30e052-2b19-42df-bd83-8a4821bc3888",
+    "slug": "kodo-millet",
+    "name": "Kodo Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கோடோ தினை"
+  },
+  {
+    "id": "dcc264bb-40af-427c-beb3-e5111b4342d4",
+    "slug": "barnyard-millet",
+    "name": "Barnyard Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "Barnyard Millet"
+  },
+  {
+    "id": "68aa5e2c-0f88-4e9e-b677-00b5e9d21164",
+    "slug": "linseed-groundnut-kernels",
+    "name": "Linseed & Groundnut Kernels",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஆளிவிதை"
+  },
+  {
+    "id": "e09ee72e-ae14-4612-bf7d-597c02ae6a1b",
+    "slug": "oats",
+    "name": "Oats",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஓட்ஸ்"
+  },
+  {
+    "id": "68fcefe1-11b3-4340-b123-f18f05ec14bd",
+    "slug": "sesame-seed",
+    "name": "Sesame Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "எள் விதை"
+  },
+  {
+    "id": "86720229-ef40-490f-9305-49620f5fbe7c",
+    "slug": "niger-seed",
+    "name": "Niger Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நைஜர் விதை"
+  },
+  {
+    "id": "0080cbcb-5a5e-4315-95fe-ceb8a69cbbfe",
+    "slug": "rapeseed",
+    "name": "Rapeseed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ரேப்சீட்"
+  },
+  {
+    "id": "2c19b7ee-4b50-4e6e-aea0-96eec6f83218",
+    "slug": "mustard-seed",
+    "name": "Mustard Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கடுகு விதை"
+  },
+  {
+    "id": "a472f0df-4e02-4179-964a-26c01c626c05",
+    "slug": "buckwheat",
+    "name": "Buckwheat",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பக்வீட்"
+  },
+  {
+    "id": "db79c1d1-d949-4c73-a962-9da210faf954",
+    "slug": "quinoa",
+    "name": "Quinoa",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "குயினோவா"
+  },
+  {
+    "id": "0945c1f2-aec9-4120-993a-f2fe48af5123",
+    "slug": "chia-seed",
+    "name": "Chia Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சியா விதை"
+  },
+  {
+    "id": "ae273ae7-db9a-48bb-9c6c-831ba3065422",
+    "slug": "pumpkin-seed",
+    "name": "Pumpkin Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பூசணி விதை"
+  },
+  {
+    "id": "edb82963-938d-48bf-8599-3aa0ab40e3f6",
+    "slug": "flax-seed-lin-seed",
+    "name": "Flax Seed / Lin Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஆளி விதை / லின் விதை"
+  },
+  {
+    "id": "f3863f41-309b-40af-8139-dc80ee89a0fa",
+    "slug": "vetch-seed",
+    "name": "Vetch Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெட்ச் விதை"
+  },
+  {
+    "id": "33d72b78-8e9c-4ad9-a2f8-dd21ef302077",
+    "slug": "maple-peas",
+    "name": "Maple Peas",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "மேப்பிள் பட்டாணி"
+  },
+  {
+    "id": "516cf336-6c0c-409b-ab48-bb19bc86d993",
+    "slug": "austrian-peas",
+    "name": "Austrian Peas",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஆஸ்திரிய பட்டாணி"
+  },
+  {
+    "id": "bb1c9e4f-b917-4f2d-a0db-5faffea6a729",
+    "slug": "white-millets",
+    "name": "White Millets",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை தினை"
+  },
+  {
+    "id": "195180bf-d5b2-4e74-b44e-c57c6757bb4f",
+    "slug": "red-millets",
+    "name": "Red Millets",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சிவப்பு தினை"
+  },
+  {
+    "id": "819ffda3-fc54-4354-94cc-9a74202a4172",
+    "slug": "japanese-millet",
+    "name": "Japanese Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "ஜப்பானிய தினை"
+  },
+  {
+    "id": "6cc2858e-9fda-4b01-9fb1-75b66919d196",
+    "slug": "yellow-millet",
+    "name": "Yellow Millet",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "மஞ்சள் தினை"
+  },
+  {
+    "id": "c699c16e-da5e-4dfa-b207-6ff0014a65f0",
+    "slug": "cardi-seed",
+    "name": "Cardi Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கார்டி விதை"
+  },
+  {
+    "id": "82850223-5fbf-4886-a8ac-fde89cb5cc5c",
+    "slug": "small-black-sunflower",
+    "name": "Small Black Sunflower",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "சிறிய கருப்பு சூரியகாந்தி"
+  },
+  {
+    "id": "0ced2ad2-2919-4eed-9b56-763181f0b320",
+    "slug": "white-sunflower",
+    "name": "White Sunflower",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "வெள்ளை சூரியகாந்தி"
+  },
+  {
+    "id": "d7ccc820-93e2-4058-a5d0-3044b7a3d172",
+    "slug": "canary-seed",
+    "name": "Canary Seed",
+    "category": "Cereals and Grains Category",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/royal-cereals.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கேனரி விதை"
+  },
+  {
+    "id": "a8905318-19fc-4143-ad3f-f97b5dcd81cb",
+    "slug": "black-gram-husk-powder",
+    "name": "Black Gram Husk Powder",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பட்டி உமி தூள்"
+  },
+  {
+    "id": "6d3c8907-b5e7-426c-ae1c-9a0b9035d955",
+    "slug": "black-gram-small-broken-powder",
+    "name": "Black Gram Small Broken / Powder",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு கிராம் சிறிய உடைந்த / தூள்"
+  },
+  {
+    "id": "b0480982-bb48-49e3-bb87-18d943a9d4ae",
+    "slug": "black-gram-broken-waste-mix",
+    "name": "Black Gram Broken & Waste Mix",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு கிராம் உடைந்தது"
+  },
+  {
+    "id": "744213e3-746d-4f22-b3fa-eb4bd6c640bf",
+    "slug": "cowpea-lobia-husk-powder",
+    "name": "Cowpea / Lobia Husk Powder",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கவ்பி / லோபியா உமி தூள்"
+  },
+  {
+    "id": "79243bb7-447c-4754-a12d-787e70a8520e",
+    "slug": "black-green-gram-broken-waste",
+    "name": "Black Green Gram Broken Waste",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு பச்சை கிராம் உடைந்த கழிவு"
+  },
+  {
+    "id": "44672d95-d5c8-44c1-8afc-9faec2e49541",
+    "slug": "black-karamani-black-cowpea-husk",
+    "name": "Black Karamani / Black Cowpea Husk",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கறுப்பு காராமணி / கறுப்பு கவ்வி உமி"
+  },
+  {
+    "id": "c5f5cbd6-254f-4739-8e22-6274aca6c9d3",
+    "slug": "dried-peas-husk",
+    "name": "Dried Peas Husk",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "காய்ந்த பட்டாணி உமி"
+  },
+  {
+    "id": "4efb18e9-673a-481e-b67f-7bed296d0b95",
+    "slug": "toor-dal-pigeon-pea-husk",
+    "name": "Toor Dal / Pigeon Pea Husk",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "தோர் பருப்பு / புறா பட்டாணி உமி"
+  },
+  {
+    "id": "8ad55a3a-15cc-4fea-82a5-0509eb676e51",
+    "slug": "masoor-dal-lentil-husk",
+    "name": "Masoor Dal / Lentil Husk",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "மசூர் பருப்பு / பருப்பு உமி"
+  },
+  {
+    "id": "d32f59d9-111a-4b69-a8d1-8b5451001e5e",
+    "slug": "millet-husk-powder",
+    "name": "Millet Husk Powder",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "தினை உமி தூள்"
+  },
+  {
+    "id": "34c32b09-280b-4f8a-bc35-93a1a3cfc843",
+    "slug": "mixed-grains-husk-powder",
+    "name": "Mixed Grains Husk Powder",
+    "category": "Uzhavan Thusi Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-thoosu-vagaigal.jpg",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கலப்பு தானிய உமி தூள்"
+  },
+  {
+    "id": "e1979dbc-e73c-4f79-887b-ef8d01cdff88",
+    "slug": "tamarind-seed-broken-crush",
+    "name": "Tamarind Seed Broken / Crush",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "புளி விதை உடைந்தது / நசுக்கியது"
+  },
+  {
+    "id": "b4b0948b-03a7-4992-a486-613785d95974",
+    "slug": "tamarind-seed-broken",
+    "name": "Tamarind Seed Broken",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "புளி விதை உடைந்தது"
+  },
+  {
+    "id": "9c80b5a3-a92f-47eb-833b-a4c194bb5851",
+    "slug": "tamarind-seed-powder",
+    "name": "Tamarind Seed Powder",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "புளி விதை தூள்"
+  },
+  {
+    "id": "898b582b-6c95-4e28-bbe2-c5c5d8569e91",
+    "slug": "cotton-seed-cake",
+    "name": "Cotton Seed Cake",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "பருத்தி விதை கேக்"
+  },
+  {
+    "id": "38462824-b775-4b73-995a-0858c1cf4895",
+    "slug": "country-cotton-seed-desi-cotton-seed",
+    "name": "Country Cotton Seed / Desi Cotton Seed",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "நாட்டு பருத்தி விதை / தேசி பருத்தி விதை"
+  },
+  {
+    "id": "b48cf7ad-5dd2-46ca-97f0-1d0b490905ae",
+    "slug": "black-cotton-seed",
+    "name": "Black Cotton Seed",
+    "category": "Uzhavan Vittha Mattum Theevana Vagaigal",
+    "animal_type": "Livestock",
+    "description": "",
+    "image": "/images/royal-seed-theevanam.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கருப்பு பருத்தி விதை"
+  },
+  {
+    "id": "97a1dd5e-d039-4f68-b28c-8d928fb35675",
+    "slug": "pigeon-grit",
+    "name": "Pigeon Grit",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "புறா கிரிட்"
+  },
+  {
+    "id": "4c6aac54-aaa8-4c1d-b314-04f88dd67495",
+    "slug": "calcium-tonic",
+    "name": "Calcium Tonic",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கால்சியம் டானிக்"
+  },
+  {
+    "id": "ab085ac0-df17-4f08-b014-eec89b737ea3",
+    "slug": "calcium-powder",
+    "name": "Calcium Powder",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கால்சியம் பவுடர்"
+  },
+  {
+    "id": "b9064865-d196-4eab-a210-41748c12d3bd",
+    "slug": "mineral-mixture",
+    "name": "Mineral Mixture",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கனிம கலவை"
+  },
+  {
+    "id": "08b1dd4d-c8e0-45f8-b5e4-2f5186e6a82b",
+    "slug": "salt",
+    "name": "Salt",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "உப்பு"
+  },
+  {
+    "id": "cc914fec-2dd4-44d5-829f-a13e35a26985",
+    "slug": "liver-tonic",
+    "name": "Liver Tonic",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கல்லீரல் டானிக்"
+  },
+  {
+    "id": "84af853e-b53b-48c7-baca-2a140dcd3c8e",
+    "slug": "kadal-chippi-powder",
+    "name": "Kadal chippi, powder",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கடல் சிப்பி, பொடி"
+  },
+  {
+    "id": "d644528b-0892-4c33-a67b-b87ea4f7c318",
+    "slug": "kanava-thoodu",
+    "name": "Kanava thoodu",
+    "category": "Hen and Pigeon Supplements",
+    "animal_type": "Birds",
+    "description": "",
+    "image": "/images/hen-pigeon-supplement.png",
+    "tags": [
+      "Royal Uzhavan Quality"
+    ],
+    "variants": [
+      1,
+      5,
+      25
+    ],
+    "in_stock": true,
+    "created_at": "2026-09-04T10:20:03.328Z",
+    "name_tamil": "கனவ தூது"
+  }
+]

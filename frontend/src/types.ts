@@ -4,8 +4,8 @@ export interface Product {
   name: string;
   category: string;
   animal_type?: string;
-  price: number | string; // Numeric coming from PG might be string sometimes depending on pg driver, but let's assume number or parse it. The backend uses DECIMAL so pg driver returns string. Let's make it number | string.
-  original_price?: number | string;
+  name_tamil?: string;
+
   discount?: number;
   rating: number | string;
   reviews: number;

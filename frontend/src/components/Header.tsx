@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X, User, LogOut, Truck, Wheat, Droplet } from 'lucide-react';
-import { useWishlist } from '../contexts/WishlistContext';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../contexts/AuthContext';
+
+import { localApi } from '../services/localApi';
 import logoImg from '../assets/images/001.jpg';
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,15 +14,13 @@ export default function Header() {
   const [isMobilePoliciesOpen, setIsMobilePoliciesOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { wishlist } = useWishlist();
-  const { cartCount, setIsCartOpen } = useCart();
-  const { user, isLoggedIn, logout, setIsAuthOpen } = useAuth();
+
 
   const isProductsActive = location.pathname.startsWith('/shop') || location.pathname.startsWith('/product');
   const isPolicyActive = ['/refund-policy', '/terms-of-service', '/privacy-policy'].includes(location.pathname);
   const isOurFarmsActive = location.pathname === '/our-farms';
   const isShippingActive = location.pathname === '/policies';
-  const isBlogActive = location.pathname.startsWith('/blog');
+
   const isContactActive = location.pathname === '/contact';
 
   useEffect(() => {
@@ -35,13 +32,8 @@ export default function Header() {
     const delayDebounceFn = setTimeout(async () => {
       setIsSearching(true);
       try {
-        const res = await fetch(`http://localhost:8000/api/products?search=${encodeURIComponent(searchQuery)}&limit=5`);
-        if (res.ok) {
-          const data = await res.json();
-          setSearchResults(data.products || []);
-        } else {
-          setSearchResults([]);
-        }
+        const data = await localApi.getProducts({ search: searchQuery, limit: 5 });
+        setSearchResults(data || []);
       } catch (err) {
         console.error('Search failed', err);
         setSearchResults([]);
@@ -247,55 +239,14 @@ export default function Header() {
             </div>
           </div>
           <Link to="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
-          <Link to="/blog" className={`rounded-full transition-colors py-2 px-3 ${isBlogActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
+
           <Link to="/contact" className={`rounded-full transition-colors py-2 px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
         </nav>
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0 ml-auto lg:ml-0">
 
-          {/* User Account Dropdown (Desktop) */}
-          <div className="relative hidden lg:flex items-center group">
-            {isLoggedIn ? (
-              <>
-                <button
-                  className="flex items-center gap-1 text-gray-800 hover:text-[#86B841] transition-colors py-2 text-[10px] xl:text-xs font-bold uppercase tracking-wider cursor-default"
-                >
-                  <User className="w-4 h-4 text-[#86B841] mr-0.5" />
-                  {user?.role === 'admin' ? 'ADMIN PANEL' : 'MY ACCOUNT'} <ChevronDown className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#86B841]" strokeWidth={2.5} />
-                </button>
 
-                {/* Hover Bridge & Dropdown Menu */}
-                <div className="absolute top-[100%] right-0 pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                  <div className="bg-white shadow-xl border border-gray-100 rounded-xl py-2 min-w-[160px] translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="px-4 py-2 border-b border-gray-100 mb-1">
-                      <span className="text-[10px] text-gray-400 font-bold uppercase">Signed in as</span>
-                      <p className="text-xs font-bold text-gray-900 truncate">{user?.name || 'User'}</p>
-                    </div>
-                    <Link
-                      to={user?.role === 'admin' ? '/admin' : '/account'}
-                      className="block px-4 py-2 text-xs font-bold text-gray-700 hover:bg-gray-50 hover:text-[#1B4332] transition-colors"
-                    >
-                      {user?.role === 'admin' ? 'Admin Dashboard' : 'My Account'}
-                    </Link>
-                    <button
-                      onClick={() => { logout(); }}
-                      className="flex items-center gap-2 w-full text-left px-4 py-2 text-xs font-bold text-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
-                    >
-                      <LogOut className="w-3.5 h-3.5 text-red-500" /> Logout
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <button
-                onClick={() => setIsAuthOpen(true)}
-                className="flex items-center gap-1 text-gray-800 hover:text-[#86B841] transition-colors py-2 text-[10px] xl:text-xs font-bold uppercase tracking-wider"
-              >
-                <User className="w-4 h-4 text-gray-500" /> LOGIN / REGISTER
-              </button>
-            )}
-          </div>
 
           <button
             onClick={() => {
@@ -308,25 +259,9 @@ export default function Header() {
             <Search className="w-5 h-5" strokeWidth={2} />
           </button>
 
-          <Link to="/account" className="relative flex text-gray-800 hover:text-[#86B841] transition-colors p-1.5 rounded-full hover:bg-gray-100" title="Wishlist">
-            <Heart className="w-5 h-5" strokeWidth={2} />
-            {wishlist.length > 0 && (
-              <span className="absolute top-0 right-0 bg-[#1B4332] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                {wishlist.length}
-              </span>
-            )}
-          </Link>
 
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative flex bg-[#86B841] text-white w-9 h-9 md:w-10 md:h-10 rounded-full items-center justify-center hover:bg-[#729c36] transition-colors shadow-sm shrink-0"
-            title="Shopping Cart"
-          >
-            <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
-            <span className="absolute -top-1 -right-1 bg-[#1B4332] text-white text-[9px] md:text-[10px] font-black w-4.5 h-4.5 rounded-full flex items-center justify-center shadow-md border border-white">
-              {cartCount}
-            </span>
-          </button>
+
+
 
           {/* Mobile Menu Toggle */}
           <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden text-gray-800 p-1.5 hover:text-[#1B4332] rounded-full hover:bg-gray-100 transition-colors ml-0.5" title="Menu">
@@ -359,44 +294,7 @@ export default function Header() {
           </button>
         </div>
 
-        {/* User Quick Bar in Mobile Drawer */}
-        <div className="bg-[#1B4332] text-white px-5 py-3 flex items-center justify-between">
-          {isLoggedIn ? (
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full bg-[#86B841] flex items-center justify-center font-bold text-xs">
-                  {user?.name?.[0]?.toUpperCase() || 'U'}
-                </div>
-                <div>
-                  <p className="text-xs font-bold leading-tight truncate max-w-[150px]">{user?.name || 'User'}</p>
-                  <Link 
-                    to={user?.role === 'admin' ? '/admin' : '/account'} 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-[10px] text-[#86B841] hover:underline font-semibold"
-                  >
-                    {user?.role === 'admin' ? 'Admin Dashboard →' : 'My Account →'}
-                  </Link>
-                </div>
-              </div>
-              <button
-                onClick={() => { logout(); setIsMobileMenuOpen(false); }}
-                className="text-xs bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded flex items-center gap-1 transition-colors"
-              >
-                <LogOut className="w-3.5 h-3.5" /> Logout
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between w-full">
-              <span className="text-xs text-gray-200 font-medium">Welcome to Royal Uzhavan</span>
-              <button
-                onClick={() => { setIsAuthOpen(true); setIsMobileMenuOpen(false); }}
-                className="bg-[#86B841] hover:bg-[#729c36] text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm"
-              >
-                <User className="w-3.5 h-3.5" /> Login / Register
-              </button>
-            </div>
-          )}
-        </div>
+
 
         {/* Drawer Navigation Links */}
         <div className="flex-1 overflow-y-auto py-2 flex flex-col">
@@ -499,7 +397,7 @@ export default function Header() {
           </div>
 
           <Link to="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
-          <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
+
           <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
         </div>
 
@@ -550,7 +448,7 @@ export default function Header() {
                           <img src={product.image} alt={product.name} className="w-12 h-12 object-cover rounded-md" />
                           <div className="flex-1 text-left">
                             <div className="text-sm font-bold text-gray-800 line-clamp-1">{product.name}</div>
-                            <div className="text-xs text-[#86B841] font-medium">₹{product.price}</div>
+                            {product.name_tamil && <div className="text-[10px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-1.5 py-0.5 inline-block rounded mt-0.5">{product.name_tamil}</div>}
                           </div>
                         </Link>
                       ))}

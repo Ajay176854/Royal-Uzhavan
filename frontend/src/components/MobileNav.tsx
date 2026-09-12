@@ -1,26 +1,21 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, ShoppingBag, MessageCircle, ShoppingCart, User } from 'lucide-react';
+import { Home, ShoppingBag, MessageCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { useCart } from '../context/CartContext';
 
 export default function MobileNav() {
   const location = useLocation();
   const path = location.pathname;
-  const { cartCount } = useCart();
-
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
     { name: 'Shop', path: '/shop', icon: ShoppingBag },
-    { 
-      name: 'WhatsApp', 
-      path: 'https://wa.me/918072864890', 
+    {
+      name: 'WhatsApp',
+      path: 'https://wa.me/918072864890',
       icon: MessageCircle,
-      external: true 
-    },
-    { name: 'Cart', path: '/cart', icon: ShoppingCart, badge: cartCount },
-    { name: 'Account', path: '/account', icon: User },
+      external: true
+    }
   ];
 
   return (
@@ -58,11 +53,6 @@ export default function MobileNav() {
             >
               <div className="relative">
                 <Icon className={cn("w-5 h-5 mb-1", isActive && "fill-current")} />
-                {item.badge !== undefined && (
-                  <span className="absolute -top-1 -right-2 bg-[#C9A227] text-white text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
-                    {item.badge}
-                  </span>
-                )}
               </div>
               <span className="text-[10px] font-medium">{item.name}</span>
             </Link>

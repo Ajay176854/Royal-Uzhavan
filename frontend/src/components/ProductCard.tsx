@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Star } from 'lucide-react';
+import { Heart, Phone, MessageCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { useCart } from '../context/CartContext';
 import { useWishlist } from '../contexts/WishlistContext';
-import { useAuth } from '../contexts/AuthContext';
-
 interface Product {
   id: string;
   name: string;
   category: string;
   animalType: string;
-  price: number;
-  originalPrice?: number;
+  name_tamil?: string;
+
   discount?: number;
   rating: number;
   reviews: number;
@@ -28,36 +25,21 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [selectedVariant, setSelectedVariant] = useState(product.variants?.[0] || 1);
   const [isHovered, setIsHovered] = useState(false);
-  const { addToCart } = useCart();
   const { toggleWishlist, isLiked } = useWishlist();
-  const { isLoggedIn, setIsAuthOpen } = useAuth();
-
-  // Simple pricing logic for mock data based on variant size
-  const variantMultiplier = selectedVariant;
-  const currentPrice = product.price * (variantMultiplier / (product.variants?.[0] || 1));
-  const currentOriginalPrice = product.original_price 
-    ? product.original_price * (variantMultiplier / (product.variants?.[0] || 1)) 
-    : undefined;
 
   const liked = isLiked(product.id);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleWhatsAppEnquiry = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!isLoggedIn) {
-      setIsAuthOpen(true);
-      return;
-    }
-    addToCart({
-      productId: product.id,
-      name: product.name,
-      price: currentPrice,
-      image: product.image,
-      quantity: 1,
-      selectedVariant,
-      originalPrice: currentOriginalPrice
-    });
+    const waNumber = '918072864890';
+    const message = `Hello, I would like to enquire about the product: ${product.name}.`;
+    window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleCallEnquiry = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open('tel:+918072864890', '_self');
   };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -74,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       {/* Image & Badges */}
       <div className="relative aspect-[4/5] overflow-hidden bg-[var(--color-wabi-bg)] m-3 rounded-xl">
-        <Link to={`/product/${product.id}`}>
+        <div className="block cursor-default">
           <img 
             src={product.image} 
             alt={product.name}
@@ -83,7 +65,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               isHovered && "scale-105"
             )}
           />
-        </Link>
+        </div>
         
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -126,50 +108,35 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Content */}
       <div className="p-4 md:p-5 flex flex-col flex-1">
-        {/* Rating */}
-        <div className="flex items-center gap-1 mb-2">
-          <Star className="w-3.5 h-3.5 fill-[var(--color-wabi-gold)] text-[var(--color-wabi-gold)]" />
-          <span className="text-xs font-bold text-gray-700">{product.rating}</span>
-          <span className="text-xs text-gray-400">({product.reviews})</span>
-        </div>
+
 
         {/* Title */}
-        <Link to={`/product/${product.id}`} className="block mb-3 mt-1">
-          <h3 className="font-serif text-[var(--color-wabi-green)] text-lg leading-tight line-clamp-2 hover:text-[var(--color-wabi-earth)] transition-colors">
+        <div className="block mb-3 mt-1 cursor-default">
+          <h3 className="font-bold text-gray-900 transition-colors leading-tight line-clamp-2">
             {product.name}
           </h3>
-        </Link>
+          {product.name_tamil && (
+            <span className="text-[13px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2 py-0.5 inline-block rounded-md mt-1.5">{product.name_tamil}</span>
+          )}
+        </div>
 
         <div className="mt-auto pt-4 flex flex-col gap-4">
-          {/* Variant Selector */}
-          <select 
-            className="w-full text-xs font-bold uppercase tracking-wider border-b border-gray-200 bg-transparent py-2 px-1 focus:outline-none focus:border-[var(--color-wabi-green)] cursor-pointer text-gray-600"
-            value={selectedVariant}
-            onChange={(e) => setSelectedVariant(Number(e.target.value))}
-          >
-            {product.variants?.map((v: number) => (
-              <option key={v} value={v}>{v} {product.category === 'Cold Pressed Edible Oil' ? 'Ltr' : 'kg'}</option>
-            ))}
-          </select>
 
-          {/* Price & Action */}
-          <div className="flex items-center justify-between gap-2 mt-1">
-            <div className="flex flex-col">
-              <span className="font-serif font-bold text-xl text-[var(--color-wabi-green)]">₹{currentPrice.toLocaleString('en-IN')}</span>
-              {currentOriginalPrice && (
-                <span className="text-xs text-gray-400 line-through">₹{currentOriginalPrice.toLocaleString('en-IN')}</span>
-              )}
-            </div>
 
-            {product.in_stock ? (
-              <button onClick={handleAddToCart} className="bg-[var(--color-wabi-bg)] hover:bg-[var(--color-wabi-green)] text-[var(--color-wabi-green)] hover:text-white border border-[var(--color-wabi-green)]/20 hover:border-[var(--color-wabi-green)] px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-all">
-                Add
-              </button>
-            ) : (
-              <button className="bg-gray-100 hover:bg-gray-200 text-gray-500 px-5 py-2 rounded-full font-bold text-[10px] uppercase tracking-widest transition-colors cursor-not-allowed">
-                Notify
-              </button>
-            )}
+          {/* Action */}
+          <div className="mt-3 flex flex-col sm:flex-row items-stretch justify-between gap-2">
+            <button
+              onClick={handleCallEnquiry}
+              className="flex-1 flex justify-center items-center gap-1.5 py-2.5 px-2 rounded-lg font-bold transition-all duration-300 bg-[var(--color-wabi-green)] hover:bg-[#1a3818] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
+            >
+              <Phone className="w-3.5 h-3.5" /> Call
+            </button>
+            <button
+              onClick={handleWhatsAppEnquiry}
+              className="flex-1 flex justify-center items-center gap-1.5 py-2.5 px-2 rounded-lg font-bold transition-all duration-300 bg-[#25D366] hover:bg-[#128C7E] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
+            >
+              <MessageCircle className="w-4 h-4" /> Enquire
+            </button>
           </div>
         </div>
       </div>

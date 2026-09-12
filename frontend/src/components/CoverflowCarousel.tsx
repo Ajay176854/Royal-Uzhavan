@@ -211,29 +211,22 @@ function Card({
                     >
                         {product.name}
                     </span>
-                    <span
-                        style={{
-                            fontSize: "16px",
-                            fontWeight: 700,
-                            color: "var(--color-wabi-gold, #c8a951)",
-                            textShadow: "0 1px 4px rgba(0,0,0,0.3)",
-                        }}
-                    >
-                        ₹{product.price}
-                        {product.original_price && (
-                            <span
-                                style={{
-                                    fontSize: "13px",
-                                    fontWeight: 400,
-                                    color: "rgba(255,255,255,0.5)",
-                                    textDecoration: "line-through",
-                                    marginLeft: "8px",
-                                }}
-                            >
-                                ₹{product.original_price}
-                            </span>
-                        )}
-                    </span>
+                    {product.name_tamil && (
+                        <span
+                            style={{
+                                fontSize: "12px",
+                                fontWeight: 800,
+                                color: "#0B4D26",
+                                backgroundColor: "rgba(134, 184, 65, 0.9)",
+                                padding: "2px 8px",
+                                borderRadius: "4px",
+                                marginTop: "6px",
+                                display: "inline-block",
+                            }}
+                        >
+                            {product.name_tamil}
+                        </span>
+                    )}
                     {product.tags.length > 0 && (
                         <div style={{ display: "flex", gap: "6px", marginTop: "4px", flexWrap: "wrap" }}>
                             {product.tags.slice(0, 2).map((tag) => (
