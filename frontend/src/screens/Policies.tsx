@@ -13,7 +13,7 @@ export default function Policies() {
             <p className="text-sm text-gray-500 mb-8">Last updated: August 2026</p>
             <p>We are proud to offer reliable delivery services across Tamil Nadu.</p>
             <h3 className="text-xl font-bold text-gray-900 mt-6">1. Delivery Areas & Timeframes</h3>
-            <p>We currently deliver across all districts in Tamil Nadu. Standard delivery takes 2-4 business days. Bulk orders (over 50 bags) may require up to 7 business days for specialized transport arrangement.</p>
+            <p>We currently deliver across all districts in Tamil Nadu. Standard delivery takes 2–4 business days. Bulk orders (over 50 bags) may require up to 7 business days for specialized transport arrangement.</p>
             <h3 className="text-xl font-bold text-gray-900 mt-6">2. Shipping Costs</h3>
             <p>We offer free shipping across Kanyakumari district, while deliveries to all other districts in Tamil Nadu are handled via courier on a "To-Pay" basis, payable upon arrival.</p>
             
