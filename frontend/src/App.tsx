@@ -16,6 +16,7 @@ import Policies from './pages/Policies';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Blog from './pages/Blog';
 import { WishlistProvider } from './contexts/WishlistContext';
 import SiteLoader from './components/SiteLoader';
 import AnimalNeedPage from './pages/AnimalNeedPage';
@@ -53,6 +54,7 @@ export default function App() {
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/terms-of-service" element={<TermsOfService />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/blog" element={<Blog />} />
                   <Route path="/cow" element={<AnimalNeedPage />} />
                   <Route path="/pigeon" element={<AnimalNeedPage />} />
                   <Route path="/hen" element={<AnimalNeedPage />} />

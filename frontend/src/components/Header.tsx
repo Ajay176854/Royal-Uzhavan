@@ -105,6 +105,7 @@ export default function Header() {
         <nav className="hidden lg:flex flex-1 justify-center items-center gap-1 xl:gap-3 text-[10px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
 
           <Link to="/our-farms" className={`rounded-full transition-colors py-2 px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
+          <Link to="/blog" className={`rounded-full transition-colors py-2 px-3 ${location.pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
 
           <div className="group">
             <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
@@ -381,6 +382,7 @@ export default function Header() {
           </div>
 
           <Link to="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">About Us</Link>
+          <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
 
           {/* Policies Accordion */}
           <div>
