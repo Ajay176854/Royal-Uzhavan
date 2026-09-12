@@ -35,6 +35,7 @@ export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [newLaunches, setNewLaunches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [siteSettings, setSiteSettings] = useState<any>(null);
 
   // Fallback products mapped from PRODUCT_CATEGORIES
   const mappedProducts = PRODUCT_CATEGORIES['Feed'].map((item, index) => ({
@@ -53,7 +54,11 @@ export default function Home() {
     const fetchHomeProducts = async () => {
       try {
         setLoading(true);
-        const data = await localApi.getProducts({ limit: 200 });
+        const [data, settingsData] = await Promise.all([
+          localApi.getProducts({ limit: 200 }),
+          localApi.getSettings()
+        ]);
+        setSiteSettings(settingsData);
 
         if (data && data.length > 0) {
           const shuffled = [...data].sort(() => 0.5 - Math.random());
@@ -585,7 +590,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-6"
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
               variants={{
                 hidden: { opacity: 0 },
                 show: {
@@ -755,7 +760,7 @@ export default function Home() {
                   Get Quote
                 </Link>
                 <a
-                  href="https://wa.me/919876543210"
+                  href={siteSettings?.whatsapp_link || "https://wa.me/919876543210"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-8 py-3.5 font-bold text-xs uppercase tracking-widest rounded-full transition-all border border-white/20 whitespace-nowrap text-center"
@@ -780,7 +785,7 @@ export default function Home() {
           </div>
           <h2 className="text-4xl md:text-5xl font-serif text-[var(--color-wabi-bg)] mb-6">Join Our Farmer Community</h2>
           <p className="text-[var(--color-wabi-bg)]/80 mb-10 font-medium max-w-lg mx-auto leading-relaxed">Join our exclusive WhatsApp group to get daily agricultural updates, seasonal feeding guidelines, direct support, and community-only wholesale offers.</p>
-          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[var(--color-wabi-gold)] hover:bg-[#a68636] text-white font-bold px-10 py-4 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 whitespace-nowrap text-xs uppercase tracking-widest mx-auto">
+          <a href={siteSettings?.whatsapp_link || "https://wa.me/919876543210"} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[var(--color-wabi-gold)] hover:bg-[#a68636] text-white font-bold px-10 py-4 rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 whitespace-nowrap text-xs uppercase tracking-widest mx-auto">
             Join the Group Now
           </a>
         </div>

@@ -58,6 +58,26 @@ const saveOrdersToStorage = (orders: any[]) => {
   localStorage.setItem('orders', JSON.stringify(orders));
 };
 
+const getSettings = () => {
+  const settings = localStorage.getItem('site_settings');
+  return settings ? JSON.parse(settings) : { 
+    whatsapp_link: 'https://chat.whatsapp.com/G5g2mJgAWhd6P08u1q0Z3r',
+    instagram_link: 'https://www.instagram.com/uzhavan_birds_food_accessories',
+    youtube_link: 'https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD',
+    contact_address: '2/11/9, Asaarivilai, Saral post,\nKanniyakumari District,\nTamil Nadu - 629203',
+    contact_phone: '+91 80-72864890',
+    contact_email: 'royaluzhavan@gmail.com',
+    support_start_day: 'Mon',
+    support_end_day: 'Sat',
+    support_start_time: '09:00',
+    support_end_time: '18:00'
+  };
+};
+
+const saveSettings = (settings: any) => {
+  localStorage.setItem('site_settings', JSON.stringify(settings));
+};
+
 // --- Product API ---
 export const localApi = {
   getProducts: async (params?: { category?: string; search?: string; limit?: number }) => {
@@ -279,5 +299,19 @@ export const localApi = {
       totalProducts: products.length,
       pendingOrders
     };
+  },
+
+  // --- Settings API ---
+  getSettings: async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return getSettings();
+  },
+  
+  updateSettings: async (newSettings: any) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const current = getSettings();
+    const updated = { ...current, ...newSettings };
+    saveSettings(updated);
+    return updated;
   }
 };

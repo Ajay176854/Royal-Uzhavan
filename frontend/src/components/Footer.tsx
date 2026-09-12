@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { localApi } from '../services/localApi';
 import {
   Instagram,
   Youtube,
@@ -13,6 +14,12 @@ import {
 } from 'lucide-react';
 
 export default function Footer() {
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    localApi.getSettings().then(setSettings).catch(console.error);
+  }, []);
+
   return (
     <footer className="bg-[var(--color-wabi-bg)] border-t border-[var(--color-wabi-earth)]/20 pb-16 md:pb-0">
       {/* Main Footer */}
@@ -45,7 +52,7 @@ export default function Footer() {
 
             <div className="flex gap-3">
               <a
-                href="https://www.instagram.com/uzhavan_birds_food_accessories"
+                href={settings?.instagram_link || "https://www.instagram.com/uzhavan_birds_food_accessories"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -55,7 +62,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD"
+                href={settings?.youtube_link || "https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD"}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="YouTube"
@@ -155,11 +162,22 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-[var(--color-wabi-earth)] shrink-0 mt-0.5" />
 
                 <span className="text-gray-500 text-sm leading-relaxed">
-                  2/11/9, Asaarivilai, Saral post,
-                  <br />
-                  Kanniyakumari District,
-                  <br />
-                  Tamil Nadu - 629203
+                  {settings?.contact_address ? (
+                    settings.contact_address.split('\n').map((line: string, i: number) => (
+                      <React.Fragment key={i}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <>
+                      2/11/9, Asaarivilai, Saral post,
+                      <br />
+                      Kanniyakumari District,
+                      <br />
+                      Tamil Nadu - 629203
+                    </>
+                  )}
                 </span>
               </li>
 
@@ -167,10 +185,10 @@ export default function Footer() {
                 <Phone className="w-5 h-5 text-[var(--color-wabi-earth)] shrink-0" />
 
                 <a
-                  href="tel:+918072864890"
+                  href={`tel:${settings?.contact_phone?.replace(/[^0-9+]/g, '') || '+918072864890'}`}
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-green)] transition-colors break-words"
                 >
-                  +91 80-72864890
+                  {settings?.contact_phone || '+91 80-72864890'}
                 </a>
               </li>
 
@@ -178,10 +196,10 @@ export default function Footer() {
                 <Mail className="w-5 h-5 text-[var(--color-wabi-earth)] shrink-0 mt-0.5 sm:mt-0" />
 
                 <a
-                  href="mailto:hello@royaluzhavan.com"
+                  href={`mailto:${settings?.contact_email || 'royaluzhavan@gmail.com'}`}
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-green)] transition-colors break-all"
                 >
-                  royaluzhavan@gmail.com
+                  {settings?.contact_email || 'royaluzhavan@gmail.com'}
                 </a>
               </li>
             </ul>
@@ -242,4 +260,3 @@ export default function Footer() {
     </footer>
   );
 }
-

@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, MessageCircle, Send } from 'lucide-react';
+import { localApi } from '../services/localApi';
 
 export default function Contact() {
+  const [settings, setSettings] = useState<any>(null);
+
+  useEffect(() => {
+    localApi.getSettings().then(setSettings).catch(console.error);
+  }, []);
+
+  const formatTime = (time: string) => {
+    if (!time) return '';
+    const [h, m] = time.split(':');
+    const date = new Date();
+    date.setHours(parseInt(h, 10));
+    date.setMinutes(parseInt(m, 10));
+    return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }).replace(':00', '').toLowerCase().replace(' ', '');
+  };
+
+  const phoneHref = settings?.contact_phone ? settings.contact_phone.replace(/[^0-9+]/g, '') : '+918072864890';
+  const whatsappNumber = settings?.contact_phone ? settings.contact_phone.replace(/[^0-9]/g, '') : '918072864890';
+  
+  const supportStartDay = settings?.support_start_day || 'Mon';
+  const supportEndDay = settings?.support_end_day || 'Sat';
+  const supportStartTime = formatTime(settings?.support_start_time || '09:00');
+  const supportEndTime = formatTime(settings?.support_end_time || '18:00');
+  const formattedTiming = `${supportStartDay}-${supportEndDay}, ${supportStartTime} to ${supportEndTime}`;
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Hero */}
@@ -25,18 +50,18 @@ export default function Contact() {
             </div>
             
             <div className="space-y-6">
-              <a href="tel:8072864890" className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-[#0B4D26]/30 transition-colors group">
+              <a href={`tel:${phoneHref}`} className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-[#0B4D26]/30 transition-colors group">
                 <div className="w-12 h-12 bg-[#0B4D26]/10 rounded-full flex items-center justify-center text-[#0B4D26] group-hover:bg-[#0B4D26] group-hover:text-white transition-colors shrink-0">
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1 text-lg">Phone Support</h3>
-                  <p className="text-gray-600 mb-2">Mon-Sat, 9am to 6pm</p>
-                  <p className="text-[#0B4D26] font-bold text-xl">8072864890</p>
+                  <p className="text-gray-600 mb-2">{formattedTiming}</p>
+                  <p className="text-[#0B4D26] font-bold text-xl">{settings?.contact_phone || '8072864890'}</p>
                 </div>
               </a>
               
-              <a href="https://wa.me/918072864890" target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-green-500/30 transition-colors group">
+              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex items-start gap-4 p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-green-500/30 transition-colors group">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors shrink-0">
                   <MessageCircle className="w-6 h-6" />
                 </div>
@@ -53,7 +78,20 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-900 mb-1 text-lg">Main Office</h3>
-                  <p className="text-gray-600">Kuruthencode,<br/>Kanniyakumari District,<br/>Tamil Nadu, India</p>
+                  <p className="text-gray-600">
+                    {settings?.contact_address ? (
+                      settings.contact_address.split('\n').map((line: string, i: number) => (
+                        <React.Fragment key={i}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <>
+                        Kuruthencode,<br/>Kanniyakumari District,<br/>Tamil Nadu, India
+                      </>
+                    )}
+                  </p>
                 </div>
               </div>
             </div>
@@ -80,7 +118,7 @@ export default function Contact() {
 *Message:*
 ${message}`;
                 
-                const waUrl = `https://wa.me/918072864890?text=${encodeURIComponent(waMessage)}`;
+                const waUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`;
                 window.open(waUrl, '_blank');
                 e.currentTarget.reset();
               }}>

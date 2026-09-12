@@ -17,7 +17,7 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories' | 'settings'>('dashboard');
 
   // Auth State
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -71,6 +71,8 @@ export default function AdminDashboard() {
   const [isSavingCategory, setIsSavingCategory] = useState(false);
 
   const [isFetching, setIsFetching] = useState(true);
+  const [siteSettings, setSiteSettings] = useState<any>(null);
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
@@ -94,6 +96,9 @@ export default function AdminDashboard() {
         ]);
         setProducts(prodData);
         setCategories(catData);
+      } else if (tab === 'settings') {
+        const settingsData = await localApi.getSettings();
+        setSiteSettings(settingsData);
       }
     } catch (error) {
       console.error("Failed to fetch admin data", error);
@@ -145,6 +150,8 @@ export default function AdminDashboard() {
       ...productData,
       image: imagePreview || editingProduct?.image || '', // use the base64 or existing
       in_stock: productData.in_stock === 'true',
+      slug: editingProduct?.slug || (productData.name as string).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+      animal_type: editingProduct?.animal_type || 'Livestock'
     };
 
     try {
@@ -185,16 +192,41 @@ export default function AdminDashboard() {
     try {
       await localApi.addCategory({
         name: categoryData.name,
-        image: imagePreview || ''
+        image: imagePreview
       });
       setIsCategoryModalOpen(false);
-      setImagePreview('');
       fetchData('categories');
     } catch (err: any) {
       console.error(err);
-      alert(`Error saving category: ${err.message || 'Unknown error'}`);
+      alert('Failed to add category');
     } finally {
       setIsSavingCategory(false);
+    }
+  };
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingSettings(true);
+    const formData = new FormData(e.target as HTMLFormElement);
+    try {
+      const newSettings = await localApi.updateSettings({
+        whatsapp_link: formData.get('whatsapp_link'),
+        instagram_link: formData.get('instagram_link'),
+        youtube_link: formData.get('youtube_link'),
+        contact_address: formData.get('contact_address'),
+        contact_phone: formData.get('contact_phone'),
+        contact_email: formData.get('contact_email'),
+        support_start_day: formData.get('support_start_day'),
+        support_end_day: formData.get('support_end_day'),
+        support_start_time: formData.get('support_start_time'),
+        support_end_time: formData.get('support_end_time')
+      });
+      setSiteSettings(newSettings);
+      alert('Settings updated successfully!');
+    } catch (err: any) {
+      alert('Failed to update settings');
+    } finally {
+      setIsSavingSettings(false);
     }
   };
 
@@ -298,7 +330,12 @@ export default function AdminDashboard() {
                   <Package className="w-5 h-5" /> Categories Management
                 </button>
                 <div className="my-2 border-t border-gray-100"></div>
-      
+                <button
+                  onClick={() => setActiveTab('settings')}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'settings' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                >
+                  <Edit className="w-5 h-5" /> Settings
+                </button>
               </nav>
             </div>
           </div>
@@ -459,6 +496,112 @@ export default function AdminDashboard() {
                     </table>
                   </div>
                 </div>
+              ) : activeTab === 'settings' ? (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Site Settings</h2>
+                  <div className="max-w-2xl bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                    <form onSubmit={handleSaveSettings} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">WhatsApp Group Link</label>
+                          <input 
+                            required 
+                            name="whatsapp_link" 
+                            defaultValue={siteSettings?.whatsapp_link || ''} 
+                            placeholder="https://chat.whatsapp.com/..." 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">Instagram Link</label>
+                          <input 
+                            required 
+                            name="instagram_link" 
+                            defaultValue={siteSettings?.instagram_link || ''} 
+                            placeholder="https://instagram.com/..." 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">YouTube Link</label>
+                          <input 
+                            required 
+                            name="youtube_link" 
+                            defaultValue={siteSettings?.youtube_link || ''} 
+                            placeholder="https://youtube.com/..." 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">Contact Phone</label>
+                          <input 
+                            required 
+                            name="contact_phone" 
+                            defaultValue={siteSettings?.contact_phone || ''} 
+                            placeholder="+91 1234567890" 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">Contact Email</label>
+                          <input 
+                            required 
+                            name="contact_email" 
+                            type="email"
+                            defaultValue={siteSettings?.contact_email || ''} 
+                            placeholder="hello@example.com" 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div className="md:col-span-2 bg-white p-4 rounded-xl border border-gray-100">
+                          <label className="block text-sm font-bold text-gray-700 mb-4">Support Timing</label>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-500 mb-1">Start Day</label>
+                              <select name="support_start_day" defaultValue={siteSettings?.support_start_day || 'Mon'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
+                                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => <option key={d} value={d}>{d}</option>)}
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-500 mb-1">End Day</label>
+                              <select name="support_end_day" defaultValue={siteSettings?.support_end_day || 'Sat'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
+                                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => <option key={d} value={d}>{d}</option>)}
+                              </select>
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-500 mb-1">Start Time</label>
+                              <input type="time" name="support_start_time" defaultValue={siteSettings?.support_start_time || '09:00'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-gray-500 mb-1">End Time</label>
+                              <input type="time" name="support_end_time" defaultValue={siteSettings?.support_end_time || '18:00'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="md:col-span-2">
+                          <label className="block text-sm font-bold text-gray-700 mb-2">Contact Address</label>
+                          <textarea 
+                            required 
+                            name="contact_address" 
+                            defaultValue={siteSettings?.contact_address || ''} 
+                            placeholder="123 Street..." 
+                            rows={3}
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end pt-4">
+                        <button 
+                          type="submit" 
+                          disabled={isSavingSettings}
+                          className="px-8 py-3 bg-[#0B4D26] text-white rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50 transition-colors"
+                        >
+                          {isSavingSettings ? 'Saving...' : 'Save Settings'}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               ) : null}
             </div>
           </div>
@@ -487,10 +630,6 @@ export default function AdminDashboard() {
                   <label className="block text-sm font-bold text-gray-700 mb-2">Product Name <span className="text-red-500">*</span></label>
                   <input required name="name" defaultValue={editingProduct?.name || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Slug (URL string) <span className="text-red-500">*</span></label>
-                  <input required name="slug" defaultValue={editingProduct?.slug || ''} placeholder="e.g. fresh-cow-milk" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
-                </div>
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Tamil Name</label>
@@ -510,16 +649,6 @@ export default function AdminDashboard() {
                       <option key={c.id} value={c.name} />
                     ))}
                   </datalist>
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Animal Type</label>
-                  <select name="animal_type" defaultValue={editingProduct?.animal_type || 'Livestock'} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
-                    <option value="Cattle">Cattle</option>
-                    <option value="Poultry">Poultry</option>
-                    <option value="Birds">Birds</option>
-                    <option value="Livestock">Livestock</option>
-                    <option value="Human">Human</option>
-                  </select>
                 </div>
 
 
