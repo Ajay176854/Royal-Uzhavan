@@ -31,9 +31,14 @@ const PRODUCT_CATEGORIES = {
 export default function Home() {
   const navigate = useNavigate();
   const [activeFeaturedIndex, setActiveFeaturedIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState<keyof typeof PRODUCT_CATEGORIES>('Feed');
+  const [activeTab, setActiveTab] = useState<'Feed' | 'Supplements & Accessories' | 'Other'>('Feed');
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [newLaunches, setNewLaunches] = useState<any[]>([]);
+  const [homeCategoryProducts, setHomeCategoryProducts] = useState<Record<string, any[]>>({
+    'Feed': [],
+    'Supplements & Accessories': [],
+    'Other': []
+  });
   const [loading, setLoading] = useState(true);
   const [siteSettings, setSiteSettings] = useState<any>(null);
 
@@ -54,9 +59,10 @@ export default function Home() {
     const fetchHomeProducts = async () => {
       try {
         setLoading(true);
-        const [data, settingsData] = await Promise.all([
+        const [data, settingsData, categoriesData] = await Promise.all([
           localApi.getProducts({ limit: 200 }),
-          localApi.getSettings()
+          localApi.getSettings(),
+          localApi.getCategories()
         ]);
         setSiteSettings(settingsData);
 
@@ -76,6 +82,82 @@ export default function Home() {
           const finalPool = uniqueProducts.length >= 10 ? uniqueProducts : shuffled;
           setFeaturedProducts(finalPool.slice(0, 8));
           setNewLaunches(finalPool.slice(8, 20));
+          
+          const categorized: Record<string, any[]> = {
+            'Feed': [],
+            'Supplements & Accessories': [],
+            'Other': []
+          };
+          let hasAnyHomeCategories = false;
+          
+          const seenCategoriesInTab: Record<string, Set<string>> = {
+            'Feed': new Set(),
+            'Supplements & Accessories': new Set(),
+            'Other': new Set()
+          };
+
+          // 1. First, process categories directly (the new source of truth)
+          categoriesData?.forEach((c: any) => {
+            if (c.isActiveHome !== false) {
+              const placements = c.homeCategories || [];
+              placements.forEach((tabName: string) => {
+                if (categorized[tabName] && !seenCategoriesInTab[tabName].has(c.name)) {
+                  categorized[tabName].push({
+                    id: `cat-${c.name}`,
+                    name: c.name,
+                    category: c.name,
+                    image: c.image || '/images/placeholder.png',
+                    description: `Browse all products in ${c.name}`,
+                    to: `/shop?category=${encodeURIComponent(c.name)}`
+                  });
+                  seenCategoriesInTab[tabName].add(c.name);
+                  hasAnyHomeCategories = true;
+                }
+              });
+            }
+          });
+
+          // 2. Then, process products (for backward compatibility with old saves)
+          data.forEach(p => {
+            if (p.isActiveHome !== false) {
+              const cats = p.homeCategories || [];
+              const pCategory = p.category || 'Uncategorized';
+              
+              cats.forEach((c: string) => {
+                if (categorized[c] && !seenCategoriesInTab[c].has(pCategory)) {
+                  categorized[c].push({
+                    id: `cat-${pCategory}`,
+                    name: pCategory,
+                    category: pCategory,
+                    image: p.image || '/images/placeholder.png',
+                    description: `Browse all products in ${pCategory}`,
+                    to: `/shop?category=${encodeURIComponent(pCategory)}`
+                  });
+                  seenCategoriesInTab[c].add(pCategory);
+                  hasAnyHomeCategories = true;
+                }
+              });
+            }
+          });
+          
+          // If no products have homeCategories set (first run), populate from PRODUCT_CATEGORIES
+          if (!hasAnyHomeCategories) {
+            Object.keys(PRODUCT_CATEGORIES).forEach(key => {
+              const tabProducts = PRODUCT_CATEGORIES[key as keyof typeof PRODUCT_CATEGORIES];
+              categorized[key] = tabProducts.map((item, index) => ({
+                id: `fallback-${key}-${index}`,
+                name: item.title,
+                image: item.image,
+                category: item.title,
+                name_tamil: item.tamil,
+                description: item.desc,
+                to: item.to
+              }));
+            });
+          }
+          
+          setHomeCategoryProducts(categorized);
+          
         } else {
           setFeaturedProducts(mappedProducts.slice(0, 5));
           setNewLaunches(mappedProducts.slice(5, 10));
@@ -427,12 +509,12 @@ export default function Home() {
 
             {/* Tabs */}
             <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-              {Object.keys(PRODUCT_CATEGORIES).map((tab) => {
+              {['Feed', 'Supplements & Accessories', 'Other'].map((tab) => {
                 const isActive = activeTab === tab;
                 return (
                   <button
                     key={tab}
-                    onClick={() => setActiveTab(tab as keyof typeof PRODUCT_CATEGORIES)}
+                    onClick={() => setActiveTab(tab as any)}
                     className={`relative px-5 py-2.5 text-xs md:text-sm font-bold tracking-widest uppercase rounded-full transition-colors duration-300 ${isActive
                       ? 'text-white'
                       : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
@@ -467,26 +549,21 @@ export default function Home() {
             animate="show"
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 xl:gap-8"
           >
-            {PRODUCT_CATEGORIES[activeTab].map((item, i) => (
+            {homeCategoryProducts[activeTab]?.map((item, i) => (
               <motion.div
-                key={item.title}
+                key={item.id || item.name}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
                 }}
               >
-                <Link to={item.to || `/shop?category=${encodeURIComponent(item.title)}`} className="group flex flex-col items-center text-center">
+                <Link to={item.to || `/shop?category=${encodeURIComponent(item.category || item.name)}`} className="group flex flex-col items-center text-center">
                   <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
-                    <img src={item.image} alt={item.title} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
-                    {item.num && (
-                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm text-[var(--color-wabi-earth)] shadow-sm">
-                        {item.num}
-                      </div>
-                    )}
+                    <img src={item.image || '/images/placeholder.png'} alt={item.name} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
                   </div>
-                  <h3 className="text-base font-bold font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors line-clamp-1">{item.title}</h3>
-                  {item.tamil && <p className="text-[11px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2 py-0.5 inline-block rounded-md mb-2 mt-1">{item.tamil}</p>}
-                  <p className="text-xs text-gray-500 font-medium leading-relaxed max-w-[200px] line-clamp-2">{item.desc}</p>
+                  <h3 className="text-base font-bold font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors line-clamp-1">{item.name}</h3>
+                  {item.name_tamil && <p className="text-[11px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2 py-0.5 inline-block rounded-md mb-2 mt-1">{item.name_tamil}</p>}
+                  <p className="text-xs text-gray-500 font-medium leading-relaxed max-w-[200px] line-clamp-2">{item.description || item.desc}</p>
                 </Link>
               </motion.div>
             ))}
