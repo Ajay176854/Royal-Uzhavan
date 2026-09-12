@@ -5,6 +5,7 @@ import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat } from 'lucide-reac
 import { motion } from 'motion/react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
+import CoverflowCarousel from '../components/CoverflowCarousel';
 
 const PRODUCT_CATEGORIES = {
   'Feed': [
@@ -39,7 +40,6 @@ export default function Home() {
   const mappedProducts = PRODUCT_CATEGORIES['Feed'].map((item, index) => ({
     id: String(index + 1),
     name: item.title,
-    price: 0,
     image: item.image,
     category: item.title,
     tags: ["Best Seller"],
@@ -99,7 +99,7 @@ export default function Home() {
             playsInline={true}
             className="w-full h-full object-cover object-top"
           >
-            <source src="/hero-video.mp4" type="video/mp4" />
+            <source src="/theme_video.MP4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/40 via-[var(--color-wabi-bg)]/10 to-transparent"></div>
         </div>
@@ -526,13 +526,15 @@ export default function Home() {
               <Smooth3DSlideshow
                 slides={featuredProducts.map(p => ({
                   image: { src: p.image, alt: p.name },
-                  title: p.name + (p.name_tamil ? '\n' + p.name_tamil : '')
+                  title: p.name + (p.name_tamil ? '\n' + p.name_tamil : ''),
+                  link: `/shop?category=${encodeURIComponent(p.category)}`
                 }))}
                 cardWidth={350}
                 cardHeight={450}
                 radius={10}
                 autoplay={true}
                 onSlideChange={setActiveFeaturedIndex}
+                onSlideClick={(slide) => slide.link && navigate(slide.link)}
                 titleFont={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "24px",
@@ -658,9 +660,9 @@ export default function Home() {
           >
             {[
               { value: '500+', label: 'Happy Farmers', sublabel: 'Across Tamil Nadu' },
-              { value: '50+', label: 'Feed Products', sublabel: 'For Every Animal' },
+              { value: '100+', label: 'Feed Products', sublabel: 'For Every Animal' },
               { value: '100%', label: 'Natural', sublabel: 'No Harmful Additives' },
-              { value: 'Free', label: 'Shipping', sublabel: 'On Bulk Orders' },
+              { value: 'Free', label: 'Shipping', sublabel: 'All Over Kanyakumari' },
             ].map((stat, i) => (
               <div
                 key={stat.label}

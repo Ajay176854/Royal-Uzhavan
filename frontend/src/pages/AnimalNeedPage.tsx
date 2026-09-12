@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { localApi } from '../services/localApi';
-import { ArrowRight, Leaf, Wheat, Sprout, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Leaf, Wheat, Sprout } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 
 const ANIMAL_CONFIGS = {
@@ -231,26 +231,7 @@ export default function AnimalNeedPage() {
         </div>
       </section>
 
-      {/* Trust Badges */}
-      <section className="py-10 bg-[var(--color-wabi-bg)] border-b border-gray-200/50">
-        <div className="container mx-auto px-4 md:px-12">
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
-            {[
-              { icon: ShieldCheck, text: 'Quality Assured' },
-              { icon: Leaf, text: '100% Natural Ingredients' },
-              { icon: Sprout, text: 'Farm Fresh' },
-              { icon: Wheat, text: 'Nutrient Rich' },
-            ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full bg-[var(--color-wabi-green)]/10 flex items-center justify-center">
-                  <Icon className="w-4 h-4 text-[var(--color-wabi-green)]" />
-                </div>
-                <span className="text-xs font-bold text-[var(--color-wabi-green)]/70 uppercase tracking-wider">{text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Products Grid */}
       <section id="products" className="py-16 lg:py-24">

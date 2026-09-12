@@ -20,7 +20,7 @@ export default function OurFarms() {
       <div className="container mx-auto px-4 md:px-12 py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
           <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-earth)]/10 p-4">
-            <img src="/images/journey.jpg" alt="Our Journey" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+            <img src="/images/our-story.jpg" alt="Our Journey" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
           </div>
           <div>
             <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Our Story</span>
@@ -36,19 +36,58 @@ export default function OurFarms() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center mb-32">
+        {/* Second Block: Text Left, Image Right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
+          <div className="order-2 md:order-1">
+            <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Branch 1</span>
+            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">From Our First Shop<br />To a Growing Success.</h2>
+            <div className="prose prose-sm md:prose-base text-gray-600">
+              <p className="mb-6 leading-relaxed">
+                What began as a small vision to provide quality animal feed became the first step in our journey.
+              </p>
+              <p className="mb-6 leading-relaxed">
+                Our first shop brought us closer to farmers, helping us understand their needs and earn their trust through quality products and reliable service.
+              </p>
+              <p className="leading-relaxed">
+                That first shop became the foundation of our success and the beginning of something much bigger.
+              </p>
+            </div>
+          </div>
+          <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-green)]/10 p-4 order-1 md:order-2">
+            <img src="/images/nature-bg.jpg" alt="Our Mission" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+          </div>
+        </div>
+
+        {/* Third Block: Image Left, Text Right */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
+          <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-gold)]/10 p-4">
+            <img src="/farm-field-bg.jpg" alt="Our Promise" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+          </div>
+          <div>
+            <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Branch 2</span>
+            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-wabi-green)] mb-8 leading-tight">A New Branch,<br />A Bigger Journey</h2>
+            <div className="prose prose-sm md:prose-base text-gray-600">
+              <p className="mb-6 leading-relaxed">
+                In 2025, the success and trust built through our first shop gave us the confidence to take the next step.
+              </p>
+              <p className="mb-6 leading-relaxed">
+                Our second branch marked a new chapter in our journey, bringing the same quality animal feed and trusted service to more farmers.
+              </p>
+              <p className="leading-relaxed">
+                From one shop to two, every step is driven by the trust of our customers and our commitment to their livestock.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center mb-32 max-w-4xl mx-auto">
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
             <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">100%</h3>
             <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Natural</h4>
             <p className="text-gray-500 text-sm leading-relaxed">Committed to chemical-free, high-quality agricultural practices.</p>
           </div>
           <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">24hr</h3>
-            <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Farm to Farm</h4>
-            <p className="text-gray-500 text-sm leading-relaxed">Fresh agricultural feed and nutrition delivered directly to you.</p>
-          </div>
-          <div className="p-12 bg-white rounded-3xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all">
-            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">K.K</h3>
+            <h3 className="text-5xl font-serif text-[var(--color-wabi-green)] mb-6 italic">KK</h3>
             <h4 className="font-bold text-xs uppercase tracking-widest text-[var(--color-wabi-earth)] mb-3">Kanyakumari</h4>
             <p className="text-gray-500 text-sm leading-relaxed">Sourced directly from our farms in Nagercoil.</p>
           </div>

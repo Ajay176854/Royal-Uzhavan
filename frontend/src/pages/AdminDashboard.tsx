@@ -17,7 +17,25 @@ import {
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'orders' | 'products'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'categories'>('dashboard');
+
+  // Auth State
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    sessionStorage.getItem('adminAuth') === 'true'
+  );
+  const [loginError, setLoginError] = useState('');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    if (formData.get('username') === 'admin' && formData.get('password') === 'admin123') {
+      sessionStorage.setItem('adminAuth', 'true');
+      setIsAuthenticated(true);
+      setLoginError('');
+    } else {
+      setLoginError('Invalid username or password');
+    }
+  };
 
   const [stats, setStats] = useState<any>(null);
   const [orders, setOrders] = useState<any[]>([]);
@@ -35,7 +53,22 @@ export default function AdminDashboard() {
   const [categories, setCategories] = useState<any[]>([]);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [isSavingProduct, setIsSavingProduct] = useState(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isSavingCategory, setIsSavingCategory] = useState(false);
 
   const [isFetching, setIsFetching] = useState(true);
 
@@ -107,11 +140,10 @@ export default function AdminDashboard() {
     const productData = Object.fromEntries(formData.entries());
     
     // Parse complex fields
+    // Parse complex fields
     const payload = {
       ...productData,
-      discount: parseInt(productData.discount as string) || 0,
-      tags: (productData.tags as string).split(',').map(s => s.trim()).filter(Boolean),
-      variants: (productData.variants as string).split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n)),
+      image: imagePreview || editingProduct?.image || '', // use the base64 or existing
       in_stock: productData.in_stock === 'true',
     };
 
@@ -144,6 +176,40 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleSaveCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingCategory(true);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const categoryData = Object.fromEntries(formData.entries());
+    
+    try {
+      await localApi.addCategory({
+        name: categoryData.name,
+        image: imagePreview || ''
+      });
+      setIsCategoryModalOpen(false);
+      setImagePreview('');
+      fetchData('categories');
+    } catch (err: any) {
+      console.error(err);
+      alert(`Error saving category: ${err.message || 'Unknown error'}`);
+    } finally {
+      setIsSavingCategory(false);
+    }
+  };
+
+  const handleDeleteCategory = async (name: string) => {
+    if (!window.confirm("Are you sure you want to delete this category?")) return;
+    
+    try {
+      await localApi.deleteCategory(name);
+      fetchData('categories');
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || 'Failed to delete category');
+    }
+  };
+
 
 
   const getStatusColor = (status: string) => {
@@ -159,10 +225,50 @@ export default function AdminDashboard() {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 w-full max-w-md">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-playfair font-bold text-[#0B4D26] mb-2">Admin Login</h1>
+            <p className="text-gray-500 text-sm">Sign in to manage products and orders.</p>
+          </div>
+          <form onSubmit={handleLogin} className="space-y-4">
+            {loginError && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm font-medium">{loginError}</div>
+            )}
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Username</label>
+              <input name="username" required autoFocus className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" placeholder="admin" />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2">Password</label>
+              <input type="password" name="password" required className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" placeholder="••••••••" />
+            </div>
+            <button type="submit" className="w-full bg-[#0B4D26] hover:bg-[#07361a] text-white font-bold py-3 rounded-lg transition-colors mt-4">
+              Login to Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        <h1 className="text-3xl font-playfair font-bold text-gray-900 mb-8">Admin Dashboard</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-playfair font-bold text-gray-900">Admin Dashboard</h1>
+          <button 
+            onClick={() => {
+              sessionStorage.removeItem('adminAuth');
+              setIsAuthenticated(false);
+            }} 
+            className="text-sm font-bold text-gray-500 hover:text-red-500 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar */}
@@ -178,17 +284,18 @@ export default function AdminDashboard() {
                 >
                   <LayoutDashboard className="w-5 h-5" /> Overview
                 </button>
-                <button
-                  onClick={() => setActiveTab('orders')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'orders' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
-                >
-                  <Package className="w-5 h-5" /> Orders Management
-                </button>
+
                 <button
                   onClick={() => setActiveTab('products')}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'products' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <Package className="w-5 h-5" /> Products Management
+                </button>
+                <button
+                  onClick={() => setActiveTab('categories')}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                >
+                  <Package className="w-5 h-5" /> Categories Management
                 </button>
                 <div className="my-2 border-t border-gray-100"></div>
       
@@ -217,141 +324,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </div>
-              ) : activeTab === 'orders' ? (
-                <div className="flex flex-col xl:flex-row gap-6">
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6 flex justify-between items-center">
-                      <div className="flex items-center gap-4">
-                        Recent Orders
-                        <span className="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full">{orders.length} orders</span>
-                      </div>
-                      {!isSearchSidebarOpen && (
-                        <button 
-                          onClick={() => setIsSearchSidebarOpen(true)}
-                          className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm hover:bg-gray-200 transition-colors"
-                        >
-                          <Search className="w-4 h-4" /> Search Orders
-                        </button>
-                      )}
-                    </h2>
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-gray-600">
-                      <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
-                        <tr>
-                          <th className="px-6 py-4 rounded-tl-lg">Order ID</th>
-                          <th className="px-6 py-4">Customer</th>
-                          <th className="px-6 py-4">Total</th>
-                          <th className="px-6 py-4">Date</th>
-                          <th className="px-6 py-4">Status</th>
-                          <th className="px-6 py-4 rounded-tr-lg">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100">
-                        {orders.map((order) => (
-                          <tr key={order.id} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-6 py-4 font-mono font-medium text-gray-900">
-                              #{order.id.split('-')[0].toUpperCase()}
-                            </td>
-                            <td className="px-6 py-4">
-                              <div 
-                                className="cursor-pointer group flex flex-col"
-                                onClick={() => setSelectedCustomerOrder(order)}
-                                title="View Customer Details"
-                              >
-                                <p className="font-bold text-gray-900 group-hover:text-[#0B4D26] transition-colors flex items-center gap-1">
-                                  {order.customer_name}
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                </p>
-                                <p className="text-xs text-gray-500">{order.customer_phone}</p>
-                              </div>
-                            </td>
-                            <td className="px-6 py-4 font-bold text-[#0B4D26]">
-                              ₹{Number(order.total).toLocaleString('en-IN')}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              {new Date(order.created_at).toLocaleDateString()}
-                            </td>
-                            <td className="px-6 py-4">
-                              <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${getStatusColor(order.status)}`}>
-                                {order.status.replace('_', ' ')}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4">
-                              <select 
-                                className="bg-white border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] block w-full p-2"
-                                value={order.status}
-                                onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                              >
-                                <option value="pending">Pending</option>
-                                <option value="confirmed">Confirmed</option>
-                                <option value="processing">Processing</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="out_for_delivery">Out for Delivery</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancelled">Cancelled</option>
-                              </select>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  </div>
-
-                  {/* Order Search Sidebar */}
-                  {isSearchSidebarOpen && (
-                    <div className="w-full xl:w-80 shrink-0 bg-gray-50 p-6 rounded-2xl border border-gray-100 h-fit">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-bold text-lg text-gray-900">Search Orders</h3>
-                        <button 
-                          onClick={() => setIsSearchSidebarOpen(false)}
-                          className="text-gray-400 hover:text-gray-900 transition-colors"
-                        >
-                          <X className="w-5 h-5" />
-                        </button>
-                      </div>
-                      <div className="flex gap-2 mb-6">
-                        <input 
-                          type="text" 
-                          placeholder="ID, Name or Phone..." 
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-[#0B4D26] focus:border-[#0B4D26] bg-white"
-                          value={orderSearchQuery}
-                          onChange={(e) => setOrderSearchQuery(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && handleSearchOrders()}
-                        />
-                        <button 
-                          onClick={handleSearchOrders}
-                          className="bg-[#0B4D26] text-white px-4 py-2 rounded-lg font-bold hover:bg-[#083a1c] transition-colors"
-                        >
-                          <Search className="w-4 h-4" />
-                        </button>
-                      </div>
-                      {isSearchingOrders ? (
-                        <div className="flex justify-center py-4">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#0B4D26]"></div>
-                        </div>
-                      ) : orderSearchResults.length > 0 ? (
-                        <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
-                          {orderSearchResults.map((order: any) => (
-                            <div key={order.id} onClick={() => setSelectedCustomerOrder(order)} className="bg-white p-4 rounded-xl border border-gray-200 cursor-pointer hover:border-[#0B4D26] transition-colors group">
-                              <div className="flex justify-between items-start mb-1">
-                                <p className="font-bold text-gray-900 text-sm group-hover:text-[#0B4D26] transition-colors">#{order.id.split('-')[0].toUpperCase()}</p>
-                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${getStatusColor(order.status)}`}>{order.status.replace('_', ' ')}</span>
-                              </div>
-                              <p className="text-sm text-gray-600">{order.customer_name}</p>
-                              <p className="text-xs text-gray-400 mt-1">{order.customer_phone}</p>
-                            </div>
-                          ))}
-                        </div>
-                      ) : orderSearchQuery && hasSearched ? (
-                        <p className="text-sm text-gray-500 text-center py-4 bg-white rounded-xl border border-gray-200">No orders found.</p>
-                      ) : (
-                        <p className="text-sm text-gray-400 text-center py-8">Enter an ID, name, or phone number to find an order.</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : (
+              ) : activeTab === 'products' ? (
                 <div>
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
@@ -361,6 +334,7 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => {
                         setEditingProduct(null);
+                        setImagePreview('');
                         setIsProductModalOpen(true);
                       }}
                       className="bg-[#0B4D26] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm hover:bg-[#083a1c] transition-colors"
@@ -409,6 +383,7 @@ export default function AdminDashboard() {
                                 <button 
                                   onClick={() => {
                                     setEditingProduct(product);
+                                    setImagePreview(product.image || '');
                                     setIsProductModalOpen(true);
                                   }}
                                   className="text-blue-600 hover:text-blue-800"
@@ -431,7 +406,60 @@ export default function AdminDashboard() {
                     </table>
                   </div>
                 </div>
-              )}
+              ) : activeTab === 'categories' ? (
+                <div>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                      Categories Management
+                      <span className="text-sm font-medium bg-gray-100 px-3 py-1 rounded-full">{categories.length} items</span>
+                    </h2>
+                    <button
+                      onClick={() => {
+                        setImagePreview('');
+                        setIsCategoryModalOpen(true);
+                      }}
+                      className="bg-[#0B4D26] text-white px-4 py-2 rounded-lg font-bold flex items-center gap-2 text-sm hover:bg-[#083a1c] transition-colors"
+                    >
+                      <Plus className="w-4 h-4" /> Add Category
+                    </button>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm text-gray-600">
+                      <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
+                        <tr>
+                          <th className="px-6 py-4 rounded-tl-lg w-16">Image</th>
+                          <th className="px-6 py-4">Category Name</th>
+                          <th className="px-6 py-4 rounded-tr-lg">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {categories.map((cat) => (
+                          <tr key={cat.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-6 py-4">
+                              <img src={cat.image || '/images/placeholder.png'} alt={cat.name} className="w-12 h-12 object-cover rounded bg-gray-100" />
+                            </td>
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-gray-900">{cat.name}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <button 
+                                  onClick={() => handleDeleteCategory(cat.name)}
+                                  className="text-red-500 hover:text-red-700"
+                                  title="Delete Category"
+                                >
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -470,12 +498,18 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-                  <select name="category_name" defaultValue={editingProduct?.category || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
-                    <option value="">Select Category...</option>
+                  <input 
+                    name="category" 
+                    defaultValue={editingProduct?.category || ''} 
+                    list="categories-list"
+                    placeholder="Select or type new category..."
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                  />
+                  <datalist id="categories-list">
                     {categories.map(c => (
-                      <option key={c.id} value={c.name}>{c.name}</option>
+                      <option key={c.id} value={c.name} />
                     ))}
-                  </select>
+                  </datalist>
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Animal Type</label>
@@ -491,23 +525,30 @@ export default function AdminDashboard() {
 
 
                 <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Image URL</label>
-                  <input name="image" defaultValue={editingProduct?.image || ''} placeholder="/images/example.png" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Upload Image</label>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20" 
+                  />
+                  {imagePreview && (
+                    <div className="mt-3 relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                      <button 
+                        type="button"
+                        onClick={() => setImagePreview('')}
+                        className="absolute top-1 right-1 bg-white/80 p-1 rounded-full text-red-500 hover:bg-white"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Discount %</label>
-                  <input type="number" name="discount" defaultValue={editingProduct?.discount || '0'} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Tags (Comma Separated)</label>
-                  <input name="tags" defaultValue={editingProduct?.tags?.join(', ') || ''} placeholder="Fresh, Farm, Quality" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
-                </div>
-
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
-                  <textarea name="description" rows={3} defaultValue={editingProduct?.description || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"></textarea>
+                  <textarea name="description" defaultValue={editingProduct?.description || ''} rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
                 </div>
                 
                 <div className="md:col-span-2 flex items-center gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -644,6 +685,61 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Category Form Modal */}
+      {isCategoryModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex justify-between items-center z-10">
+              <h3 className="text-xl font-bold text-gray-900">Add New Category</h3>
+              <button 
+                onClick={() => setIsCategoryModalOpen(false)}
+                className="text-gray-400 hover:text-gray-900 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSaveCategory} className="p-6 space-y-6">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Category Name <span className="text-red-500">*</span></label>
+                <input required name="name" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-2">Upload Image</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20" 
+                />
+                {imagePreview && (
+                  <div className="mt-3 relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button 
+                      type="button"
+                      onClick={() => setImagePreview('')}
+                      className="absolute top-1 right-1 bg-white/80 p-1 rounded-full text-red-500 hover:bg-white"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                <button type="button" onClick={() => setIsCategoryModalOpen(false)} className="px-6 py-2.5 rounded-lg font-bold text-gray-600 hover:bg-gray-100 transition-colors">
+                  Cancel
+                </button>
+                <button type="submit" disabled={isSavingCategory} className="px-6 py-2.5 rounded-lg font-bold bg-[#0B4D26] text-white hover:bg-[#083a1c] transition-colors disabled:opacity-50">
+                  {isSavingCategory ? 'Saving...' : 'Save Category'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

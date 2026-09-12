@@ -259,9 +259,13 @@ export default function Header() {
             <Search className="w-5 h-5" strokeWidth={2} />
           </button>
 
-
-
-
+          <Link 
+            to="/admin" 
+            className="text-gray-800 hover:text-[#86B841] transition-colors p-1.5 rounded-full hover:bg-gray-100"
+            title="Admin Dashboard"
+          >
+            <User className="w-5 h-5" strokeWidth={2} />
+          </Link>
 
           {/* Mobile Menu Toggle */}
           <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden text-gray-800 p-1.5 hover:text-[#1B4332] rounded-full hover:bg-gray-100 transition-colors ml-0.5" title="Menu">
@@ -438,7 +442,7 @@ export default function Header() {
                       {searchResults.map((product) => (
                         <Link 
                           key={product.id}
-                          to={`/product/${product.id}`}
+                          to={`/shop?category=${encodeURIComponent(product.category)}`}
                           onClick={() => {
                             setIsSearchOpen(false);
                             setSearchQuery('');

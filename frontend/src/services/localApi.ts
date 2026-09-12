@@ -10,9 +10,43 @@ const saveCustomProducts = (products: any[]) => {
   localStorage.setItem('custom_products', JSON.stringify(products));
 };
 
+const getModifiedProducts = () => {
+  const modified = localStorage.getItem('modified_products');
+  return modified ? JSON.parse(modified) : {};
+};
+
+const saveModifiedProducts = (productsDict: Record<string, any>) => {
+  localStorage.setItem('modified_products', JSON.stringify(productsDict));
+};
+
+const getDeletedProductIds = () => {
+  const deleted = localStorage.getItem('deleted_products');
+  return deleted ? JSON.parse(deleted) : [];
+};
+
+const saveDeletedProductIds = (ids: string[]) => {
+  localStorage.setItem('deleted_products', JSON.stringify(ids));
+};
+
+const getCustomCategories = () => {
+  const cats = localStorage.getItem('custom_categories');
+  return cats ? JSON.parse(cats) : [];
+};
+
+const saveCustomCategories = (cats: any[]) => {
+  localStorage.setItem('custom_categories', JSON.stringify(cats));
+};
+
 const getAllProducts = () => {
   const customProducts = getCustomProducts();
-  return [...customProducts, ...baseProducts];
+  const modifiedProducts = getModifiedProducts();
+  const deletedIds = getDeletedProductIds();
+
+  const validBaseProducts = baseProducts
+    .filter(p => !deletedIds.includes(p.id))
+    .map(p => modifiedProducts[p.id] || p);
+
+  return [...customProducts, ...validBaseProducts];
 };
 
 const getOrdersFromStorage = () => {
@@ -65,10 +99,15 @@ export const localApi = {
 
   getCategories: async () => {
     await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Custom explicit categories
+    const customCats = getCustomCategories();
+    
+    // Dynamic categories from products
     const products = getAllProducts();
-    const categories = new Set(products.map(p => p.category));
-    return Array.from(categories).map(name => {
-      // Find the first product in this category to grab an image
+    const categories = new Set(products.map(p => p.category).filter(Boolean));
+    
+    const dynamicCats = Array.from(categories).map(name => {
       const product = products.find(p => p.category === name);
       return {
         id: name,
@@ -76,6 +115,35 @@ export const localApi = {
         image: product?.image || '/images/default.jpg'
       };
     });
+
+    // Merge them, preferring custom ones if names overlap
+    const mergedMap = new Map();
+    dynamicCats.forEach(c => mergedMap.set(c.name, c));
+    customCats.forEach(c => mergedMap.set(c.name, c));
+
+    return Array.from(mergedMap.values());
+  },
+
+  addCategory: async (data: any) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const custom = getCustomCategories();
+    const newCategory = {
+      id: crypto.randomUUID(),
+      name: data.name,
+      image: data.image || '/images/default.jpg',
+      created_at: new Date().toISOString()
+    };
+    custom.push(newCategory);
+    saveCustomCategories(custom);
+    return newCategory;
+  },
+
+  deleteCategory: async (name: string) => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const custom = getCustomCategories();
+    const filtered = custom.filter((c: any) => c.name !== name);
+    saveCustomCategories(filtered);
+    return { success: true };
   },
 
   addProduct: async (data: any) => {
@@ -96,30 +164,56 @@ export const localApi = {
 
   updateProduct: async (id: string, data: any) => {
     await new Promise(resolve => setTimeout(resolve, 400));
-    const custom = getCustomProducts();
     
-    // We can only update custom products in localStorage
-    const index = custom.findIndex((p: any) => p.id === id);
-    if (index !== -1) {
-      custom[index] = { ...custom[index], ...data };
+    // Check if it's a custom product first
+    const custom = getCustomProducts();
+    const customIndex = custom.findIndex((p: any) => p.id === id);
+    
+    if (customIndex !== -1) {
+      custom[customIndex] = { ...custom[customIndex], ...data };
       saveCustomProducts(custom);
-      return custom[index];
-    } else {
-      throw new Error("Cannot update base static products. Only newly added products can be updated in this static version.");
+      return custom[customIndex];
     }
+    
+    // Otherwise it's a base product (or previously modified)
+    const modified = getModifiedProducts();
+    const baseProduct = baseProducts.find(p => p.id === id);
+    
+    if (baseProduct) {
+      // Merge base product with existing modifications (if any) and new data
+      const currentData = modified[id] || baseProduct;
+      modified[id] = { ...currentData, ...data };
+      saveModifiedProducts(modified);
+      return modified[id];
+    }
+
+    throw new Error("Product not found");
   },
 
   deleteProduct: async (id: string) => {
     await new Promise(resolve => setTimeout(resolve, 400));
-    const custom = getCustomProducts();
     
-    const filtered = custom.filter((p: any) => p.id !== id);
-    if (filtered.length !== custom.length) {
-      saveCustomProducts(filtered);
+    // Check custom products
+    const custom = getCustomProducts();
+    const filteredCustom = custom.filter((p: any) => p.id !== id);
+    
+    if (filteredCustom.length !== custom.length) {
+      saveCustomProducts(filteredCustom);
       return { success: true };
-    } else {
-      throw new Error("Cannot delete base static products. Only newly added products can be deleted.");
     }
+    
+    // If it's a base product, mark it as deleted
+    const baseProduct = baseProducts.find(p => p.id === id);
+    if (baseProduct) {
+      const deletedIds = getDeletedProductIds();
+      if (!deletedIds.includes(id)) {
+        deletedIds.push(id);
+        saveDeletedProductIds(deletedIds);
+      }
+      return { success: true };
+    }
+
+    throw new Error("Product not found");
   },
 
   // --- Order API ---

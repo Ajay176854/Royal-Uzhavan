@@ -134,16 +134,6 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/subscriptions"
-                  className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
-                >
-                  <ArrowRight className="w-3 h-3 shrink-0" />
-                  Subscribe & Save
-                </Link>
-              </li>
-
-              <li>
-                <Link
                   to="/contact"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
@@ -165,11 +155,11 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-[var(--color-wabi-earth)] shrink-0 mt-0.5" />
 
                 <span className="text-gray-500 text-sm leading-relaxed">
-                  Kuruthencode,
+                  2/11/9, Asaarivilai, Saral post,
                   <br />
                   Kanniyakumari District,
                   <br />
-                  Tamil Nadu
+                  Tamil Nadu - 629203
                 </span>
               </li>
 
@@ -191,7 +181,7 @@ export default function Footer() {
                   href="mailto:hello@royaluzhavan.com"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-green)] transition-colors break-all"
                 >
-                  hello@royaluzhavan.com
+                  royaluzhavan@gmail.com
                 </a>
               </li>
             </ul>
