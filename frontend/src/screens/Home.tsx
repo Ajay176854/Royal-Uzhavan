@@ -101,7 +101,9 @@ export default function Home() {
             loop
             muted={true}
             playsInline={true}
-            className="w-full h-full object-cover object-top"
+            preload="auto"
+            poster="/images/nature-bg.jpg"
+            className="w-full h-full object-cover object-top bg-[var(--color-wabi-bg)]"
           >
             <source src="/theme_video.MP4" type="video/mp4" />
           </video>
