@@ -1,8 +1,7 @@
+'use client';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import {
-  Instagram,
-  Youtube,
   MapPin,
   Mail,
   Phone,
@@ -11,6 +10,26 @@ import {
   Leaf,
   Sprout,
 } from 'lucide-react';
+
+// Inline SVG icons for Instagram and YouTube (lucide-react removed brand icons)
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+      <path d="m10 15 5-3-5-3z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -22,7 +41,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
             <Link
-              to="/"
+              href="/"
               className="flex flex-col text-left justify-center mb-5 sm:mb-6 group inline-flex"
             >
               <span className="text-[#1B4332] text-xl sm:text-2xl md:text-[26px] font-serif font-bold tracking-tight leading-[0.85]">
@@ -51,7 +70,7 @@ export default function Footer() {
                 aria-label="Instagram"
                 className="w-10 h-10 rounded-full bg-[var(--color-wabi-earth)]/10 flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-colors shrink-0"
               >
-                <Instagram className="w-4 h-4" />
+                <InstagramIcon className="w-4 h-4" />
               </a>
 
               <a
@@ -61,7 +80,7 @@ export default function Footer() {
                 aria-label="YouTube"
                 className="w-10 h-10 rounded-full bg-[var(--color-wabi-earth)]/10 flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-colors shrink-0"
               >
-                <Youtube className="w-4 h-4" />
+                <YoutubeIcon className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -75,7 +94,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/cow"
+                  href="/cow"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -85,7 +104,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/hen"
+                  href="/hen"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -95,7 +114,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/pigeon"
+                  href="/pigeon"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -105,7 +124,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/shop?category=Hen%20and%20Pigeon%20Supplements"
+                  href="/shop?category=Hen%20and%20Pigeon%20Supplements"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -124,7 +143,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/our-farms"
+                  href="/our-farms"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -134,7 +153,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  to="/contact"
+                  href="/contact"
                   className="text-gray-500 text-sm hover:text-[var(--color-wabi-earth)] transition-colors flex items-center gap-2"
                 >
                   <ArrowRight className="w-3 h-3 shrink-0" />
@@ -242,4 +261,3 @@ export default function Footer() {
     </footer>
   );
 }
-

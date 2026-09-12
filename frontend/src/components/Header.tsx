@@ -1,5 +1,7 @@
+'use client';
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X, User, LogOut, Truck, Wheat, Droplet } from 'lucide-react';
 
 import { localApi } from '../services/localApi';
@@ -12,16 +14,16 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileProductsOpen, setIsMobileProductsOpen] = useState(false);
   const [isMobilePoliciesOpen, setIsMobilePoliciesOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
 
-  const isProductsActive = location.pathname.startsWith('/shop') || location.pathname.startsWith('/product');
-  const isPolicyActive = ['/refund-policy', '/terms-of-service', '/privacy-policy'].includes(location.pathname);
-  const isOurFarmsActive = location.pathname === '/our-farms';
-  const isShippingActive = location.pathname === '/policies';
+  const isProductsActive = pathname?.startsWith('/shop') || pathname?.startsWith('/product');
+  const isPolicyActive = ['/refund-policy', '/terms-of-service', '/privacy-policy'].includes(pathname || "");
+  const isOurFarmsActive = pathname === '/our-farms';
+  const isShippingActive = pathname === '/policies';
 
-  const isContactActive = location.pathname === '/contact';
+  const isContactActive = pathname === '/contact';
 
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -48,7 +50,7 @@ export default function Header() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
-  }, [location]);
+  }, [pathname]);
 
   useEffect(() => {
     const handleCloseMenu = () => setIsMobileMenuOpen(false);
@@ -59,7 +61,7 @@ export default function Header() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery)}`);
+      router.push(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
       setSearchQuery('');
     }
@@ -84,9 +86,9 @@ export default function Header() {
       <div className="container mx-auto px-4 xl:px-8 py-3 md:py-4 flex items-center justify-between gap-4 md:gap-6">
 
         {/* Logo */}
-        <Link to="/" className="flex shrink-0 items-center gap-2.5 md:gap-3 group">
+        <Link href="/" className="flex shrink-0 items-center gap-2.5 md:gap-3 group">
           <div className="relative">
-            <img src={logoImg} alt="Royal Uzhavan Logo" className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 object-cover rounded-full shadow-md border-[2px] border-white group-hover:shadow-lg transition-all duration-300 shrink-0" />
+            <img src={logoImg.src} alt="Royal Uzhavan Logo" className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 object-cover rounded-full shadow-md border-[2px] border-white group-hover:shadow-lg transition-all duration-300 shrink-0" />
             <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-0.5 md:p-1 shadow-sm border border-gray-100">
               <Leaf className="w-2.5 h-2.5 md:w-3 md:h-3 text-[#86B841]" strokeWidth={2.5} />
             </div>
@@ -104,8 +106,8 @@ export default function Header() {
         {/* Desktop Navigation Links (Visible on lg screens and up) */}
         <nav className="hidden lg:flex flex-1 justify-center items-center gap-1 xl:gap-3 text-[10px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
 
-          <Link to="/our-farms" className={`rounded-full transition-colors py-2 px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
-          <Link to="/blog" className={`rounded-full transition-colors py-2 px-3 ${location.pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
+          <Link href="/our-farms" className={`rounded-full transition-colors py-2 px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
+          <Link href="/blog" className={`rounded-full transition-colors py-2 px-3 ${pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
 
           <div className="group">
             <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
@@ -119,21 +121,21 @@ export default function Header() {
                   {/* Col 1 */}
                   {/* Col 1 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to={`/shop?category=${encodeURIComponent('Royal Cattle Feed')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Royal Cattle Feed')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Royal Cattle Feed</span>
                         <span className="text-xs text-[#86B841] font-semibold">பசு தீவனம்</span>
                       </div>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to={`/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Royal Hen Feed</span>
                         <span className="text-xs text-[#86B841] font-semibold">கோழி தீவனம்</span>
                       </div>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to={`/shop?category=${encodeURIComponent('Royal Birds Food')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Royal Birds Food')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Royal Birds Food</span>
                         <span className="text-xs text-[#86B841] font-semibold">பறவைகள் உணவு</span>
@@ -144,14 +146,14 @@ export default function Header() {
 
                   {/* Col 2 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to={`/shop?category=${encodeURIComponent('Royal oil-cake(Punnaku)')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Royal oil-cake(Punnaku)')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Oil Cakes (Punnaku)</span>
                         <span className="text-xs text-[#86B841] font-semibold">புண்ணாக்கு வகைகள்</span>
                       </div>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thavitu Vagaigal - nutrition')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Uzhavan Thavitu Vagaigal - nutrition')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Thavitu Vagaigal (Bran)</span>
                         <span className="text-xs text-[#86B841] font-semibold">தவிடு வகைகள்</span>
@@ -162,14 +164,14 @@ export default function Header() {
 
                   {/* Col 3 */}
                   <div className="flex flex-col gap-5 lg:border-r lg:border-dashed lg:border-gray-200 lg:pr-8">
-                    <Link to={`/shop?category=${encodeURIComponent('Cereals and Grains Category')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Cereals and Grains Category')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Cereals and Grains</span>
                         <span className="text-xs text-[#86B841] font-semibold">தானிய வகைகள்</span>
                       </div>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thusi Vagaigal')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Uzhavan Thusi Vagaigal')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Uzhavan Thusi Vagaigal</span>
                         <span className="text-xs text-[#86B841] font-semibold">தூசி கழிவு வகைகள்</span>
@@ -180,14 +182,14 @@ export default function Header() {
 
                   {/* Col 4 */}
                   <div className="flex flex-col gap-5">
-                    <Link to={`/shop?category=${encodeURIComponent('Uzhavan Vittha Mattum Theevana Vagaigal')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Uzhavan Vittha Mattum Theevana Vagaigal')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Specialized Seed Feeds</span>
                         <span className="text-xs text-[#86B841] font-semibold">விதை தீவனம்</span>
                       </div>
                       <Leaf className="w-3.5 h-3.5 text-[#86B841] shrink-0 mt-0.5 opacity-80 group-hover/item:opacity-100 transition-opacity" />
                     </Link>
-                    <Link to={`/shop?category=${encodeURIComponent('Hen and Pigeon Supplements')}`} className="flex justify-between items-start group/item">
+                    <Link href={`/shop?category=${encodeURIComponent('Hen and Pigeon Supplements')}`} className="flex justify-between items-start group/item">
                       <div>
                         <span className="text-sm font-bold text-gray-800 group-hover/item:text-[#86B841] leading-tight block">Hen & Pigeon Supplements</span>
                         <span className="text-xs text-[#86B841] font-semibold">சத்து மருந்துகள்</span>
@@ -201,19 +203,19 @@ export default function Header() {
                         Shop By Need (Specialized Care):
                       </span>
                       <div className="flex flex-col gap-2 pl-0.5">
-                        <Link to="/cow" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
+                        <Link href="/cow" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
                           <span className="flex items-center gap-1.5">🐄 Cow & Cattle Feeds (பசு)</span>
                           <span className="text-[10px] text-[#86B841] font-semibold group-hover/sub:translate-x-0.5 transition-transform">→</span>
                         </Link>
-                        <Link to="/pigeon" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
+                        <Link href="/pigeon" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
                           <span className="flex items-center gap-1.5">🕊️ Pigeon & Bird Mix (புறா)</span>
                           <span className="text-[10px] text-[#86B841] font-semibold group-hover/sub:translate-x-0.5 transition-transform">→</span>
                         </Link>
-                        <Link to="/hen" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
+                        <Link href="/hen" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
                           <span className="flex items-center gap-1.5">🐔 Hen & Kozhi Feed (கோழி)</span>
                           <span className="text-[10px] text-[#86B841] font-semibold group-hover/sub:translate-x-0.5 transition-transform">→</span>
                         </Link>
-                        <Link to="/pig" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
+                        <Link href="/pig" className="text-xs font-bold text-gray-700 hover:text-[#1B4332] flex items-center justify-between group/sub">
                           <span className="flex items-center gap-1.5">🐖 Pig & Swine Growth (பன்றி)</span>
                           <span className="text-[10px] text-[#86B841] font-semibold group-hover/sub:translate-x-0.5 transition-transform">→</span>
                         </Link>
@@ -233,15 +235,15 @@ export default function Header() {
             {/* Dropdown with hover bridge */}
             <div className="absolute top-full left-0 pt-4 -mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
               <div className="bg-white shadow-xl border border-gray-100 rounded-lg py-3 min-w-[180px] translate-y-2 group-hover:translate-y-0 transition-transform duration-300 normal-case tracking-normal">
-                <Link to="/refund-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Refund Policy</Link>
-                <Link to="/terms-of-service" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Terms of Service</Link>
-                <Link to="/privacy-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Privacy Policy</Link>
+                <Link href="/refund-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Refund Policy</Link>
+                <Link href="/terms-of-service" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Terms of Service</Link>
+                <Link href="/privacy-policy" className="block px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 hover:text-[#86B841] transition-colors">Privacy Policy</Link>
               </div>
             </div>
           </div>
-          <Link to="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
+          <Link href="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
 
-          <Link to="/contact" className={`rounded-full transition-colors py-2 px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
+          <Link href="/contact" className={`rounded-full transition-colors py-2 px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
         </nav>
 
         {/* Actions */}
@@ -260,8 +262,7 @@ export default function Header() {
             <Search className="w-5 h-5" strokeWidth={2} />
           </button>
 
-          <Link 
-            to="/admin" 
+          <Link href="/admin" 
             className="text-gray-800 hover:text-[#86B841] transition-colors p-1.5 rounded-full hover:bg-gray-100"
             title="Admin Dashboard"
           >
@@ -288,7 +289,7 @@ export default function Header() {
         {/* Drawer Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-gray-50/80">
           <div className="flex items-center gap-2">
-            <img src={logoImg} alt="Logo" className="w-8 h-8 rounded-full border border-white shadow-xs" />
+            <img src={logoImg.src} alt="Logo" className="w-8 h-8 rounded-full border border-white shadow-xs" />
             <span className="font-serif font-bold text-[#1B4332] text-lg">Royal உழவன்</span>
           </div>
           <button
@@ -308,19 +309,19 @@ export default function Header() {
           <div className="p-3 mx-3 my-2 bg-emerald-50/60 rounded-xl border border-emerald-100/80">
             <span className="text-[10px] font-black uppercase tracking-wider text-[#1B4332] block mb-2">Shop By Animal Feeds</span>
             <div className="grid grid-cols-4 gap-1.5 text-center">
-              <Link to="/cow" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
+              <Link href="/cow" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
                 <span className="text-base">🐄</span>
                 <span className="text-[10px] font-bold text-gray-800 mt-0.5">Cattle</span>
               </Link>
-              <Link to="/pigeon" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
+              <Link href="/pigeon" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
                 <span className="text-base">🕊️</span>
                 <span className="text-[10px] font-bold text-gray-800 mt-0.5">Pigeon</span>
               </Link>
-              <Link to="/hen" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
+              <Link href="/hen" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
                 <span className="text-base">🐔</span>
                 <span className="text-[10px] font-bold text-gray-800 mt-0.5">Hen</span>
               </Link>
-              <Link to="/pig" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
+              <Link href="/pig" onClick={() => setIsMobileMenuOpen(false)} className="bg-white p-2 rounded-lg border border-emerald-100 hover:border-[#86B841] transition-all flex flex-col items-center">
                 <span className="text-base">🐖</span>
                 <span className="text-[10px] font-bold text-gray-800 mt-0.5">Swine</span>
               </Link>
@@ -340,40 +341,40 @@ export default function Header() {
             </button>
             <div className={`bg-gray-50/60 overflow-hidden transition-all duration-300 ${isMobileProductsOpen ? 'max-h-[600px]' : 'max-h-0'}`}>
               <div className="py-2 flex flex-col border-b border-gray-100">
-                <Link to="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-bold text-[#1B4332] hover:text-[#86B841] flex items-center justify-between">
+                <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-bold text-[#1B4332] hover:text-[#86B841] flex items-center justify-between">
                   <span>View All Categories (அனைத்தும்)</span>
                   <span>→</span>
                 </Link>
                 <div className="my-1 border-t border-gray-200/50"></div>
-                <Link to={`/shop?category=${encodeURIComponent('Royal Cattle Feed')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Royal Cattle Feed')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Royal Cattle Feed</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">பசு தீவனம்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Royal Hen Feed / Royal Kozhi Theevanam*')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Royal Hen Feed</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">கோழி தீவனம்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Royal Birds Food')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Royal Birds Food')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Royal Birds Food</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">பறவைகள் உணவு</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Royal oil-cake(Punnaku)')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Royal oil-cake(Punnaku)')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Oil Cakes (Punnaku)</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">புண்ணாக்கு வகைகள்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thavitu Vagaigal - nutrition')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Uzhavan Thavitu Vagaigal - nutrition')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Thavitu Vagaigal (Bran)</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">தவிடு வகைகள்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Cereals and Grains Category')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Cereals and Grains Category')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Cereals & Grains</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">தானிய வகைகள்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Uzhavan Thusi Vagaigal')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Uzhavan Thusi Vagaigal')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Uzhavan Thusi Vagaigal</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">தூசி கழிவு வகைகள்</span>
                 </Link>
-                <Link to={`/shop?category=${encodeURIComponent('Hen and Pigeon Supplements')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
+                <Link href={`/shop?category=${encodeURIComponent('Hen and Pigeon Supplements')}`} onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841] flex justify-between items-center">
                   <span>Hen & Pigeon Supplements</span>
                   <span className="text-[11px] text-[#86B841] font-semibold">சத்து மருந்துகள்</span>
                 </Link>
@@ -381,8 +382,8 @@ export default function Header() {
             </div>
           </div>
 
-          <Link to="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">About Us</Link>
-          <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
+          <Link href="/our-farms" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">About Us</Link>
+          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Blog</Link>
 
           {/* Policies Accordion */}
           <div>
@@ -395,16 +396,16 @@ export default function Header() {
             </button>
             <div className={`bg-gray-50/60 overflow-hidden transition-all duration-300 ${isMobilePoliciesOpen ? 'max-h-[300px]' : 'max-h-0'}`}>
               <div className="py-2 flex flex-col border-b border-gray-100">
-                <Link to="/refund-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Refund Policy</Link>
-                <Link to="/terms-of-service" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Terms of Service</Link>
-                <Link to="/privacy-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Privacy Policy</Link>
+                <Link href="/refund-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Refund Policy</Link>
+                <Link href="/terms-of-service" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Terms of Service</Link>
+                <Link href="/privacy-policy" onClick={() => setIsMobileMenuOpen(false)} className="px-7 py-2 text-xs font-medium text-gray-700 hover:text-[#86B841]">Privacy Policy</Link>
               </div>
             </div>
           </div>
 
-          <Link to="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
+          <Link href="/policies?tab=shipping" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Shipping & Bulk Orders</Link>
 
-          <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-gray-800 border-b border-gray-50 hover:bg-gray-50 transition-colors">Contact Us</Link>
         </div>
 
         {/* Drawer Footer */}
@@ -444,7 +445,7 @@ export default function Header() {
                       {searchResults.map((product) => (
                         <Link 
                           key={product.id}
-                          to={`/shop?category=${encodeURIComponent(product.category)}`}
+                          href={`/shop?category=${encodeURIComponent(product.category)}`}
                           onClick={() => {
                             setIsSearchOpen(false);
                             setSearchQuery('');
@@ -488,3 +489,7 @@ export default function Header() {
     </header>
   );
 }
+
+
+
+

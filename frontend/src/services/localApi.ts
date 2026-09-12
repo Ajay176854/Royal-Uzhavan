@@ -1,40 +1,51 @@
 import baseProducts from '../data/products.json';
 
+// SSR-safe localStorage helpers
+const safeGetItem = (key: string): string | null => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem(key);
+};
+
+const safeSetItem = (key: string, value: string): void => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(key, value);
+};
+
 // --- Helper Functions ---
 const getCustomProducts = () => {
-  const custom = localStorage.getItem('custom_products');
+  const custom = safeGetItem('custom_products');
   return custom ? JSON.parse(custom) : [];
 };
 
 const saveCustomProducts = (products: any[]) => {
-  localStorage.setItem('custom_products', JSON.stringify(products));
+  safeSetItem('custom_products', JSON.stringify(products));
 };
 
 const getModifiedProducts = () => {
-  const modified = localStorage.getItem('modified_products');
+  const modified = safeGetItem('modified_products');
   return modified ? JSON.parse(modified) : {};
 };
 
 const saveModifiedProducts = (productsDict: Record<string, any>) => {
-  localStorage.setItem('modified_products', JSON.stringify(productsDict));
+  safeSetItem('modified_products', JSON.stringify(productsDict));
 };
 
 const getDeletedProductIds = () => {
-  const deleted = localStorage.getItem('deleted_products');
+  const deleted = safeGetItem('deleted_products');
   return deleted ? JSON.parse(deleted) : [];
 };
 
 const saveDeletedProductIds = (ids: string[]) => {
-  localStorage.setItem('deleted_products', JSON.stringify(ids));
+  safeSetItem('deleted_products', JSON.stringify(ids));
 };
 
 const getCustomCategories = () => {
-  const cats = localStorage.getItem('custom_categories');
+  const cats = safeGetItem('custom_categories');
   return cats ? JSON.parse(cats) : [];
 };
 
 const saveCustomCategories = (cats: any[]) => {
-  localStorage.setItem('custom_categories', JSON.stringify(cats));
+  safeSetItem('custom_categories', JSON.stringify(cats));
 };
 
 const getAllProducts = () => {
@@ -50,12 +61,12 @@ const getAllProducts = () => {
 };
 
 const getOrdersFromStorage = () => {
-  const orders = localStorage.getItem('orders');
+  const orders = safeGetItem('orders');
   return orders ? JSON.parse(orders) : [];
 };
 
 const saveOrdersToStorage = (orders: any[]) => {
-  localStorage.setItem('orders', JSON.stringify(orders));
+  safeSetItem('orders', JSON.stringify(orders));
 };
 
 // --- Product API ---
@@ -118,8 +129,8 @@ export const localApi = {
 
     // Merge them, preferring custom ones if names overlap
     const mergedMap = new Map();
-    dynamicCats.forEach(c => mergedMap.set(c.name, c));
-    customCats.forEach(c => mergedMap.set(c.name, c));
+    dynamicCats.forEach((c: any) => mergedMap.set(c.name, c));
+    customCats.forEach((c: any) => mergedMap.set(c.name, c));
 
     return Array.from(mergedMap.values());
   },

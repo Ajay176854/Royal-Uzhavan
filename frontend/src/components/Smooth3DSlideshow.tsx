@@ -1,4 +1,5 @@
-"use client"
+'use client';
+
 
 import React, {
     useState,
@@ -415,3 +416,4 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
         </div>
     )
 }
+

@@ -1,3 +1,4 @@
+'use client';
 import * as React from "react"
 import { useCallback, useEffect, useMemo, useRef } from "react"
 import {
@@ -229,7 +230,7 @@ function Card({
                     )}
                     {product.tags.length > 0 && (
                         <div style={{ display: "flex", gap: "6px", marginTop: "4px", flexWrap: "wrap" }}>
-                            {product.tags.slice(0, 2).map((tag) => (
+                            {product.tags.slice(0, 2).map((tag: any) => (
                                 <span
                                     key={tag}
                                     style={{
@@ -604,3 +605,5 @@ export default function CoverflowCarousel(props: Props) {
         </div>
     )
 }
+
+

@@ -1,5 +1,6 @@
+'use client';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Phone, MessageCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 interface Product {
@@ -48,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       {/* Image & Badges */}
       <div className="relative overflow-hidden bg-white m-3 rounded-xl">
-        <Link to={`/shop?category=${encodeURIComponent(product.category)}`} className="block relative aspect-square cursor-pointer">
+        <Link href={`/shop?category=${encodeURIComponent(product.category)}`} className="block relative aspect-square cursor-pointer">
           <img 
             src={product.image} 
             alt={product.name}
@@ -91,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="px-4 pb-4 md:px-5 md:pb-5 flex flex-col flex-1">
 
         {/* Title */}
-        <Link to={`/shop?category=${encodeURIComponent(product.category)}`} className="block mb-3 cursor-pointer">
+        <Link href={`/shop?category=${encodeURIComponent(product.category)}`} className="block mb-3 cursor-pointer">
           <h3 className="font-bold text-gray-900 group-hover:text-[var(--color-wabi-green)] transition-colors leading-tight line-clamp-2">
             {product.name}
           </h3>
@@ -123,3 +124,5 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 };
 
 export default ProductCard;
+
+

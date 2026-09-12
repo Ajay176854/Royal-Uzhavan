@@ -1,11 +1,13 @@
+'use client';
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Home, ShoppingBag, MessageCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export default function MobileNav() {
-  const location = useLocation();
-  const path = location.pathname;
+  const pathname = usePathname();
+  const path = pathname;
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
@@ -44,7 +46,7 @@ export default function MobileNav() {
           return (
             <Link
               key={item.name}
-              to={item.path}
+              href={item.path}
               onClick={() => window.dispatchEvent(new Event('close-mobile-menu'))}
               className={cn(
                 "flex flex-col items-center justify-center w-full h-full transition-colors relative",
@@ -62,3 +64,5 @@ export default function MobileNav() {
     </div>
   );
 }
+
+
