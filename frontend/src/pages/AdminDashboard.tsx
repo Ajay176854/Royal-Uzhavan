@@ -452,6 +452,7 @@ export default function AdminDashboard() {
       const newSettings = await localApi.updateSettings({
         whatsapp_link: formData.get('whatsapp_link'),
         instagram_link: formData.get('instagram_link'),
+        facebook_link: formData.get('facebook_link'),
         youtube_link: formData.get('youtube_link'),
         contact_address: formData.get('contact_address'),
         contact_phone: formData.get('contact_phone'),
@@ -771,6 +772,16 @@ export default function AdminDashboard() {
                           />
                         </div>
                         <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">Facebook Link</label>
+                          <input 
+                            required 
+                            name="facebook_link" 
+                            defaultValue={siteSettings?.facebook_link || ''} 
+                            placeholder="https://facebook.com/..." 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          />
+                        </div>
+                        <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">YouTube Link</label>
                           <input 
                             required 
@@ -923,9 +934,14 @@ export default function AdminDashboard() {
                   )}
                 </div>
 
+                <div className="md:col-span-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Price</label>
+                  <input type="text" name="description" defaultValue={editingProduct?.description || ''} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" placeholder="e.g. ₹1000" />
+                </div>
+
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
-                  <textarea name="description" defaultValue={editingProduct?.description || ''} rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Product Detail</label>
+                  <textarea name="product_detail" defaultValue={editingProduct?.product_detail || ''} rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" placeholder="Detailed product specifications or information..." />
                 </div>
                 
                 <div className="md:col-span-2 flex items-center gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { localApi } from '../services/localApi';
-import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat } from 'lucide-react';
+import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat, Instagram, Youtube, Facebook } from 'lucide-react';
 import { motion } from 'motion/react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
@@ -193,6 +193,35 @@ export default function Home() {
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
           <div className="max-w-2xl w-full -mt-16 md:-mt-28">
+            <div className="flex gap-4 mb-6 pl-4">
+              <a
+                href={siteSettings?.instagram_link || "https://www.instagram.com/uzhavan_birds_food_accessories"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a
+                href={siteSettings?.youtube_link || "https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
+              >
+                <Youtube className="w-5 h-5" />
+              </a>
+              <a
+                href={siteSettings?.facebook_link || "https://www.facebook.com/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
+              >
+                <Facebook className="w-5 h-5" />
+              </a>
+            </div>
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
             <h1 className="text-[var(--color-wabi-green)] text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
               Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-earth)]">Animals.</span>
@@ -308,13 +337,13 @@ export default function Home() {
                 <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                   <img
                     src="/images/cattle&animals.png"
-                    alt="Cattle & Animals — Cow, Pig, Horse & Buffalo"
+                    alt="Cattle & Animals — Cow, Pig, Horse, Buffalo & Rabbit"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   {/* Tag */}
                   <div className="absolute bottom-5 left-5 flex flex-wrap gap-1.5">
-                    {['Cow', 'Pig', 'Horse', 'Buffalo'].map((animal) => (
+                    {['Cow', 'Pig', 'Horse', 'Buffalo', 'Rabbit'].map((animal) => (
                       <span key={animal} className="bg-white/90 backdrop-blur-md text-[var(--color-wabi-green)] text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
                         {animal}
                       </span>
