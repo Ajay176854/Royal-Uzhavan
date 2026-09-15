@@ -15,16 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true });
     }
     
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Invalid credentials',
-      debug: {
-        vUser: validUsername,
-        vPassLen: validPassword.length,
-        iUser: inputUser,
-        iPassLen: inputPass.length
-      }
-    }, { status: 401 });
+    return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Bad request' }, { status: 400 });
   }
