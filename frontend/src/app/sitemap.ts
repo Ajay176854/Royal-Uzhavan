@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import baseProducts from '../data/products.json';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://royaluzhavan.com';
+  const baseUrl = 'https://www.royaluzhavan.in';
 
   const staticRoutes = [
     '',

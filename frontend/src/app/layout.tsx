@@ -7,7 +7,7 @@ import MobileNav from "../components/MobileNav";
 import ScrollToTop from "./ScrollToTop";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://royaluzhavan.com'),
+  metadataBase: new URL('https://www.royaluzhavan.in'),
   title: {
     default: "Royal Uzhavan | Premium Animal Feeds in Kanyakumari & Tamil Nadu",
     template: "%s | Royal Uzhavan"
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Royal Uzhavan | Premium Animal Feeds in Kanyakumari & Tamil Nadu",
     description:
       "Premium cattle feed, poultry feed, pigeon mixes, and organic farm supplements. Based in Kanyakumari (Saral post), delivering across Tamil Nadu and all over India.",
-    url: 'https://royaluzhavan.com',
+    url: 'https://www.royaluzhavan.in',
     siteName: 'Royal Uzhavan',
     images: [
       {
@@ -60,10 +60,10 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Royal Uzhavan",
-  "image": "https://royaluzhavan.com/images/001.jpg",
+  "image": "https://www.royaluzhavan.in/images/001.jpg",
   "description": "Premium cattle feed, poultry feed, pigeon mixes, and organic farm supplements in Kanyakumari, serving Tamil Nadu and all over India.",
-  "@id": "https://royaluzhavan.com",
-  "url": "https://royaluzhavan.com",
+  "@id": "https://www.royaluzhavan.in",
+  "url": "https://www.royaluzhavan.in",
   "telephone": "+918072864890",
   "email": "royaluzhavan@gmail.com",
   "address": {
