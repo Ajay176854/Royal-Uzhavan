@@ -21,7 +21,7 @@ export default function OurFarms() {
       <div className="container mx-auto px-4 md:px-12 py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
           <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-earth)]/10 p-4">
-            <img src="/images/our-story.jpg" alt="Our Journey" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+            <img src="/images/our-story-updated.jpg" alt="Our Journey" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
           </div>
           <div>
             <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Our Story</span>
@@ -52,17 +52,21 @@ export default function OurFarms() {
               <p className="leading-relaxed">
                 That first shop became the foundation of our success and the beginning of something much bigger.
               </p>
+              <div className="mt-6 pt-6 border-t border-gray-100 flex items-start gap-3">
+                <svg className="w-6 h-6 flex-shrink-0 mt-0.5 text-[var(--color-wabi-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <p className="text-sm font-medium text-gray-800 leading-relaxed">9/111, Veera Vilai Road, near IOB Bank, Kurunthancode A, Tamil Nadu 629802</p>
+              </div>
             </div>
           </div>
           <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-green)]/10 p-4 order-1 md:order-2">
-            <img src="/images/nature-bg.jpg" alt="Our Mission" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+            <img src="/images/branch-1-new.jpg" alt="Our Mission" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
           </div>
         </div>
 
         {/* Third Block: Image Left, Text Right */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
           <div className="rounded-3xl overflow-hidden shadow-sm bg-[var(--color-wabi-gold)]/10 p-4">
-            <img src="/farm-field-bg.jpg" alt="Our Promise" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
+            <img src="/images/branch-2-new.jpg" alt="Our Promise" className="w-full h-full object-cover aspect-[4/3] rounded-2xl sepia-[0.15] contrast-95" />
           </div>
           <div>
             <span className="text-[var(--color-wabi-earth)] font-serif italic text-lg mb-4 block">Branch 2</span>
@@ -77,6 +81,10 @@ export default function OurFarms() {
               <p className="leading-relaxed">
                 From one shop to two, every step is driven by the trust of our customers and our commitment to their livestock.
               </p>
+              <div className="mt-6 pt-6 border-t border-gray-100 flex items-start gap-3">
+                <svg className="w-6 h-6 flex-shrink-0 mt-0.5 text-[var(--color-wabi-gold)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                <p className="text-sm font-medium text-gray-800 leading-relaxed">poosasthan vilai, Monday Market - Colachel Rd, Thingalnagar, Tamil Nadu 629802</p>
+              </div>
             </div>
           </div>
         </div>

@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Leaf,
   Sprout,
+  Facebook,
 } from 'lucide-react';
 
 // Inline SVG icons for Instagram and YouTube (lucide-react removed brand icons)
@@ -88,6 +89,16 @@ export default function Footer() {
                 className="w-10 h-10 rounded-full bg-[var(--color-wabi-earth)]/10 flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-colors shrink-0"
               >
                 <YoutubeIcon className="w-4 h-4" />
+              </a>
+
+              <a
+                href={settings?.facebook_link || "https://www.facebook.com/"}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-10 h-10 rounded-full bg-[var(--color-wabi-earth)]/10 flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-colors shrink-0"
+              >
+                <Facebook className="w-4 h-4" />
               </a>
             </div>
           </div>

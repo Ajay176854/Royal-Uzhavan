@@ -74,6 +74,7 @@ const getSettings = () => {
   return settings ? JSON.parse(settings) : { 
     whatsapp_link: 'https://chat.whatsapp.com/G5g2mJgAWhd6P08u1q0Z3r',
     instagram_link: 'https://www.instagram.com/uzhavan_birds_food_accessories',
+    facebook_link: 'https://www.facebook.com/',
     youtube_link: 'https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD',
     contact_address: '2/11/9, Asaarivilai, Saral post,\nKanniyakumari District,\nTamil Nadu - 629203',
     contact_phone: '+91 80-72864890',
