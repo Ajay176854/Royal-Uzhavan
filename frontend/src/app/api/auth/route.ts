@@ -4,8 +4,8 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
     
-    const validUsername = process.env.ADMIN_USERNAME || 'admin@royaluzhavan.com';
-    const validPassword = process.env.ADMIN_PASSWORD || 'Theevanam@1995';
+    const validUsername = (process.env.ADMIN_USERNAME || 'admin@royaluzhavan.com').trim();
+    const validPassword = (process.env.ADMIN_PASSWORD || 'Theevanam@1995').trim();
 
     // Safely trim and compare to avoid accidental spaces causing login failures
     const inputUser = (typeof username === 'string' ? username.trim() : '');
@@ -15,16 +15,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true });
     }
     
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Invalid credentials', 
-      debug: {
-        expectedUserLen: validUsername ? validUsername.length : 0,
-        expectedPassLen: validPassword ? validPassword.length : 0,
-        actualUserLen: inputUser.length,
-        actualPassLen: inputPass.length
-      }
-    }, { status: 401 });
+    return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
   } catch (error) {
     return NextResponse.json({ success: false, error: 'Bad request' }, { status: 400 });
   }
