@@ -7,7 +7,11 @@ export async function POST(request: Request) {
     const validUsername = process.env.ADMIN_USERNAME || 'admin@royaluzhavan.com';
     const validPassword = process.env.ADMIN_PASSWORD || 'Theevanam@1995';
 
-    if (username === validUsername && password === validPassword) {
+    // Safely trim and compare to avoid accidental spaces causing login failures
+    const inputUser = (typeof username === 'string' ? username.trim() : '');
+    const inputPass = (typeof password === 'string' ? password.trim() : '');
+
+    if (inputUser === validUsername && inputPass === validPassword) {
       return NextResponse.json({ success: true });
     }
     
