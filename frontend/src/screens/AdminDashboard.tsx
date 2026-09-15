@@ -24,7 +24,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
   // Extract unique categories and their initial state
   const categoryMap = React.useMemo(() => {
     const map: Record<string, { name: string; homeCategories: string[]; isActiveHome: boolean }> = {};
-    
+
     // 1. Initialize with all actual categories, including any saved placements on them
     categories.forEach(c => {
       map[c.name] = {
@@ -52,7 +52,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
     return map;
   }, [products, categories]);
 
-  const filteredCategories = Object.values(categoryMap).filter(c => 
+  const filteredCategories = Object.values(categoryMap).filter(c =>
     c.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -60,10 +60,10 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
     setEditedCategories(prev => {
       const current = prev[catName] || categoryMap[catName];
       const currentCategories = current.homeCategories || [];
-      const newCategories = checked 
+      const newCategories = checked
         ? [...currentCategories, homeCat]
         : currentCategories.filter((c: string) => c !== homeCat);
-      
+
       return {
         ...prev,
         [catName]: { ...current, homeCategories: newCategories }
@@ -87,7 +87,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
     try {
       const productUpdates: any[] = [];
       const categoryUpdates: any[] = [];
-      
+
       Object.entries(editedCategories).forEach(([catName, catData]) => {
         // Schedule update for the category object itself
         categoryUpdates.push(
@@ -96,7 +96,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
             isActiveHome: catData.isActiveHome
           })
         );
-        
+
         // Update all associated products
         products.forEach(p => {
           if ((p.category || 'Uncategorized') === catName) {
@@ -137,15 +137,15 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
         <div className="flex gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
             <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search categories..." 
+            <input
+              type="text"
+              placeholder="Search categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
             />
           </div>
-          <button 
+          <button
             onClick={handleSave}
             disabled={isSaving || Object.keys(editedCategories).length === 0}
             className="bg-[#0B4D26] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50 whitespace-nowrap transition-colors"
@@ -154,7 +154,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
           </button>
         </div>
       </div>
-      
+
       {successMessage && (
         <div className="mb-6 p-4 bg-green-50 text-green-700 border border-green-200 rounded-lg flex items-center justify-between">
           <span className="font-bold">{successMessage}</span>
@@ -179,7 +179,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
               const currentData = editedCategories[cat.name] || cat;
               const cats = currentData.homeCategories || [];
               const isActive = currentData.isActiveHome !== undefined ? currentData.isActiveHome : true;
-              
+
               return (
                 <tr key={cat.name} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 font-bold text-gray-900">
@@ -195,7 +195,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
                     <input type="checkbox" checked={cats.includes('Other')} onChange={(e) => handleCheckboxChange(cat.name, 'Other', e.target.checked)} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
                   </td>
                   <td className="px-6 py-4 text-center">
-                    <button 
+                    <button
                       onClick={() => handleActiveToggle(cat.name, !isActive)}
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-[#0B4D26]' : 'bg-gray-300'}`}
                     >
@@ -216,7 +216,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
           const currentData = editedCategories[cat.name] || cat;
           const cats = currentData.homeCategories || [];
           const isActive = currentData.isActiveHome !== undefined ? currentData.isActiveHome : true;
-          
+
           return (
             <div key={cat.name} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
               <div className="mb-4">
@@ -239,7 +239,7 @@ function HomePlacementTab({ products, categories, onSave }: { products: any[], c
               <div className="flex justify-between items-center">
                 <span className="text-sm font-bold text-gray-700">Status</span>
                 <div className="flex items-center">
-                  <button 
+                  <button
                     onClick={() => handleActiveToggle(cat.name, !isActive)}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-[#0B4D26]' : 'bg-gray-300'}`}
                   >
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    if (formData.get('username') === 'admin' && formData.get('password') === 'admin123') {
+    if (formData.get('username') === 'admin@royaluzhavan.com' && formData.get('password') === 'admin@123') {
       sessionStorage.setItem('adminAuth', 'true');
       setIsAuthenticated(true);
       setLoginError('');
@@ -294,7 +294,7 @@ export default function AdminDashboard() {
   const [isSearchingOrders, setIsSearchingOrders] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false);
-  
+
   // Product State
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -361,7 +361,7 @@ export default function AdminDashboard() {
       setHasSearched(false);
       return;
     }
-    
+
     setIsSearchingOrders(true);
     setHasSearched(true);
     try {
@@ -390,7 +390,7 @@ export default function AdminDashboard() {
     setIsSavingProduct(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const productData = Object.fromEntries(formData.entries());
-    
+
     // Parse complex fields
     // Parse complex fields
     const payload = {
@@ -420,7 +420,7 @@ export default function AdminDashboard() {
 
   const handleDeleteProduct = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
-    
+
     try {
       await localApi.deleteProduct(id);
       fetchData('products');
@@ -435,7 +435,7 @@ export default function AdminDashboard() {
     setIsSavingCategory(true);
     const formData = new FormData(e.target as HTMLFormElement);
     const categoryData = Object.fromEntries(formData.entries());
-    
+
     try {
       await localApi.addCategory({
         name: categoryData.name,
@@ -480,7 +480,7 @@ export default function AdminDashboard() {
 
   const handleDeleteCategory = async (name: string) => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
-    
+
     try {
       await localApi.deleteCategory(name);
       fetchData('categories');
@@ -543,11 +543,11 @@ export default function AdminDashboard() {
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-playfair font-bold text-gray-900">Admin Dashboard</h1>
-          <button 
+          <button
             onClick={() => {
               sessionStorage.removeItem('adminAuth');
               setIsAuthenticated(false);
-            }} 
+            }}
             className="text-sm font-bold text-gray-500 hover:text-red-500 transition-colors"
           >
             Logout
@@ -594,7 +594,7 @@ export default function AdminDashboard() {
                 >
                   <Edit className="w-5 h-5" /> Settings
                 </button>
-      
+
               </nav>
             </div>
           </div>
@@ -602,7 +602,7 @@ export default function AdminDashboard() {
           {/* Main Content */}
           <div className="flex-1">
             <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm min-h-[500px]">
-              
+
               {isFetching ? (
                 <div className="flex items-center justify-center h-64">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0B4D26]"></div>
@@ -638,7 +638,7 @@ export default function AdminDashboard() {
                       <Plus className="w-4 h-4" /> Add Product
                     </button>
                   </div>
-                  
+
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-gray-600">
                       <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
@@ -676,7 +676,7 @@ export default function AdminDashboard() {
                             </td>
                             <td className="px-6 py-4">
                               <div className="flex items-center gap-3">
-                                <button 
+                                <button
                                   onClick={() => {
                                     setEditingProduct(product);
                                     setImagePreview(product.image || '');
@@ -687,7 +687,7 @@ export default function AdminDashboard() {
                                 >
                                   <Edit className="w-5 h-5" />
                                 </button>
-                                <button 
+                                <button
                                   onClick={() => handleDeleteProduct(product.id)}
                                   className="text-red-500 hover:text-red-700"
                                   title="Delete Product"
@@ -719,7 +719,7 @@ export default function AdminDashboard() {
                       <Plus className="w-4 h-4" /> Add Category
                     </button>
                   </div>
-                  
+
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-gray-600">
                       <thead className="bg-gray-50 text-gray-700 uppercase text-xs font-bold border-b border-gray-200">
@@ -740,7 +740,7 @@ export default function AdminDashboard() {
                             </td>
                             <td className="px-6 py-4">
                               <div className="flex items-center gap-3">
-                                <button 
+                                <button
                                   onClick={() => handleDeleteCategory(cat.name)}
                                   className="text-red-500 hover:text-red-700"
                                   title="Delete Category"
@@ -765,63 +765,63 @@ export default function AdminDashboard() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">WhatsApp Group Link</label>
-                          <input 
-                            required 
-                            name="whatsapp_link" 
-                            defaultValue={siteSettings?.whatsapp_link || ''} 
-                            placeholder="https://chat.whatsapp.com/..." 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          <input
+                            required
+                            name="whatsapp_link"
+                            defaultValue={siteSettings?.whatsapp_link || ''}
+                            placeholder="https://chat.whatsapp.com/..."
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">Instagram Link</label>
-                          <input 
-                            required 
-                            name="instagram_link" 
-                            defaultValue={siteSettings?.instagram_link || ''} 
-                            placeholder="https://instagram.com/..." 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          <input
+                            required
+                            name="instagram_link"
+                            defaultValue={siteSettings?.instagram_link || ''}
+                            placeholder="https://instagram.com/..."
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">Facebook Link</label>
-                          <input 
-                            required 
-                            name="facebook_link" 
-                            defaultValue={siteSettings?.facebook_link || ''} 
-                            placeholder="https://facebook.com/..." 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          <input
+                            required
+                            name="facebook_link"
+                            defaultValue={siteSettings?.facebook_link || ''}
+                            placeholder="https://facebook.com/..."
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">YouTube Link</label>
-                          <input 
-                            required 
-                            name="youtube_link" 
-                            defaultValue={siteSettings?.youtube_link || ''} 
-                            placeholder="https://youtube.com/..." 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          <input
+                            required
+                            name="youtube_link"
+                            defaultValue={siteSettings?.youtube_link || ''}
+                            placeholder="https://youtube.com/..."
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">Contact Phone</label>
-                          <input 
-                            required 
-                            name="contact_phone" 
-                            defaultValue={siteSettings?.contact_phone || ''} 
-                            placeholder="+91 1234567890" 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                          <input
+                            required
+                            name="contact_phone"
+                            defaultValue={siteSettings?.contact_phone || ''}
+                            placeholder="+91 1234567890"
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-gray-700 mb-2">Contact Email</label>
-                          <input 
-                            required 
-                            name="contact_email" 
+                          <input
+                            required
+                            name="contact_email"
                             type="email"
-                            defaultValue={siteSettings?.contact_email || ''} 
-                            placeholder="hello@example.com" 
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                            defaultValue={siteSettings?.contact_email || ''}
+                            placeholder="hello@example.com"
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                         <div className="md:col-span-2 bg-white p-4 rounded-xl border border-gray-100">
@@ -830,13 +830,13 @@ export default function AdminDashboard() {
                             <div>
                               <label className="block text-xs font-semibold text-gray-500 mb-1">Start Day</label>
                               <select name="support_start_day" defaultValue={siteSettings?.support_start_day || 'Mon'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
-                                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => <option key={d} value={d}>{d}</option>)}
+                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <option key={d} value={d}>{d}</option>)}
                               </select>
                             </div>
                             <div>
                               <label className="block text-xs font-semibold text-gray-500 mb-1">End Day</label>
                               <select name="support_end_day" defaultValue={siteSettings?.support_end_day || 'Sat'} className="w-full px-3 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]">
-                                {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => <option key={d} value={d}>{d}</option>)}
+                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <option key={d} value={d}>{d}</option>)}
                               </select>
                             </div>
                             <div>
@@ -851,19 +851,19 @@ export default function AdminDashboard() {
                         </div>
                         <div className="md:col-span-2">
                           <label className="block text-sm font-bold text-gray-700 mb-2">Contact Address</label>
-                          <textarea 
-                            required 
-                            name="contact_address" 
-                            defaultValue={siteSettings?.contact_address || ''} 
-                            placeholder="123 Street..." 
+                          <textarea
+                            required
+                            name="contact_address"
+                            defaultValue={siteSettings?.contact_address || ''}
+                            placeholder="123 Street..."
                             rows={3}
-                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                            className="w-full px-4 py-3 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                           />
                         </div>
                       </div>
                       <div className="flex justify-end pt-4">
-                        <button 
-                          type="submit" 
+                        <button
+                          type="submit"
                           disabled={isSavingSettings}
                           className="px-8 py-3 bg-[#0B4D26] text-white rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50 transition-colors"
                         >
@@ -887,14 +887,14 @@ export default function AdminDashboard() {
               <h3 className="text-xl font-bold text-gray-900">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </h3>
-              <button 
+              <button
                 onClick={() => setIsProductModalOpen(false)}
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <form onSubmit={handleSaveProduct} className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -908,12 +908,12 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Category</label>
-                  <input 
-                    name="category" 
-                    defaultValue={editingProduct?.category || ''} 
+                  <input
+                    name="category"
+                    defaultValue={editingProduct?.category || ''}
                     list="categories-list"
                     placeholder="Select or type new category..."
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" 
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]"
                   />
                   <datalist id="categories-list">
                     {categories.map(c => (
@@ -926,16 +926,16 @@ export default function AdminDashboard() {
 
                 <div>
                   <label className="block text-sm font-bold text-gray-700 mb-2">Upload Image</label>
-                  <input 
-                    type="file" 
+                  <input
+                    type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20" 
+                    className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20"
                   />
                   {imagePreview && (
                     <div className="mt-3 relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
                       <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                      <button 
+                      <button
                         type="button"
                         onClick={() => setImagePreview('')}
                         className="absolute top-1 right-1 bg-white/80 p-1 rounded-full text-red-500 hover:bg-white"
@@ -955,7 +955,7 @@ export default function AdminDashboard() {
                   <label className="block text-sm font-bold text-gray-700 mb-2">Product Detail</label>
                   <textarea name="product_detail" defaultValue={editingProduct?.product_detail || ''} rows={4} className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" placeholder="Detailed product specifications or information..." />
                 </div>
-                
+
                 <div className="md:col-span-2 flex items-center gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <input type="checkbox" id="in_stock" name="in_stock" value="true" defaultChecked={editingProduct ? editingProduct.in_stock : true} className="w-5 h-5 text-[#0B4D26] rounded focus:ring-[#0B4D26]" />
                   <label htmlFor="in_stock" className="font-bold text-gray-700 cursor-pointer">Product is In Stock</label>
@@ -963,15 +963,15 @@ export default function AdminDashboard() {
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsProductModalOpen(false)}
                   className="px-6 py-2 border rounded-lg font-bold text-gray-600 hover:bg-gray-50"
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isSavingProduct}
                   className="px-6 py-2 bg-[#0B4D26] text-white rounded-lg font-bold hover:bg-[#083a1c] disabled:opacity-50"
                 >
@@ -993,14 +993,14 @@ export default function AdminDashboard() {
                 <Users className="w-5 h-5 text-[#0B4D26]" />
                 Customer Details
               </h3>
-              <button 
+              <button
                 onClick={() => setSelectedCustomerOrder(null)}
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <div className="p-6 overflow-y-auto">
               <div className="space-y-6">
                 <div>
@@ -1027,10 +1027,10 @@ export default function AdminDashboard() {
                     <p className="text-sm text-blue-900 whitespace-pre-wrap leading-relaxed">
                       {(() => {
                         try {
-                          const address = typeof selectedCustomerOrder.shipping_address === 'string' 
+                          const address = typeof selectedCustomerOrder.shipping_address === 'string'
                             ? JSON.parse(selectedCustomerOrder.shipping_address)
                             : selectedCustomerOrder.shipping_address;
-                          
+
                           if (address && typeof address === 'object') {
                             return `${address.address}\n${address.city}, ${address.state}\n${address.pincode}`;
                           }
@@ -1050,7 +1050,7 @@ export default function AdminDashboard() {
                         const items = typeof selectedCustomerOrder.items === 'string'
                           ? JSON.parse(selectedCustomerOrder.items)
                           : selectedCustomerOrder.items;
-                        
+
                         if (!Array.isArray(items) || items.length === 0) return <p className="p-4 text-sm text-gray-500">No items found.</p>;
 
                         return items.map((item: any, index: number) => (
@@ -1100,32 +1100,32 @@ export default function AdminDashboard() {
           <div className="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto shadow-2xl">
             <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex justify-between items-center z-10">
               <h3 className="text-xl font-bold text-gray-900">Add New Category</h3>
-              <button 
+              <button
                 onClick={() => setIsCategoryModalOpen(false)}
                 className="text-gray-400 hover:text-gray-900 transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
-            
+
             <form onSubmit={handleSaveCategory} className="p-6 space-y-6">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Category Name <span className="text-red-500">*</span></label>
                 <input required name="name" className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26]" />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">Upload Image</label>
-                <input 
-                  type="file" 
+                <input
+                  type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20" 
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-[#0B4D26] focus:border-[#0B4D26] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#0B4D26]/10 file:text-[#0B4D26] hover:file:bg-[#0B4D26]/20"
                 />
                 {imagePreview && (
                   <div className="mt-3 relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                    <button 
+                    <button
                       type="button"
                       onClick={() => setImagePreview('')}
                       className="absolute top-1 right-1 bg-white/80 p-1 rounded-full text-red-500 hover:bg-white"

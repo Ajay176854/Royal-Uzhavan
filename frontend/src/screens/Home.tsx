@@ -3,11 +3,39 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { localApi } from '../services/localApi';
-import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat, Instagram, Youtube, Facebook } from 'lucide-react';
+import { ShieldCheck, Leaf, Truck, Sprout, ArrowRight, Wheat } from 'lucide-react';
 import { motion } from 'motion/react';
 import ProductCard from '../components/ProductCard';
 import Smooth3DSlideshow from '../components/Smooth3DSlideshow';
 import CoverflowCarousel from '../components/CoverflowCarousel';
+
+// Inline SVG icons for Instagram, YouTube, and Facebook
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+      <path d="m10 15 5-3-5-3z" />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
 
 const PRODUCT_CATEGORIES = {
   'Feed': [
@@ -84,14 +112,14 @@ export default function Home() {
           const finalPool = uniqueProducts.length >= 10 ? uniqueProducts : shuffled;
           setFeaturedProducts(finalPool.slice(0, 8));
           setNewLaunches(finalPool.slice(8, 20));
-          
+
           const categorized: Record<string, any[]> = {
             'Feed': [],
             'Supplements & Accessories': [],
             'Other': []
           };
           let hasAnyHomeCategories = false;
-          
+
           const seenCategoriesInTab: Record<string, Set<string>> = {
             'Feed': new Set(),
             'Supplements & Accessories': new Set(),
@@ -124,7 +152,7 @@ export default function Home() {
             if (p.isActiveHome !== false) {
               const cats = p.homeCategories || [];
               const pCategory = p.category || 'Uncategorized';
-              
+
               cats.forEach((c: string) => {
                 if (categorized[c] && !seenCategoriesInTab[c].has(pCategory)) {
                   categorized[c].push({
@@ -141,7 +169,7 @@ export default function Home() {
               });
             }
           });
-          
+
           // If no products have homeCategories set (first run), populate from PRODUCT_CATEGORIES
           if (!hasAnyHomeCategories) {
             Object.keys(PRODUCT_CATEGORIES).forEach(key => {
@@ -157,9 +185,9 @@ export default function Home() {
               }));
             });
           }
-          
+
           setHomeCategoryProducts(categorized);
-          
+
         } else {
           setFeaturedProducts(mappedProducts.slice(0, 5));
           setNewLaunches(mappedProducts.slice(5, 10));
@@ -189,7 +217,7 @@ export default function Home() {
             poster="/images/nature-bg.jpg"
             className="w-full h-full object-cover object-top bg-[var(--color-wabi-bg)]"
           >
-            <source src="/theme_video.MP4" type="video/mp4" />
+            <source src="/assets/theme_video.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/40 via-[var(--color-wabi-bg)]/10 to-transparent"></div>
         </div>
@@ -204,7 +232,7 @@ export default function Home() {
                 aria-label="Instagram"
                 className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
               >
-                <Instagram className="w-5 h-5" />
+                <InstagramIcon className="w-5 h-5" />
               </a>
               <a
                 href={siteSettings?.youtube_link || "https://youtube.com/@mybusiness469?si=g8EgjTnVOXcI1YTD"}
@@ -213,7 +241,7 @@ export default function Home() {
                 aria-label="YouTube"
                 className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
               >
-                <Youtube className="w-5 h-5" />
+                <YoutubeIcon className="w-5 h-5" />
               </a>
               <a
                 href={siteSettings?.facebook_link || "https://www.facebook.com/"}
@@ -222,7 +250,7 @@ export default function Home() {
                 aria-label="Facebook"
                 className="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-[var(--color-wabi-green)] hover:bg-[var(--color-wabi-green)] hover:text-white transition-all hover:scale-110"
               >
-                <Facebook className="w-5 h-5" />
+                <FacebookIcon className="w-5 h-5" />
               </a>
             </div>
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
@@ -284,9 +312,10 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                   <img
-                    src="/images/poultry.png"
-                    alt="Poultry — Hen, Duck, Turkey & Broiler"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    src="/images/poultry.webp"
+                    alt="Poultry - Hen, Duck, Turkey & Broiler"
+                    loading="lazy"
+                    className="w-full h-full object-cover sepia-[0.2] contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   {/* Tag */}
@@ -337,9 +366,10 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                   <img
-                    src="/images/cattle&animals.png"
-                    alt="Cattle & Animals — Cow, Pig, Horse, Buffalo & Rabbit"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    src="/images/cattle&animals.webp"
+                    alt="Cattle & Animals - Cow, Pig, Horse, Buffalo & Rabbit"
+                    loading="lazy"
+                    className="w-full h-full object-cover sepia-[0.2] contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   {/* Tag */}
@@ -390,9 +420,10 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                   <img
-                    src="/images/birds.png"
-                    alt="Birds — Pigeon, Love Birds, Cockatiel & Conure"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    src="/images/birds.webp"
+                    alt="Birds - Pigeon, Love Birds, Cockatiel & Conure"
+                    loading="lazy"
+                    className="w-full h-full object-cover sepia-[0.2] contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   {/* Tags */}
@@ -505,6 +536,7 @@ export default function Home() {
                   <img
                     src={need.image}
                     alt={need.title}
+                    loading="lazy"
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
                   />
                 </div>
@@ -587,7 +619,7 @@ export default function Home() {
               >
                 <Link href={item.to || `/shop?category=${encodeURIComponent(item.category || item.name || item.title || 'Feed')}`} className="group flex flex-col items-center text-center">
                   <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
-                    <img src={item.image || '/images/001.jpg'} alt={item.name || item.title || 'Product'} className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <img src={item.image || '/images/001.jpg'} alt={item.name || item.title || 'Product'} loading="lazy" className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
                     {(item as any).num && (
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm text-[var(--color-wabi-earth)] shadow-sm">
                         {(item as any).num}
