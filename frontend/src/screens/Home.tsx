@@ -42,8 +42,8 @@ const PRODUCT_CATEGORIES = {
     { title: 'Royal Cattle Feed', tamil: 'பசு தீவனம்', to: '/cow', desc: 'Premium feeds and mixes for cattle.', image: '/images/cattle-food.png' },
     { title: 'Royal Hen Feed', tamil: 'கோழி தீவனம்', to: '/hen', desc: 'Starter, grower, and layer feeds for hens.', image: '/images/hen-food.png' },
     { title: 'Royal Birds Food', tamil: 'பறவைகள் உணவு', to: '/pigeon', desc: 'Specialized mixes for pigeons and birds.', image: '/images/birds-food.png' },
-    { title: 'Pig Feed', tamil: 'பன்றி தீவனம்', to: '/pig', desc: 'High quality feed for pigs.', image: '/images/pig.jpeg' },
-    { title: 'Horse Feed', tamil: 'குதிரை தீவனம்', to: '/cow', desc: 'Nutritious feed for horses.', image: '/images/horse.jpg' },
+    { title: 'Pig Feed', tamil: 'பன்றி தீவனம்', to: '/pig', desc: 'High quality feed for pigs.', image: '/pig-feed.png' },
+    { title: 'Horse Feed', tamil: 'குதிரை தீவனம்', to: '/cow', desc: 'Nutritious feed for horses.', image: '/horse-feed.jpg' },
   ],
   'Supplements & Accessories': [
     { title: 'Birds', tamil: 'பறவைகள்', to: '/shop?category=Hen%20and%20Pigeon%20Supplements', desc: 'Calcium, grit, and tonics for optimal bird health.', image: '/images/Pegion.jpeg' },
