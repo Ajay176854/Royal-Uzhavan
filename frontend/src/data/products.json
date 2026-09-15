@@ -24,7 +24,7 @@
     "id": "new-conure-food",
     "slug": "royal-conure-food",
     "name": "Royal Conure Food",
-    "category": "Bird Mixes",
+    "category": "Royal Birds Food",
     "animal_type": "Bird",
     "description": "Daily Care Mix - Premium Nutrition for Healthy Conures. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
     "image": "/conure-feed.png",
@@ -45,7 +45,7 @@
     "id": "new-cockatiel-food",
     "slug": "royal-cockatiel-food",
     "name": "Royal Cockatiel Food",
-    "category": "Bird Mixes",
+    "category": "Royal Birds Food",
     "animal_type": "Bird",
     "description": "Daily Care Mix - Premium Nutrition for Healthy Cockatiels. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
     "image": "/cockatiel-feed.jpg",
@@ -66,7 +66,7 @@
     "id": "new-finch-food",
     "slug": "royal-finch-food",
     "name": "Royal Finch Food",
-    "category": "Bird Mixes",
+    "category": "Royal Birds Food",
     "animal_type": "Bird",
     "description": "Daily Care Mix - Premium Nutrition for Healthy Finches. Complete & Balanced Blend. High energy, vital vitamins.",
     "image": "/finch-feed.jpg",
@@ -87,7 +87,7 @@
     "id": "new-lovebirds-food",
     "slug": "royal-love-birds-food",
     "name": "Royal Love Birds Food",
-    "category": "Bird Mixes",
+    "category": "Royal Birds Food",
     "animal_type": "Bird",
     "description": "Daily Care Mix - Premium Nutrition for Healthy Lovebirds. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
     "image": "/lovebirds-feed.png",
@@ -465,46 +465,6 @@
     "in_stock": true,
     "created_at": "2026-09-04T10:20:03.328Z",
     "name_tamil": "அரச புறா PT"
-  },
-  {
-    "id": "9ac4ee78-6de3-4641-a07a-4fc1ecf30007",
-    "slug": "royal-budgies-finches-mix",
-    "name": "Royal Budgies & Finches Mix",
-    "category": "Royal Birds Food",
-    "animal_type": "Birds",
-    "description": "",
-    "image": "/images/birds-food.png",
-    "tags": [
-      "Royal Uzhavan Quality"
-    ],
-    "variants": [
-      1,
-      5,
-      25
-    ],
-    "in_stock": true,
-    "created_at": "2026-09-04T10:20:03.328Z",
-    "name_tamil": "ராயல் பட்ஜிஸ்"
-  },
-  {
-    "id": "2c90cdbf-0209-4d9a-8729-f8b3c69c655e",
-    "slug": "royal-african-cockatiel-mix",
-    "name": "Royal African & Cockatiel Mix",
-    "category": "Royal Birds Food",
-    "animal_type": "Birds",
-    "description": "",
-    "image": "/images/birds-food.png",
-    "tags": [
-      "Royal Uzhavan Quality"
-    ],
-    "variants": [
-      1,
-      5,
-      25
-    ],
-    "in_stock": true,
-    "created_at": "2026-09-04T10:20:03.328Z",
-    "name_tamil": "ராயல் ஆப்பிரிக்கன்"
   },
   {
     "id": "7353ae4c-cf3e-451d-b25e-98d10f874bcc",
