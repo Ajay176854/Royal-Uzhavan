@@ -4,8 +4,8 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
     
-    const validUsername = 'admin@royaluzhavan.com';
-    const validPassword = 'Theevanam@1995';
+    const validUsername = process.env.ADMIN_USERNAME;
+    const validPassword = process.env.ADMIN_PASSWORD;
 
     // Safely trim and compare to avoid accidental spaces causing login failures
     const inputUser = (typeof username === 'string' ? username.trim() : '');
