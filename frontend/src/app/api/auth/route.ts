@@ -4,14 +4,15 @@ export async function POST(request: Request) {
   try {
     const { username, password } = await request.json();
     
-    const validUsername = (process.env.ADMIN_USERNAME || 'admin@royaluzhavan.com').trim();
-    const validPassword = (process.env.ADMIN_PASSWORD || 'Theevanam@1995').trim();
+    const validUsername = process.env.ADMIN_USERNAME?.trim();
+    const validPassword = process.env.ADMIN_PASSWORD?.trim();
 
     // Safely trim and compare to avoid accidental spaces causing login failures
     const inputUser = (typeof username === 'string' ? username.trim() : '');
     const inputPass = (typeof password === 'string' ? password.trim() : '');
 
-    if (inputUser === validUsername && inputPass === validPassword) {
+    // Ensure environment variables actually exist, and compare them
+    if (validUsername && validPassword && inputUser === validUsername && inputPass === validPassword) {
       return NextResponse.json({ success: true });
     }
     
