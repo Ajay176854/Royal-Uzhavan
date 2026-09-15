@@ -7,46 +7,74 @@ const products = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
 
 const newProducts = [
   {
-    "id": "new-turkey-feed",
-    "slug": "royal-turkey-feed",
-    "name": "Royal Turkey Feed",
-    "category": "Poultry Feed",
-    "animal_type": "Poultry",
-    "description": "Daily Care Mix - Premium Nutrition for Healthy Turkeys. Complete & Balanced Blend. High energy, vital vitamins, healthy gut, high palatability.",
-    "image": "/turkey-feed.jpg",
-    "tags": ["Royal Uzhavan Quality", "Turkey", "Daily Care Mix"],
+    "id": "new-buffalo-feed",
+    "slug": "royal-buffalo-feed",
+    "name": "Royal Buffalo Feed",
+    "category": "Royal Cattle Feed",
+    "animal_type": "Cattle",
+    "description": "Daily Care Mix - Premium Nutrition for Healthy Buffalo. Complete & Balanced Blend. High energy, vital vitamins, healthy gut, high palatability.",
+    "image": "/buffalo-feed.png",
+    "tags": ["Royal Uzhavan Quality", "Buffalo", "Cattle", "Daily Care Mix"],
     "variants": [25],
     "in_stock": true,
     "created_at": new Date().toISOString(),
-    "name_tamil": "ராயல் வான்கோழி தீவனம்"
+    "name_tamil": "ராயல் எருமை மாட்டு தீவனம்"
   },
   {
-    "id": "new-pig-feed",
-    "slug": "royal-pig-feed",
-    "name": "Royal Pig Feed",
-    "category": "Livestock Feed",
-    "animal_type": "Pig",
-    "description": "Daily Care Mix - Premium Nutrition for Healthy Swine. Complete & Balanced Blend. High energy, vital vitamins, healthy gut, high palatability.",
-    "image": "/pig-feed.png",
-    "tags": ["Royal Uzhavan Quality", "Pig", "Swine", "Daily Care Mix"],
+    "id": "new-conure-food",
+    "slug": "royal-conure-food",
+    "name": "Royal Conure Food",
+    "category": "Bird Mixes",
+    "animal_type": "Bird",
+    "description": "Daily Care Mix - Premium Nutrition for Healthy Conures. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
+    "image": "/conure-feed.png",
+    "tags": ["Royal Uzhavan Quality", "Conure", "Bird", "Daily Care Mix"],
     "variants": [25],
     "in_stock": true,
     "created_at": new Date().toISOString(),
-    "name_tamil": "ராயல் பன்றி தீவனம்"
+    "name_tamil": "ராயல் கானூர் பறவை உணவு"
   },
   {
-    "id": "new-horse-feed",
-    "slug": "royal-horse-feed",
-    "name": "Royal Horse Feed",
-    "category": "Livestock Feed",
-    "animal_type": "Horse",
-    "description": "Daily Care Mix - Premium Nutrition for a Healthy Horse. Complete & Balanced Blend. High energy, vital vitamins, healthy gut, high palatability.",
-    "image": "/horse-feed.jpg",
-    "tags": ["Royal Uzhavan Quality", "Horse", "Equine", "Daily Care Mix"],
+    "id": "new-cockatiel-food",
+    "slug": "royal-cockatiel-food",
+    "name": "Royal Cockatiel Food",
+    "category": "Bird Mixes",
+    "animal_type": "Bird",
+    "description": "Daily Care Mix - Premium Nutrition for Healthy Cockatiels. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
+    "image": "/cockatiel-feed.jpg",
+    "tags": ["Royal Uzhavan Quality", "Cockatiel", "Bird", "Daily Care Mix"],
     "variants": [25],
     "in_stock": true,
     "created_at": new Date().toISOString(),
-    "name_tamil": "ராயல் குதிரை தீவனம்"
+    "name_tamil": "ராயல் காக்டீல் பறவை உணவு"
+  },
+  {
+    "id": "new-finch-food",
+    "slug": "royal-finch-food",
+    "name": "Royal Finch Food",
+    "category": "Bird Mixes",
+    "animal_type": "Bird",
+    "description": "Daily Care Mix - Premium Nutrition for Healthy Finches. Complete & Balanced Blend. High energy, vital vitamins.",
+    "image": "/finch-feed.jpg",
+    "tags": ["Royal Uzhavan Quality", "Finch", "Bird", "Daily Care Mix"],
+    "variants": [25],
+    "in_stock": true,
+    "created_at": new Date().toISOString(),
+    "name_tamil": "ராயல் பின்ச் பறவை உணவு"
+  },
+  {
+    "id": "new-lovebirds-food",
+    "slug": "royal-love-birds-food",
+    "name": "Royal Love Birds Food",
+    "category": "Bird Mixes",
+    "animal_type": "Bird",
+    "description": "Daily Care Mix - Premium Nutrition for Healthy Lovebirds. Complete & Balanced Blend. High energy, vital vitamins, healthy plumage, easy digestion.",
+    "image": "/lovebirds-feed.png",
+    "tags": ["Royal Uzhavan Quality", "Lovebirds", "Bird", "Daily Care Mix"],
+    "variants": [25],
+    "in_stock": true,
+    "created_at": new Date().toISOString(),
+    "name_tamil": "ராயல் லவ்பேர்ட்ஸ் உணவு"
   }
 ];
 
@@ -54,4 +82,4 @@ const newProducts = [
 const updatedProducts = [...newProducts, ...products];
 
 fs.writeFileSync(productsFile, JSON.stringify(updatedProducts, null, 2));
-console.log("Added new products to products.json");
+console.log("Added 5 new products to products.json");
