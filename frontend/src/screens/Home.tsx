@@ -493,7 +493,7 @@ export default function Home() {
               },
               {
                 to: '/pigeon',
-                image: '/images/Pegion.jpeg',
+                image: '/images/birds-food.png',
                 title: 'Pigeon',
                 tamil: 'புறா தானியங்கள்',
                 desc: 'Stamina & Grit',
@@ -501,7 +501,7 @@ export default function Home() {
               },
               {
                 to: '/pig',
-                image: '/images/pig.jpeg',
+                image: '/pig-feed.png',
                 title: 'Pig',
                 tamil: 'பன்றி வளர்ப்பு',
                 desc: 'Growth & FCR',

@@ -71,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 {product.discount}% OFF
               </span>
             )}
-            {product.tags && product.tags.map((tag: string) => (
+            {product.tags && product.tags.filter((tag: string) => tag.includes('Royal Uzhavan')).map((tag: string) => (
               <span key={tag} className={cn(
                 "text-white text-[7px] sm:text-[8px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-sm shadow-sm opacity-90",
                 tag === "Royal Uzhavan Favourites" ? "bg-[var(--color-wabi-green)]" : "bg-[var(--color-wabi-earth)]"
