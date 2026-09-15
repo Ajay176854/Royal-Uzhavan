@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <>
       <div 
-        className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-md transition-all duration-500 ease-out flex flex-col"
+        className="group bg-white rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-md transition-all duration-500 ease-out flex flex-col h-full"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
