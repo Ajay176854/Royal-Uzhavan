@@ -115,13 +115,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <div className="flex flex-row items-stretch justify-between gap-1.5 sm:gap-2">
                 <button
                   onClick={handleCallEnquiry}
-                  className="flex-1 flex justify-center items-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 sm:px-2 rounded-md sm:rounded-lg font-bold transition-all duration-300 bg-[var(--color-wabi-green)] hover:bg-[#1a3818] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
+                  className="flex-1 flex justify-center items-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 sm:px-2 rounded-md sm:rounded-lg font-bold transition-all duration-300 bg-[#25D366] hover:bg-[#128C7E] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
                 >
                   <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> Call
                 </button>
                 <button
                   onClick={handleWhatsAppEnquiry}
-                  className="flex-1 flex justify-center items-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 sm:px-2 rounded-md sm:rounded-lg font-bold transition-all duration-300 bg-[#25D366] hover:bg-[#128C7E] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
+                  className="flex-1 flex justify-center items-center gap-1 sm:gap-1.5 py-2 sm:py-2.5 px-1 sm:px-2 rounded-md sm:rounded-lg font-bold transition-all duration-300 bg-[var(--color-wabi-green)] hover:bg-[#1a3818] text-white shadow-sm hover:shadow-md text-[10px] sm:text-xs uppercase tracking-wider"
                 >
                   <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Enquire
                 </button>
@@ -177,13 +177,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <div className="mt-auto pt-4 flex flex-col gap-2.5">
                 <button
                   onClick={handleCallEnquiry}
-                  className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl font-bold transition-all duration-300 bg-[var(--color-wabi-green)] hover:bg-[#1a3818] text-white shadow-md hover:shadow-lg text-sm uppercase tracking-wider"
+                  className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl font-bold transition-all duration-300 bg-[#25D366] hover:bg-[#128C7E] text-white shadow-md hover:shadow-lg text-sm uppercase tracking-wider"
                 >
                   <Phone className="w-4 h-4" /> Call Now
                 </button>
                 <button
                   onClick={handleWhatsAppEnquiry}
-                  className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl font-bold transition-all duration-300 bg-[#25D366] hover:bg-[#128C7E] text-white shadow-md hover:shadow-lg text-sm uppercase tracking-wider"
+                  className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-xl font-bold transition-all duration-300 bg-[var(--color-wabi-green)] hover:bg-[#1a3818] text-white shadow-md hover:shadow-lg text-sm uppercase tracking-wider"
                 >
                   <MessageCircle className="w-4 h-4" /> WhatsApp Enquire
                 </button>

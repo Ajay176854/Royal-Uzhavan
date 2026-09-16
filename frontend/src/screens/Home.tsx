@@ -227,7 +227,7 @@ export default function Home() {
           >
             <source src="/assets/theme_video.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wabi-bg)]/40 via-[var(--color-wabi-bg)]/10 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/10"></div>
         </div>
 
         <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
@@ -261,18 +261,18 @@ export default function Home() {
                 <FacebookIcon className="w-5 h-5" />
               </a>
             </div>
-            <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
-            <h1 className="text-[var(--color-wabi-green)] text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
-              Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-earth)]">Animals.</span>
+            <span className="text-white font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4 drop-shadow-md">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
+            <h1 className="text-white text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6 drop-shadow-lg">
+              Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-gold)]">Animals.</span>
             </h1>
-            <p className="text-gray-700 max-w-lg text-sm md:text-base mb-10 font-medium leading-relaxed">
+            <p className="text-gray-100 max-w-lg text-sm md:text-base mb-10 font-medium leading-relaxed drop-shadow-md">
               Royal Uzhavan is a homegrown agricultural and animal nutrition company producing reliable feed for farmers, livestock, poultry, and birds. Premium quality for sustainable farming.
             </p>
             <div className="flex flex-wrap gap-6 items-center">
-              <Link href="/shop" className="bg-[var(--color-wabi-green)] hover:bg-[#1a2b14] text-white px-10 py-4 font-bold text-xs uppercase tracking-widest rounded-full transition-all">
+              <Link href="/shop" className="bg-[var(--color-wabi-green)] hover:bg-[#1a2b14] text-white px-10 py-4 font-bold text-xs uppercase tracking-widest rounded-full transition-all shadow-lg">
                 Shop Products
               </Link>
-              <Link href="/our-farms" className="text-[var(--color-wabi-green)] text-sm font-bold tracking-widest uppercase hover:text-[var(--color-wabi-gold)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-gold)] pb-1">
+              <Link href="/our-farms" className="text-white text-sm font-bold tracking-widest uppercase hover:text-[var(--color-wabi-gold)] transition-colors border-b border-transparent hover:border-[var(--color-wabi-gold)] pb-1 drop-shadow-md">
                 Our Story
               </Link>
             </div>
@@ -686,7 +686,7 @@ export default function Home() {
                 }))}
                 cardWidth={windowWidth > 0 && windowWidth < 640 ? 280 : 350}
                 cardHeight={windowWidth > 0 && windowWidth < 640 ? 380 : 450}
-                radius={10}
+                radius={3}
                 autoplay={true}
                 onSlideChange={setActiveFeaturedIndex}
                 onSlideClick={(slide) => slide.link && router.push(slide.link)}
