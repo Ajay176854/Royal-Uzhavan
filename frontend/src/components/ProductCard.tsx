@@ -101,11 +101,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name_tamil && (
               <span className="text-[11px] sm:text-[12px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-1.5 py-0.5 sm:px-2 inline-block rounded-md mt-1.5">{product.name_tamil}</span>
             )}
-            {product.description && (
-              <p className="text-[var(--color-wabi-green)] font-bold text-[11px] sm:text-[13px] mt-1.5 sm:mt-2">
-                {product.description}
-              </p>
-            )}
           </Link>
 
           <div className="mt-auto">

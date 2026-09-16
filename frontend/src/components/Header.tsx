@@ -83,7 +83,7 @@ export default function Header() {
       </div>
 
       {/* Tier 2: Main Header (Single Line Context) */}
-      <div className="container mx-auto px-4 xl:px-8 py-3 md:py-4 flex items-center justify-between gap-4 md:gap-6">
+      <div className="container mx-auto px-2 sm:px-4 xl:px-8 py-3 md:py-4 flex items-center justify-between gap-2 md:gap-6">
 
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2.5 md:gap-3 group">
@@ -94,11 +94,11 @@ export default function Header() {
             </div>
           </div>
           <div className="flex flex-col text-left justify-center mt-0.5">
-            <span className="text-[#1B4332] text-lg sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-[0.85]">Royal</span>
-            <span className="text-[#C9A227] text-lg sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-[0.85]">உழவன்</span>
-            <span className="text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] text-[#5c8a2b] font-black tracking-[0.2em] uppercase mt-1 md:mt-1.5 flex items-center gap-1">
-              <span className="w-2.5 sm:w-3 md:w-4 h-[2px] bg-[#86B841]/40 rounded-full"></span>
-              Feed The Future Grow With Nature <Wheat className="w-3 h-3 ml-0.5" />
+            <span className="text-[#1B4332] text-base sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-none whitespace-nowrap">Royal</span>
+            <span className="text-[#C9A227] text-base sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-[0.85] whitespace-nowrap">உழவன்</span>
+            <span className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] text-[#5c8a2b] font-black tracking-[0.1em] sm:tracking-[0.2em] uppercase mt-1 md:mt-1.5 flex items-center gap-0.5 sm:gap-1 whitespace-nowrap">
+              <span className="w-1.5 sm:w-3 md:w-4 h-[2px] bg-[#86B841]/40 rounded-full shrink-0"></span>
+              <span>Feed The Future Grow With Nature</span> <Wheat className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ml-0.5" />
             </span>
           </div>
         </Link>
@@ -247,7 +247,7 @@ export default function Header() {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0 ml-auto lg:ml-0">
+        <div className="flex items-center justify-end gap-1 sm:gap-3 shrink-0 ml-auto lg:ml-0">
 
 
 

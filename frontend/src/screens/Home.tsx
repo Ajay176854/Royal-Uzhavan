@@ -71,6 +71,14 @@ export default function Home() {
   });
   const [loading, setLoading] = useState(true);
   const [siteSettings, setSiteSettings] = useState<any>(null);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Fallback products mapped from PRODUCT_CATEGORIES
   const mappedProducts = PRODUCT_CATEGORIES['Feed'].map((item, index) => ({
@@ -254,7 +262,7 @@ export default function Home() {
               </a>
             </div>
             <span className="text-[var(--color-wabi-green)] font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
-            <h1 className="text-[var(--color-wabi-green)] text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
+            <h1 className="text-[var(--color-wabi-green)] text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6">
               Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-earth)]">Animals.</span>
             </h1>
             <p className="text-gray-700 max-w-lg text-sm md:text-base mb-10 font-medium leading-relaxed">
@@ -329,8 +337,8 @@ export default function Home() {
                 </div>
 
                 {/* Content */}
-                <div className="p-7 lg:p-8">
-                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                <div className="p-5 sm:p-7 lg:p-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
                     Poultry
                   </h3>
                   <p className="text-[13px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2.5 py-0.5 inline-block rounded-md mb-3">நாட்டுக்கோழி</p>
@@ -383,8 +391,8 @@ export default function Home() {
                 </div>
 
                 {/* Content */}
-                <div className="p-7 lg:p-8">
-                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                <div className="p-5 sm:p-7 lg:p-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
                     Cattle & Animals
                   </h3>
                   <p className="text-[13px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2.5 py-0.5 inline-block rounded-md mb-3">மாடு & விலங்குகள்</p>
@@ -437,8 +445,8 @@ export default function Home() {
                 </div>
 
                 {/* Content */}
-                <div className="p-7 lg:p-8">
-                  <h3 className="text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
+                <div className="p-5 sm:p-7 lg:p-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-[var(--color-wabi-green)] mb-1 group-hover:text-[var(--color-wabi-earth)] transition-colors duration-300">
                     Birds
                   </h3>
                   <p className="text-[13px] font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2.5 py-0.5 inline-block rounded-md mb-3">பறவைகள்</p>
@@ -526,13 +534,13 @@ export default function Home() {
             ].map((need) => (
               <Link href={need.to}
                 key={need.title}
-                className="group bg-white p-5 sm:p-6 lg:p-8 rounded-[2rem] flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100 relative overflow-hidden"
+                className="group bg-white p-3 sm:p-5 lg:p-8 rounded-2xl sm:rounded-[2rem] flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100 relative overflow-hidden"
               >
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#86B841] bg-[#86B841]/10 px-3 py-1 rounded-full mb-4">
+                <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-[#86B841] bg-[#86B841]/10 px-2 sm:px-3 py-1 rounded-full mb-3 sm:mb-4">
                   {need.badge}
                 </span>
 
-                <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-[1.5rem] overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-4 shadow-inner border border-gray-100 p-3 group-hover:bg-[#86B841]/10 transition-colors">
+                <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-xl sm:rounded-[1.5rem] overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-3 sm:mb-4 shadow-inner border border-gray-100 p-2 sm:p-3 group-hover:bg-[#86B841]/10 transition-colors">
                   <img
                     src={need.image}
                     alt={need.title}
@@ -541,7 +549,7 @@ export default function Home() {
                   />
                 </div>
 
-                <span className="text-base sm:text-lg lg:text-xl font-serif font-bold text-[var(--color-wabi-green)] group-hover:text-[#86B841] transition-colors leading-tight mb-1">
+                <span className="text-sm sm:text-base lg:text-xl font-serif font-bold text-[var(--color-wabi-green)] group-hover:text-[#86B841] transition-colors leading-tight mb-1">
                   {need.title}
                 </span>
                 <span className="text-xs sm:text-sm font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2 py-1 inline-block rounded-md mb-2">
@@ -618,7 +626,7 @@ export default function Home() {
                 }}
               >
                 <Link href={item.to || `/shop?category=${encodeURIComponent(item.category || item.name || item.title || 'Feed')}`} className="group flex flex-col items-center text-center">
-                  <div className="w-full aspect-[3/4] mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
+                  <div className="w-full aspect-[3/4] mb-3 sm:mb-6 overflow-hidden rounded-2xl bg-[var(--color-wabi-bg)] relative">
                     <img src={item.image || '/images/001.jpg'} alt={item.name || item.title || 'Product'} loading="lazy" className="w-full h-full object-cover sepia-[0.1] contrast-100 group-hover:scale-105 transition-transform duration-700 ease-out" />
                     {(item as any).num && (
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm w-8 h-8 rounded-full flex items-center justify-center font-serif text-sm text-[var(--color-wabi-earth)] shadow-sm">
@@ -676,8 +684,8 @@ export default function Home() {
                   title: p.name + (p.name_tamil ? '\n' + p.name_tamil : ''),
                   link: `/shop?category=${encodeURIComponent(p.category)}`
                 }))}
-                cardWidth={350}
-                cardHeight={450}
+                cardWidth={windowWidth > 0 && windowWidth < 640 ? 280 : 350}
+                cardHeight={windowWidth > 0 && windowWidth < 640 ? 380 : 450}
                 radius={10}
                 autoplay={true}
                 onSlideChange={setActiveFeaturedIndex}
@@ -746,6 +754,7 @@ export default function Home() {
               {featuredProducts.slice(0, 8).map((product, i) => (
                 <motion.div
                   key={product.id}
+                  className="h-full"
                   variants={{
                     hidden: { opacity: 0, y: 30 },
                     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
@@ -798,7 +807,7 @@ export default function Home() {
 
           {/* Stats Counter Row */}
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:gap-6 mb-16 max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -812,7 +821,7 @@ export default function Home() {
             ].map((stat, i) => (
               <div
                 key={stat.label}
-                className="text-center p-6 rounded-2xl bg-[var(--color-wabi-bg)] border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                className="text-center p-4 md:p-6 rounded-2xl bg-[var(--color-wabi-bg)] border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="text-3xl md:text-4xl font-serif font-bold text-[var(--color-wabi-green)] mb-1">{stat.value}</div>
                 <div className="text-sm font-bold text-[var(--color-wabi-green)]/80 mb-0.5">{stat.label}</div>
