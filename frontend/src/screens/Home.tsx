@@ -46,9 +46,9 @@ const PRODUCT_CATEGORIES = {
     { title: 'Horse Feed', tamil: 'குதிரை தீவனம்', to: '/cow', desc: 'Nutritious feed for horses.', image: '/horse-feed.jpg' },
   ],
   'Supplements & Accessories': [
-    { title: 'Birds', tamil: 'பறவைகள்', to: '/shop?category=Hen%20and%20Pigeon%20Supplements', desc: 'Calcium, grit, and tonics for optimal bird health.', image: '/images/Pegion.jpeg' },
+    { title: 'Birds', tamil: 'பறவைகள்', to: '/shop?category=Hen%20and%20Pigeon%20Supplements', desc: 'Calcium, grit, and tonics for optimal bird health.', image: '/images/birds-food.png' },
     { title: 'Cattle / Animals', tamil: 'மாடு / விலங்குகள்', to: '/shop?category=Royal%20Cattle%20Feed', desc: 'Mineral mixtures and health supplements for cattle.', image: '/images/cattle-food.png' },
-    { title: 'Hen / Poultry', tamil: 'கோழி', to: '/shop?category=Hen%20and%20Pigeon%20Supplements', desc: 'Vitamins and boosters for hens and poultry.', image: '/images/Hen.jpeg' },
+    { title: 'Hen / Poultry', tamil: 'கோழி', to: '/shop?category=Hen%20and%20Pigeon%20Supplements', desc: 'Vitamins and boosters for hens and poultry.', image: '/images/hen-food.png' },
   ],
 
   'Other': [
