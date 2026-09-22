@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X, User, LogOut, Truck, Wheat, Droplet } from 'lucide-react';
+import { Search, ShoppingCart, Heart, MessageCircle, ChevronDown, Menu, Leaf, X, LogOut, Truck, Wheat, Droplet } from 'lucide-react';
 
 import { localApi } from '../services/localApi';
 import logoImg from '../assets/images/001.jpg';
@@ -53,6 +53,17 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
     const handleCloseMenu = () => setIsMobileMenuOpen(false);
     window.addEventListener('close-mobile-menu', handleCloseMenu);
     return () => window.removeEventListener('close-mobile-menu', handleCloseMenu);
@@ -68,49 +79,49 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm flex flex-col w-full border-b border-gray-100">
+    <header className="relative sticky top-0 z-50 bg-white shadow-sm flex flex-col w-full border-b border-gray-100">
       {/* Tier 1: Top Announcement Bar */}
       <div className="bg-[#1B4332] text-white text-[11px] py-2.5 hidden md:flex justify-between items-center px-4 xl:px-12 font-bold tracking-wider">
-        <div className="flex items-center gap-2">
-          <Truck className="w-4 h-4" /> Free Shipping
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          <Truck className="w-4 h-4 shrink-0" /> Free Shipping
         </div>
-        <div className="flex items-center gap-2">
-          <Wheat className="w-4 h-4" /> Direct From Tamilnadu Farmers
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          <Wheat className="w-4 h-4 shrink-0" /> Direct From Tamilnadu Farmers
         </div>
-        <div className="flex items-center gap-2">
-          <Droplet className="w-4 h-4" /> Premium Animal Feeds Available
+        <div className="flex items-center gap-2 whitespace-nowrap">
+          <Droplet className="w-4 h-4 shrink-0" /> Premium Animal Feeds Available
         </div>
       </div>
 
       {/* Tier 2: Main Header (Single Line Context) */}
-      <div className="container mx-auto px-2 sm:px-4 xl:px-8 py-3 md:py-4 flex items-center justify-between gap-2 md:gap-6">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-2.5 md:py-3.5 flex items-center justify-between gap-2 lg:gap-4 xl:gap-6">
 
         {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2.5 md:gap-3 group">
-          <div className="relative">
-            <img src={logoImg.src} alt="Royal Uzhavan Logo" className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 object-cover rounded-full shadow-md border-[2px] border-white group-hover:shadow-lg transition-all duration-300 shrink-0" />
+        <Link href="/" className="flex shrink-0 items-center gap-1.5 sm:gap-2.5 md:gap-3 group min-w-0 max-w-[75%] sm:max-w-none">
+          <div className="relative shrink-0">
+            <img src={logoImg.src} alt="Royal Uzhavan Logo" className="h-9 w-9 sm:h-12 sm:w-12 md:h-14 md:w-14 xl:h-16 xl:w-16 object-cover rounded-full shadow-md border-[2px] border-white group-hover:shadow-lg transition-all duration-300 shrink-0" />
             <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-0.5 md:p-1 shadow-sm border border-gray-100">
               <Leaf className="w-2.5 h-2.5 md:w-3 md:h-3 text-[#86B841]" strokeWidth={2.5} />
             </div>
           </div>
-          <div className="flex flex-col text-left justify-center mt-0.5">
-            <span className="text-[#1B4332] text-base sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-none whitespace-nowrap">Royal</span>
-            <span className="text-[#C9A227] text-base sm:text-xl md:text-2xl lg:text-[26px] font-serif font-bold tracking-tight leading-[0.85] whitespace-nowrap">உழவன்</span>
-            <span className="text-[6px] sm:text-[8px] md:text-[9px] lg:text-[10px] text-[#5c8a2b] font-black tracking-[0.1em] sm:tracking-[0.2em] uppercase mt-1 md:mt-1.5 flex items-center gap-0.5 sm:gap-1 whitespace-nowrap">
+          <div className="flex flex-col text-left justify-center mt-0.5 min-w-0">
+            <span className="text-[#1B4332] text-sm sm:text-xl md:text-2xl xl:text-[26px] font-serif font-bold tracking-tight leading-none whitespace-nowrap">Royal</span>
+            <span className="text-[#C9A227] text-sm sm:text-xl md:text-2xl xl:text-[26px] font-serif font-bold tracking-tight leading-[0.85] whitespace-nowrap">உழவன்</span>
+            <span className="text-[6px] sm:text-[8px] md:text-[9px] xl:text-[10px] text-[#5c8a2b] font-black tracking-[0.02em] sm:tracking-[0.1em] xl:tracking-[0.2em] uppercase mt-0.5 md:mt-1.5 flex items-center gap-0.5 sm:gap-1 whitespace-nowrap min-w-0 overflow-hidden">
               <span className="w-1.5 sm:w-3 md:w-4 h-[2px] bg-[#86B841]/40 rounded-full shrink-0"></span>
-              <span>Feed The Future Grow With Nature</span> <Wheat className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ml-0.5" />
+              <span className="truncate">Feed The Future Grow With Nature</span> <Wheat className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ml-0.5 hidden xs:inline-block" />
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links (Visible on lg screens and up) */}
-        <nav className="hidden lg:flex flex-1 justify-center items-center gap-1 xl:gap-3 text-[10px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
+        <nav className="hidden lg:flex flex-1 justify-center items-center gap-0.5 lg:gap-1 xl:gap-3 text-[10px] xl:text-xs font-bold uppercase tracking-wider text-gray-700 whitespace-nowrap">
 
-          <Link href="/our-farms" className={`rounded-full transition-colors py-2 px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
-          <Link href="/blog" className={`rounded-full transition-colors py-2 px-3 ${pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
+          <Link href="/our-farms" className={`rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${isOurFarmsActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>ABOUT US</Link>
+          <Link href="/blog" className={`rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${pathname === '/blog' ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>BLOG</Link>
 
           <div className="group">
-            <Link href="/shop" className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
+            <Link href="/shop" className={`flex items-center gap-1 rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${isProductsActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
               PRODUCTS <ChevronDown className={`w-3.5 h-3.5 ${isProductsActive ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} strokeWidth={2.5} />
             </Link>
             {/* Full-width Mega Menu Wrapper with hover bridge */}
@@ -229,7 +240,7 @@ export default function Header() {
           </div>
 
           <div className="relative group">
-            <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-3 ${isPolicyActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
+            <button className={`flex items-center gap-1 rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${isPolicyActive ? 'bg-[#86B841] text-white' : 'group-hover:bg-[#86B841] group-hover:text-white'}`}>
               POLICY <ChevronDown className={`w-3.5 h-3.5 ${isPolicyActive ? 'text-white' : 'text-gray-400 group-hover:text-white'}`} strokeWidth={2.5} />
             </button>
             {/* Dropdown with hover bridge */}
@@ -241,9 +252,9 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <Link href="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
+          <Link href="/policies?tab=shipping" className={`rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${isShippingActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>SHIPPING & BULK ORDERS</Link>
 
-          <Link href="/contact" className={`rounded-full transition-colors py-2 px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
+          <Link href="/contact" className={`rounded-full transition-colors py-2 px-2 lg:px-2.5 xl:px-3 ${isContactActive ? 'bg-[#86B841] text-white' : 'hover:bg-[#86B841] hover:text-white'}`}>CONTACT US</Link>
         </nav>
 
         {/* Actions */}
@@ -262,12 +273,7 @@ export default function Header() {
             <Search className="w-5 h-5" strokeWidth={2} />
           </button>
 
-          <Link href="/admin" 
-            className="text-gray-800 hover:text-[#86B841] transition-colors p-1.5 rounded-full hover:bg-gray-100"
-            title="Admin Dashboard"
-          >
-            <User className="w-5 h-5" strokeWidth={2} />
-          </Link>
+
 
           {/* Mobile Menu Toggle */}
           <button onClick={() => setIsMobileMenuOpen(true)} className="lg:hidden text-gray-800 p-1.5 hover:text-[#1B4332] rounded-full hover:bg-gray-100 transition-colors ml-0.5" title="Menu">

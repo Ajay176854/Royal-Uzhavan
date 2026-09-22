@@ -77,12 +77,12 @@ export default function Shop() {
           {/* Sidebar Filters */}
           <div className={cn(
             "lg:w-64 shrink-0 space-y-8 bg-white p-6 border border-gray-200 h-fit",
-            isMobileFiltersOpen ? "block fixed inset-0 z-50 overflow-y-auto m-0 border-none" : "hidden lg:block"
+            isMobileFiltersOpen ? "block fixed inset-0 z-[110] overflow-y-auto m-0 border-none" : "hidden lg:block"
           )}>
             {isMobileFiltersOpen && (
               <div className="flex justify-between items-center mb-6 lg:hidden">
                 <h2 className="font-bold text-lg">Filters</h2>
-                <button onClick={() => setIsMobileFiltersOpen(false)} className="text-gray-500 font-bold">Close</button>
+                <button onClick={() => setIsMobileFiltersOpen(false)} className="text-gray-500 font-bold p-1">Close</button>
               </div>
             )}
 
@@ -169,7 +169,7 @@ export default function Shop() {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
+                <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6">
                   {products.map(product => (
                     <ProductCard key={product.id} product={product} />
                   ))}
