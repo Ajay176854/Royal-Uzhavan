@@ -51,7 +51,7 @@ export default function Footer() {
     <footer className="bg-[var(--color-wabi-bg)] border-t border-[var(--color-wabi-earth)]/20 pb-16 md:pb-0">
       {/* Main Footer */}
       <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-12 md:py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8">
 
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">

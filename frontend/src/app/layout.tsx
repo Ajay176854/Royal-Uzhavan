@@ -126,7 +126,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <html lang="en" className="h-full antialiased overflow-x-hidden" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
@@ -137,7 +137,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-full flex flex-col text-[#1A1A1A] overflow-x-hidden">
+      <body className="min-h-full flex flex-col text-[#1A1A1A] overflow-x-hidden max-w-[100vw]">
         <Providers>
           <ScrollToTop />
           <Header />

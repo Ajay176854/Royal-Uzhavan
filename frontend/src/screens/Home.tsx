@@ -214,7 +214,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[700px] flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
+      <section className="relative min-h-[520px] sm:min-h-[600px] md:min-h-[700px] md:h-screen flex items-center bg-[var(--color-wabi-bg)] overflow-hidden">
         <div className="absolute inset-0 w-full h-full">
           <video
             autoPlay
@@ -230,8 +230,8 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-black/10"></div>
         </div>
 
-        <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center">
-          <div className="max-w-2xl w-full -mt-16 md:-mt-28">
+        <div className="container mx-auto px-4 md:px-12 relative z-10 flex flex-col md:flex-row items-center py-12 md:py-0">
+          <div className="max-w-2xl w-full mt-0 md:-mt-16 lg:-mt-28">
             <div className="flex gap-4 mb-6 pl-4">
               <a
                 href={siteSettings?.instagram_link || "https://www.instagram.com/uzhavan_birds_food_accessories"}
@@ -262,7 +262,7 @@ export default function Home() {
               </a>
             </div>
             <span className="text-white font-bold tracking-[0.2em] text-xs uppercase mb-6 block border-l-2 border-[var(--color-wabi-gold)] pl-4 drop-shadow-md">ROYAL UZHAVAN — ANIMAL NUTRITION</span>
-            <h1 className="text-white text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6 drop-shadow-lg">
+            <h1 className="text-white text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-serif leading-[1.05] mb-6 drop-shadow-lg">
               Quality Feed,<br />Healthy <span className="italic text-[var(--color-wabi-gold)]">Animals.</span>
             </h1>
             <p className="text-gray-100 max-w-lg text-sm md:text-base mb-10 font-medium leading-relaxed drop-shadow-md">
@@ -473,23 +473,27 @@ export default function Home() {
       </section>
 
       {/* Shop By Need - Softened */}
-      <section id="shop-by-need" className="bg-[var(--color-wabi-bg)] py-16 lg:py-24 border-y border-[var(--color-wabi-earth)]/10">
-        <div className="container mx-auto px-4 md:px-12 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-          <div className="flex-shrink-0 text-center lg:text-left max-w-sm">
-            <span className="text-[#86B841] font-bold text-xs uppercase tracking-widest block mb-2">Targeted Nutrition</span>
-            <h2 className="text-[var(--color-wabi-green)] font-serif text-3xl md:text-5xl leading-tight mb-4">
-              Curated for<br /><i className="text-[var(--color-wabi-earth)]">Your Farm</i>
+      <section id="shop-by-need" className="bg-[var(--color-wabi-bg)] py-12 md:py-16 lg:py-20 xl:py-24 border-y border-[var(--color-wabi-earth)]/10">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 xl:px-12 flex flex-col xl:flex-row items-center xl:items-stretch gap-8 sm:gap-10 xl:gap-12">
+          {/* Header Block */}
+          <div className="w-full xl:w-72 2xl:w-80 flex-shrink-0 text-center xl:text-left flex flex-col justify-center items-center xl:items-start max-w-xl xl:max-w-none mx-auto xl:mx-0">
+            <span className="text-[#86B841] font-bold text-xs uppercase tracking-widest block mb-2">
+              Targeted Nutrition
+            </span>
+            <h2 className="text-[var(--color-wabi-green)] font-serif text-2xl sm:text-3xl md:text-4xl xl:text-5xl leading-tight mb-3 xl:mb-4">
+              Curated for<br className="hidden sm:inline xl:inline" /> <i className="text-[var(--color-wabi-earth)]">Your Farm</i>
             </h2>
-            <p className="text-gray-600 text-sm leading-relaxed mb-6">
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5 xl:mb-6 max-w-md xl:max-w-none">
               Find exactly what your livestock and poultry require for peak productivity, disease resistance, and healthy growth.
             </p>
-            <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--color-wabi-green)] bg-white px-4 py-2 rounded-full border border-gray-200/80 shadow-sm">
+            <div className="inline-flex items-center gap-2 text-xs font-bold text-[var(--color-wabi-green)] bg-white px-3.5 sm:px-4 py-2 rounded-full border border-gray-200/80 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#86B841] animate-pulse"></span>
               Dedicated care & feeding guides
             </div>
           </div>
 
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 w-full">
+          {/* Cards Grid */}
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-3 lg:gap-4 xl:gap-5 w-full">
             {[
               {
                 to: '/cow',
@@ -520,7 +524,7 @@ export default function Home() {
                 image: '/images/hen-food.png',
                 title: 'Poultry',
                 tamil: 'கோழி',
-                desc: 'Balanced feed for egg laying hens.',
+                desc: 'Egg & Layer Feed',
                 badge: 'Layer'
               },
               {
@@ -532,34 +536,37 @@ export default function Home() {
                 badge: 'Farm Pure'
               }
             ].map((need) => (
-              <Link href={need.to}
+              <Link
+                href={need.to}
                 key={need.title}
-                className="group bg-white p-3 sm:p-5 lg:p-8 rounded-2xl sm:rounded-[2rem] flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100 relative overflow-hidden"
+                className="group bg-white p-3 sm:p-4 md:p-3.5 lg:p-4 xl:p-6 rounded-2xl sm:rounded-3xl flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 border border-gray-100/80 relative overflow-hidden h-full justify-between w-full"
               >
-                <span className="text-[9px] sm:text-xs font-bold uppercase tracking-wider text-[#86B841] bg-[#86B841]/10 px-2 sm:px-3 py-1 rounded-full mb-3 sm:mb-4">
-                  {need.badge}
-                </span>
+                <div className="flex flex-col items-center w-full">
+                  <span className="text-[9px] sm:text-[10px] md:text-xs font-bold uppercase tracking-wider text-[#86B841] bg-[#86B841]/10 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full mb-2.5 sm:mb-3 whitespace-nowrap">
+                    {need.badge}
+                  </span>
 
-                <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-xl sm:rounded-[1.5rem] overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-3 sm:mb-4 shadow-inner border border-gray-100 p-2 sm:p-3 group-hover:bg-[#86B841]/10 transition-colors">
-                  <img
-                    src={need.image}
-                    alt={need.title}
-                    loading="lazy"
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
-                  />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-xl sm:rounded-2xl overflow-hidden flex items-center justify-center bg-[var(--color-wabi-bg)] mb-2.5 sm:mb-3 shadow-inner border border-gray-100 p-2 sm:p-2.5 group-hover:bg-[#86B841]/10 transition-colors flex-shrink-0">
+                    <img
+                      src={need.image}
+                      alt={need.title}
+                      loading="lazy"
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
+                    />
+                  </div>
+
+                  <span className="text-xs sm:text-sm md:text-sm lg:text-base xl:text-xl font-serif font-bold text-[var(--color-wabi-green)] group-hover:text-[#86B841] transition-colors leading-tight mb-1 line-clamp-1">
+                    {need.title}
+                  </span>
+                  <span className="text-[10px] sm:text-xs font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-1.5 sm:px-2 py-0.5 inline-block rounded-md mb-1.5 text-center whitespace-nowrap">
+                    {need.tamil}
+                  </span>
+                  <span className="text-[10px] sm:text-xs text-gray-500 font-medium line-clamp-2">
+                    {need.desc}
+                  </span>
                 </div>
 
-                <span className="text-sm sm:text-base lg:text-xl font-serif font-bold text-[var(--color-wabi-green)] group-hover:text-[#86B841] transition-colors leading-tight mb-1">
-                  {need.title}
-                </span>
-                <span className="text-xs sm:text-sm font-extrabold text-[#0B4D26] bg-[#86B841]/20 px-2 py-1 inline-block rounded-md mb-2">
-                  {need.tamil}
-                </span>
-                <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                  {need.desc}
-                </span>
-
-                <span className="mt-3 text-[10px] font-bold text-[#1B4332] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                <span className="mt-3 text-[10px] sm:text-xs font-bold text-[#1B4332] opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5 whitespace-nowrap">
                   View Feeds →
                 </span>
               </Link>
@@ -672,7 +679,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="w-full h-[500px] mb-8"
+              className="w-full h-[380px] sm:h-[450px] md:h-[500px] mb-8 overflow-hidden"
               initial={{ opacity: 0, y: 60, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -739,7 +746,7 @@ export default function Home() {
             </motion.div>
 
             <motion.div
-              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
+              className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
               variants={{
                 hidden: { opacity: 0 },
                 show: {

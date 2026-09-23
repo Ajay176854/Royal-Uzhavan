@@ -261,7 +261,7 @@ export default function Smooth3DSlideshow(rawProps: Smooth3DSlideshowProps) {
         position: "relative",
         width: "100%",
         height: "100%",
-        minWidth: 320,
+        minWidth: 0,
         minHeight: 360,
         display: "flex",
         alignItems: "center",

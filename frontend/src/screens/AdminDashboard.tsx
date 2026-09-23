@@ -574,36 +574,36 @@ export default function AdminDashboard() {
               <div className="p-6 border-b border-gray-100 bg-[#C9A227] text-gray-900">
                 <h2 className="font-bold text-lg">Admin Panel</h2>
               </div>
-              <nav className="flex flex-col p-2">
+              <nav className="flex md:flex-col p-2 overflow-x-auto no-scrollbar whitespace-nowrap gap-1 md:gap-0">
                 <button
                   onClick={() => setActiveTab('dashboard')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'dashboard' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors shrink-0 md:w-full text-left ${activeTab === 'dashboard' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <LayoutDashboard className="w-5 h-5" /> Overview
                 </button>
 
                 <button
                   onClick={() => setActiveTab('products')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'products' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors shrink-0 md:w-full text-left ${activeTab === 'products' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <Package className="w-5 h-5" /> Products Management
                 </button>
                 <button
                   onClick={() => setActiveTab('categories')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors shrink-0 md:w-full text-left ${activeTab === 'categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <Package className="w-5 h-5" /> Categories Management
                 </button>
                 <button
                   onClick={() => setActiveTab('home-categories')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'home-categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors shrink-0 md:w-full text-left ${activeTab === 'home-categories' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <LayoutDashboard className="w-5 h-5" /> Home Placement
                 </button>
-                <div className="my-2 border-t border-gray-100"></div>
+                <div className="hidden md:block my-2 border-t border-gray-100"></div>
                 <button
                   onClick={() => setActiveTab('settings')}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors w-full text-left ${activeTab === 'settings' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-bold transition-colors shrink-0 md:w-full text-left ${activeTab === 'settings' ? 'bg-[#0B4D26]/10 text-[#0B4D26]' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   <Edit className="w-5 h-5" /> Settings
                 </button>
