@@ -374,7 +374,7 @@ export default function Home() {
                 {/* Image Container */}
                 <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                   <img
-                    src="/images/cattle&animals.webp"
+                    src="/images/cattle-animals.webp"
                     alt="Cattle & Animals - Cow, Pig, Horse, Buffalo & Rabbit"
                     loading="lazy"
                     className="w-full h-full object-cover sepia-[0.2] contrast-110 group-hover:scale-105 transition-transform duration-700 ease-out"
