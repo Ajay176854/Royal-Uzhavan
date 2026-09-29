@@ -13,7 +13,7 @@ const ANIMAL_CONFIGS = {
     tamilTitle: 'கோழி வகைகள்',
     subtitle: 'Complete Poultry Nutrition',
     description: 'Premium nutrition for all your poultry — from country hens and layers to ducks, turkeys, and broilers. Our feeds are carefully formulated with balanced grain blends, calcium boosters, and protein-rich supplements for healthy growth, strong immunity, and maximum egg production.',
-    heroImage: '/images/poultry.png',
+    heroImage: '/images/poultry.webp',
     animals: ['Hen', 'Duck', 'Turkey', 'Broiler'],
     searchQuery: 'Hen Poultry Kozhi Duck Turkey Broiler Layer Chicken',
     color: '#0B4D26',
@@ -34,7 +34,7 @@ const ANIMAL_CONFIGS = {
     tamilTitle: 'பசு & மாடுகள்',
     subtitle: 'Premium Livestock Nutrition',
     description: 'High-quality feed for cows, pigs, horses, and buffaloes — formulated with high-protein pellets, mineral-rich supplements, and energy boosters to enhance milk yield, muscle growth, stamina, and overall vitality across all life stages.',
-    heroImage: '/images/cattle&animals.png',
+    heroImage: '/images/cattle-animals.webp',
     animals: ['Cow', 'Pig', 'Horse', 'Buffalo'],
     searchQuery: 'Cow Cattle Pig Swine Horse Buffalo Dairy Livestock',
     color: '#1B4332',
@@ -55,7 +55,7 @@ const ANIMAL_CONFIGS = {
     tamilTitle: 'புறா & பறவைகள்',
     subtitle: 'Natural Bird Nutrition',
     description: 'Specialized seed blends, grit mixes, and vitamin supplements crafted for pigeons, love birds, African love birds, cockatiels, and conures — designed to promote vibrant plumage, peak stamina, strong bones, and overall well-being naturally.',
-    heroImage: '/images/birds.png',
+    heroImage: '/images/birds.webp',
     animals: ['Pigeon', 'Love Birds', 'African Love Birds', 'Cockatiel', 'Conure'],
     searchQuery: 'Pigeon Bird Love Cockatiel Conure Budgie Seed Mix Parrot',
     color: '#2D6A4F',
@@ -263,7 +263,7 @@ export default function AnimalNeedPage() {
               <p className="text-gray-500 font-medium text-sm">Loading products...</p>
             </div>
           ) : products.length > 0 ? (
-            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
               {products.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
